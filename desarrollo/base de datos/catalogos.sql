@@ -1,39 +1,18 @@
--- =========================================================
--- catalogos.sql
--- Seeds: roles, carreras, tipos, materias y relación carrera-materia
--- =========================================================
-
--- =========================================
--- ROLES
--- =========================================
 
 INSERT INTO cat03_rol (tx_nombre) VALUES
 ('Alumno'),
 ('Administrador');
 
--- =========================================
--- TIPOS DE MATERIA
--- =========================================
-
 INSERT INTO cat04_tipo_materia (tx_nombre) VALUES
 ('Obligatoria'),
 ('Optativa');
 
--- =========================================
--- CARRERAS
--- =========================================
-
-INSERT INTO cat01_carrera (tx_clave, tx_nombre, tx_plan) VALUES
-('ISC', 'Ingeniería en Sistemas Computacionales', '2020'),
-('IIA', 'Ingeniería en Inteligencia Artificial',  '2020'),
-('LCD', 'Licenciatura en Ciencia de Datos',       '2020');
-
--- =========================================
--- MATERIAS
--- =========================================
+INSERT INTO cat01_carrera (tx_clave, tx_nombre,) VALUES
+('ISC', 'Ingeniería en Sistemas Computacionales'),
+('IIA', 'Ingeniería en Inteligencia Artificial'),
+('LCD', 'Licenciatura en Ciencia de Datos');
 
 INSERT INTO cat02_materia (tx_nombre) VALUES
--- Compartidas entre las 3 carreras
 ('Cálculo'),
 ('Matemáticas Discretas'),
 ('Comunicación Oral y Escrita'),
