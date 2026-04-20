@@ -1,8 +1,13 @@
+-- =========================================================
+-- ets_demo.sql
+-- Datos de ejemplo: docentes, aulas y ETS simulados
+-- =========================================================
+
 -- =========================================
 -- DOCENTES (tomados del catálogo oficial ESCOM)
 -- =========================================
 
-INSERT INTO esc05_docente (tx_nombre, tx_apellido_p, tx_apellido_m, tx_correo) VALUES
+INSERT INTO esc05_docente (tx_nombre, tx_apellido_paterno, tx_apellido_materno, tx_correo) VALUES
 ('Rafael', 'Aguilar', 'García', 'raguilarg@ipn.mx'),
 ('Fernando', 'Aguilar', 'Sánchez', 'faguilars@ipn.mx'),
 ('Daniel', 'Aguilar', 'Velázquez', 'daguilarv@ipn.mx'),
@@ -272,7 +277,7 @@ INSERT INTO esc06_aula (tx_clave, tx_edificio) VALUES
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Cálculo'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Chávez' AND tx_apellido_m='Lima'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Chávez' AND tx_apellido_materno='Lima'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3101'),
     '2026-06-02 08:00:00';
 
@@ -280,7 +285,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Álgebra Lineal'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Cañedo' AND tx_apellido_m='Suárez'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cañedo' AND tx_apellido_materno='Suárez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3102'),
     '2026-06-03 10:00:00';
 
@@ -288,7 +293,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Matemáticas Discretas'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Buitrón' AND tx_apellido_m='Damaso'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Buitrón' AND tx_apellido_materno='Damaso'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3201'),
     '2026-06-04 12:00:00';
 
@@ -296,7 +301,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Fundamentos de Programación'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Albortante' AND tx_apellido_m='Morato'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Albortante' AND tx_apellido_materno='Morato'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     '2026-06-05 08:00:00';
 
@@ -304,7 +309,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Algoritmos y Estructuras de Datos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Franco' AND tx_apellido_m='Martínez'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Franco' AND tx_apellido_materno='Martínez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-2'),
     '2026-06-06 10:00:00';
 
@@ -312,7 +317,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Bases de Datos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Botello' AND tx_apellido_m='Castillo'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Botello' AND tx_apellido_materno='Castillo'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-3'),
     '2026-06-09 12:00:00';
 
@@ -320,7 +325,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Paradigmas de Programación'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Aguilar' AND tx_apellido_m='García'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Aguilar' AND tx_apellido_materno='García'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3202'),
     '2026-06-10 14:00:00';
 
@@ -328,7 +333,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Análisis y Diseño de Algoritmos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Ávila' AND tx_apellido_m='Sánchez'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Ávila' AND tx_apellido_materno='Sánchez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3301'),
     '2026-06-11 08:00:00';
 
@@ -336,7 +341,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Ecuaciones Diferenciales'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Carballo' AND tx_apellido_m='Jiménez'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Carballo' AND tx_apellido_materno='Jiménez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3302'),
     '2026-06-12 10:00:00';
 
@@ -344,7 +349,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Probabilidad y Estadística'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Cruz' AND tx_apellido_m='Rojas'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cruz' AND tx_apellido_materno='Rojas'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4101'),
     '2026-06-13 12:00:00';
 
@@ -352,7 +357,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Sistemas Operativos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Araujo' AND tx_apellido_m='Díaz'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Araujo' AND tx_apellido_materno='Díaz'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-4'),
     '2026-06-16 08:00:00';
 
@@ -360,7 +365,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Redes de Computadoras'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Alcaraz' AND tx_apellido_m='Torres'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Alcaraz' AND tx_apellido_materno='Torres'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     '2026-06-17 10:00:00';
 
@@ -368,7 +373,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Compiladores'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Alcántara' AND tx_apellido_m='Méndez'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Alcántara' AND tx_apellido_materno='Méndez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4102'),
     '2026-06-18 12:00:00';
 
@@ -376,7 +381,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Ingeniería de Software'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Cordero' AND tx_apellido_m='López'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cordero' AND tx_apellido_materno='López'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4201'),
     '2026-06-19 14:00:00';
 
@@ -384,7 +389,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Inteligencia Artificial'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Aguilar' AND tx_apellido_m='Velázquez'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Aguilar' AND tx_apellido_materno='Velázquez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-2'),
     '2026-06-20 08:00:00';
 
@@ -392,7 +397,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Finanzas Empresariales'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Agustín' AND tx_apellido_m='Domínguez'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Agustín' AND tx_apellido_materno='Domínguez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3101'),
     '2026-06-23 10:00:00';
 
@@ -400,7 +405,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Comunicación Oral y Escrita'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Aragón' AND tx_apellido_m='García'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Aragón' AND tx_apellido_materno='García'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3102'),
     '2026-06-24 12:00:00';
 
@@ -408,7 +413,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Teoría de la Computación'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Hernández' AND tx_apellido_m='Olvera'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Hernández' AND tx_apellido_materno='Olvera'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3201'),
     '2026-06-25 14:00:00';
 
@@ -416,7 +421,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Bases de Datos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Hernández' AND tx_apellido_m='Rubio'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Hernández' AND tx_apellido_materno='Rubio'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-3'),
     '2026-06-26 08:00:00';
 
@@ -428,7 +433,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Cálculo Aplicado'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Díaz' AND tx_apellido_m='Huerta'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Díaz' AND tx_apellido_materno='Huerta'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3101'),
     '2026-06-02 10:00:00';
 
@@ -436,7 +441,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Análisis Vectorial'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='López' AND tx_apellido_m='Carrera'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='López' AND tx_apellido_materno='Carrera'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3102'),
     '2026-06-03 14:00:00';
 
@@ -444,7 +449,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Cálculo Multivariable'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Leal' AND tx_apellido_m='Pacheco'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Leal' AND tx_apellido_materno='Pacheco'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3201'),
     '2026-06-04 08:00:00';
 
@@ -452,7 +457,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Mecánica y Electromagnetismo'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Guzmán' AND tx_apellido_m='Aguilar'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Guzmán' AND tx_apellido_materno='Aguilar'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3202'),
     '2026-06-05 14:00:00';
 
@@ -460,7 +465,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Matemáticas Avanzadas para la Ingeniería'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Ríos de la Torre'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Ríos de la Torre'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3301'),
     '2026-06-08 10:00:00';
 
@@ -468,7 +473,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Probabilidad'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Vázquez' AND tx_apellido_m='González'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Vázquez' AND tx_apellido_materno='González'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3302'),
     '2026-06-09 14:00:00';
 
@@ -476,7 +481,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Estadística'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Cruz' AND tx_apellido_m='Rojas'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cruz' AND tx_apellido_materno='Rojas'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4101'),
     '2026-06-10 10:00:00';
 
@@ -484,7 +489,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Métodos Numéricos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Sánchez' AND tx_apellido_m='Aguilar'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Sánchez' AND tx_apellido_materno='Aguilar'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4102'),
     '2026-06-11 14:00:00';
 
@@ -492,7 +497,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Procesos Estocásticos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Sánchez' AND tx_apellido_m='Aguilar'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Sánchez' AND tx_apellido_materno='Aguilar'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4201'),
     '2026-06-15 08:00:00';
 
@@ -504,7 +509,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Fundamentos de Diseño Digital'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Galicia' AND tx_apellido_m='Mejía'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Galicia' AND tx_apellido_materno='Mejía'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     '2026-06-02 14:00:00';
 
@@ -512,7 +517,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Diseño de Sistemas Digitales'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Linares' AND tx_apellido_m='Vallejo'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Linares' AND tx_apellido_materno='Vallejo'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-2'),
     '2026-06-03 08:00:00';
 
@@ -520,7 +525,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Arquitectura de Computadoras'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='García' AND tx_apellido_m='Ortega'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='García' AND tx_apellido_materno='Ortega'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-3'),
     '2026-06-04 10:00:00';
 
@@ -528,7 +533,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Circuitos Eléctricos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Almazán' AND tx_apellido_m='Farfán'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Almazán' AND tx_apellido_materno='Farfán'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3101'),
     '2026-06-05 10:00:00';
 
@@ -536,7 +541,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Electrónica Analógica'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Cancino' AND tx_apellido_m='Calderón'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cancino' AND tx_apellido_materno='Calderón'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3102'),
     '2026-06-08 12:00:00';
 
@@ -544,7 +549,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Procesamiento Digital de Señales'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Castillo' AND tx_apellido_m='Cabrera'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Castillo' AND tx_apellido_materno='Cabrera'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-4'),
     '2026-06-09 08:00:00';
 
@@ -552,7 +557,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Instrumentación y Control'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Hernández' AND tx_apellido_m='Aguilar'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Hernández' AND tx_apellido_materno='Aguilar'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3201'),
     '2026-06-10 12:00:00';
 
@@ -564,7 +569,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Fundamentos de Inteligencia Artificial'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Galindo' AND tx_apellido_m='Durán'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Galindo' AND tx_apellido_materno='Durán'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     '2026-06-11 10:00:00';
 
@@ -572,7 +577,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Aprendizaje de Máquina'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='García' AND tx_apellido_m='Mendoza'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='García' AND tx_apellido_materno='Mendoza'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-2'),
     '2026-06-12 12:00:00';
 
@@ -580,7 +585,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Visión Artificial'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Sánchez' AND tx_apellido_m='García' AND tx_nombre='Octavio'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Sánchez' AND tx_apellido_materno='García' AND tx_nombre='Octavio'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-3'),
     '2026-06-15 10:00:00';
 
@@ -588,7 +593,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Algoritmos Bioinspirados'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Rosas' AND tx_apellido_m='Trigueros'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Rosas' AND tx_apellido_materno='Trigueros'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3202'),
     '2026-06-16 12:00:00';
 
@@ -596,7 +601,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Tecnologías de Lenguaje Natural'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Juárez' AND tx_apellido_m='Gambino'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Juárez' AND tx_apellido_materno='Gambino'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-4'),
     '2026-06-17 14:00:00';
 
@@ -604,7 +609,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Cómputo Paralelo'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Morales' AND tx_apellido_m='Güitrón'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Morales' AND tx_apellido_materno='Güitrón'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     '2026-06-18 08:00:00';
 
@@ -612,7 +617,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Introducción a la Ciencia de Datos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Ocampo' AND tx_apellido_m='Botello'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Ocampo' AND tx_apellido_materno='Botello'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3301'),
     '2026-06-19 10:00:00';
 
@@ -620,7 +625,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Programación para Ciencia de Datos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Aguilar' AND tx_apellido_m='Velázquez'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Aguilar' AND tx_apellido_materno='Velázquez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-2'),
     '2026-06-22 08:00:00';
 
@@ -628,7 +633,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Minería de Datos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Zagal' AND tx_apellido_m='Flores'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Zagal' AND tx_apellido_materno='Flores'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-3'),
     '2026-06-23 12:00:00';
 
@@ -636,7 +641,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Análisis de Series de Tiempo'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Corona' AND tx_apellido_m='Bermúdez'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Corona' AND tx_apellido_materno='Bermúdez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3302'),
     '2026-06-24 10:00:00';
 
@@ -644,7 +649,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Modelado Predictivo'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Corona' AND tx_apellido_m='Bermúdez'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Corona' AND tx_apellido_materno='Bermúdez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4101'),
     '2026-06-25 12:00:00';
 
@@ -656,7 +661,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Análisis y Diseño de Sistemas'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Dorantes' AND tx_apellido_m='González'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Dorantes' AND tx_apellido_materno='González'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4102'),
     '2026-06-02 12:00:00';
 
@@ -664,7 +669,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Tecnologías para el Desarrollo de Aplicaciones Web'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Enríquez' AND tx_apellido_m='Zárate'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Enríquez' AND tx_apellido_materno='Zárate'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     '2026-06-03 12:00:00';
 
@@ -672,7 +677,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Sistemas Distribuidos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Coronilla' AND tx_apellido_m='Contreras'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Coronilla' AND tx_apellido_materno='Contreras'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-4'),
     '2026-06-04 12:00:00';
 
@@ -680,7 +685,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Aplicaciones para Comunicaciones en Red'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Bautista' AND tx_apellido_m='Rosales'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Bautista' AND tx_apellido_materno='Rosales'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-2'),
     '2026-06-05 12:00:00';
 
@@ -688,7 +693,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Administración de Servicios en Red'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Henestrosa' AND tx_apellido_m='Carrasco'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Henestrosa' AND tx_apellido_materno='Carrasco'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-3'),
     '2026-06-08 14:00:00';
 
@@ -700,7 +705,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Fundamentos Económicos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Cabrera' AND tx_apellido_m='Chávez'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cabrera' AND tx_apellido_materno='Chávez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3101'),
     '2026-06-09 12:00:00';
 
@@ -708,7 +713,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Gestión Empresarial'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Cancino' AND tx_apellido_m='Mosqueda'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cancino' AND tx_apellido_materno='Mosqueda'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3102'),
     '2026-06-10 14:00:00';
 
@@ -716,7 +721,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Ingeniería, Ética y Sociedad'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Gómez' AND tx_apellido_m='Tress'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Gómez' AND tx_apellido_materno='Tress'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3201'),
     '2026-06-11 12:00:00';
 
@@ -724,7 +729,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Ética y Legalidad'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Martínez' AND tx_apellido_m='Acosta'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Martínez' AND tx_apellido_materno='Acosta'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3202'),
     '2026-06-12 14:00:00';
 
@@ -732,7 +737,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Liderazgo Personal'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Ferrer' AND tx_apellido_m='Tenorio'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Ferrer' AND tx_apellido_materno='Tenorio'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3301'),
     '2026-06-15 12:00:00';
 
@@ -740,7 +745,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Metodología de la Investigación y Divulgación Científica'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Celis' AND tx_apellido_m='Domínguez'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Celis' AND tx_apellido_materno='Domínguez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3302'),
     '2026-06-16 14:00:00';
 
@@ -748,7 +753,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Formulación y Evaluación de Proyectos Informáticos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Palacios' AND tx_apellido_m='Solano'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Palacios' AND tx_apellido_materno='Solano'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4201'),
     '2026-06-17 10:00:00';
 
@@ -756,7 +761,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Métodos Cuantitativos para la Toma de Decisiones'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Márquez' AND tx_apellido_m='Arreguín'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Márquez' AND tx_apellido_materno='Arreguín'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4202'),
     '2026-06-18 10:00:00';
 
@@ -768,7 +773,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Computer Security'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Cifuentes' AND tx_apellido_m='Álvarez'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cifuentes' AND tx_apellido_materno='Álvarez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     '2026-06-19 14:00:00';
 
@@ -776,7 +781,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Introduction to Cryptography'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Cortez' AND tx_apellido_m='Duarte'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cortez' AND tx_apellido_materno='Duarte'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-2'),
     '2026-06-22 10:00:00';
 
@@ -784,7 +789,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Machine Learning'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Juárez' AND tx_apellido_m='Gambino'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Juárez' AND tx_apellido_materno='Gambino'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-3'),
     '2026-06-23 14:00:00';
 
@@ -792,7 +797,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Genetic Algorithms'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Cruz' AND tx_apellido_m='Meza'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cruz' AND tx_apellido_materno='Meza'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-4'),
     '2026-06-24 14:00:00';
 
@@ -800,7 +805,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Image Analysis'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Cruz' AND tx_apellido_m='Meza'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cruz' AND tx_apellido_materno='Meza'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3101'),
     '2026-06-25 10:00:00';
 
@@ -808,7 +813,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Computer Graphics'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Saucedo' AND tx_apellido_m='Delgado'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Saucedo' AND tx_apellido_materno='Delgado'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3102'),
     '2026-06-26 10:00:00';
 
@@ -816,7 +821,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Data Mining'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Ocampo' AND tx_apellido_m='Botello'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Ocampo' AND tx_apellido_materno='Botello'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3201'),
     '2026-06-29 08:00:00';
 
@@ -824,7 +829,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='High Technology Enterprise Management'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='López' AND tx_apellido_m='Rojas'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='López' AND tx_apellido_materno='Rojas'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3202'),
     '2026-06-30 10:00:00';
 
@@ -832,7 +837,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='IT Governance'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Guzmán' AND tx_apellido_m='Flores'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Guzmán' AND tx_apellido_materno='Flores'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3301'),
     '2026-07-01 08:00:00';
 
@@ -840,7 +845,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Economic Engineering'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Morales' AND tx_apellido_m='González'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Morales' AND tx_apellido_materno='González'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3302'),
     '2026-07-02 10:00:00';
 
@@ -853,7 +858,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Cálculo'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Colin' AND tx_apellido_m='Hernández'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Colin' AND tx_apellido_materno='Hernández'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3101'),
     '2026-08-04 08:00:00';
 
@@ -861,7 +866,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Fundamentos de Programación'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Flores' AND tx_apellido_m='Mendoza'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Flores' AND tx_apellido_materno='Mendoza'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     '2026-08-05 10:00:00';
 
@@ -869,7 +874,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Algoritmos y Estructuras de Datos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Cruz' AND tx_apellido_m='García'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cruz' AND tx_apellido_materno='García'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-2'),
     '2026-08-06 12:00:00';
 
@@ -877,7 +882,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Bases de Datos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Chavarría' AND tx_apellido_m='Báez'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Chavarría' AND tx_apellido_materno='Báez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-3'),
     '2026-08-07 14:00:00';
 
@@ -885,7 +890,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Paradigmas de Programación'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='De la O' AND tx_apellido_m='Torres'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='De la O' AND tx_apellido_materno='Torres'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3201'),
     '2026-08-10 08:00:00';
 
@@ -893,7 +898,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Análisis y Diseño de Algoritmos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Díaz' AND tx_apellido_m='Santiago' AND tx_nombre='Ricardo Felipe'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Díaz' AND tx_apellido_materno='Santiago' AND tx_nombre='Ricardo Felipe'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3202'),
     '2026-08-11 10:00:00';
 
@@ -901,7 +906,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Sistemas Operativos'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Cortés' AND tx_apellido_m='Galicia'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cortés' AND tx_apellido_materno='Galicia'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-4'),
     '2026-08-12 12:00:00';
 
@@ -909,7 +914,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Compiladores'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Pescador' AND tx_apellido_m='Rojas'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Pescador' AND tx_apellido_materno='Rojas'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3301'),
     '2026-08-13 14:00:00';
 
@@ -917,7 +922,7 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Ingeniería de Software'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Melara' AND tx_apellido_m='Abarca'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Melara' AND tx_apellido_materno='Abarca'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3302'),
     '2026-08-14 08:00:00';
 
@@ -925,6 +930,6 @@ SELECT
 INSERT INTO esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fh_aplicacion)
 SELECT
     (SELECT id_materia FROM cat02_materia WHERE tx_nombre='Redes de Computadoras'),
-    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_p='Sánchez' AND tx_apellido_m='Quintanilla'),
+    (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Sánchez' AND tx_apellido_materno='Quintanilla'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     '2026-08-17 10:00:00';
