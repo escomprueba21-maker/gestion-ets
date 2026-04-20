@@ -1,0 +1,14 @@
+# OS
+.DS_Store
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# Java / Maven (aplica a todos los módulos)
+**/target/
+**/*.log
+
+# Env
+.env
