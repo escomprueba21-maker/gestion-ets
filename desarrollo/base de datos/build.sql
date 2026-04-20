@@ -1,7 +1,3 @@
--- =========================================================
--- build.sql
--- Script maestro: tira y recrea la base de datos
--- =========================================================
 
 SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='calendario-ets';
 DROP DATABASE IF EXISTS "calendario-ets";
