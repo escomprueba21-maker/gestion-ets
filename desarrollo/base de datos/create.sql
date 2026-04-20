@@ -52,8 +52,8 @@ CREATE INDEX idx_esc01_carrera_semestre
 CREATE TABLE esc02_persona (
     id_persona     INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     tx_nombre      VARCHAR(100) NOT NULL,
-    tx_apellido_p  VARCHAR(100) NOT NULL,
-    tx_apellido_m  VARCHAR(100),
+    tx_apellido_paterno  VARCHAR(100) NOT NULL,
+    tx_apellido_materno  VARCHAR(100),
     tx_correo      VARCHAR(200) NOT NULL UNIQUE,
     tx_password    VARCHAR(255) NOT NULL,
     st_verificado  BOOLEAN      NOT NULL DEFAULT FALSE,
@@ -90,8 +90,8 @@ CREATE TABLE esc04_token_confirmacion (
 CREATE TABLE esc05_docente (
     id_docente     INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     tx_nombre      VARCHAR(100) NOT NULL,
-    tx_apellido_p  VARCHAR(100) NOT NULL,
-    tx_apellido_m  VARCHAR(100),
+    tx_apellido_paterno  VARCHAR(100) NOT NULL,
+    tx_apellido_materno  VARCHAR(100),
     tx_correo      VARCHAR(200) UNIQUE
 );
 
