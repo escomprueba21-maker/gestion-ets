@@ -2,8 +2,7 @@
 CREATE TABLE cat01_carrera (
     id_carrera  INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     tx_clave    VARCHAR(10)  NOT NULL UNIQUE,
-    tx_nombre   VARCHAR(200) NOT NULL,
-    tx_plan     VARCHAR(10)  NOT NULL
+    tx_nombre   VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE cat02_materia (
