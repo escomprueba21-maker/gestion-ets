@@ -7,7 +7,7 @@ INSERT INTO cat04_tipo_materia (tx_nombre) VALUES
 ('Obligatoria'),
 ('Optativa');
 
-INSERT INTO cat01_carrera (tx_clave, tx_nombre,) VALUES
+INSERT INTO cat01_carrera (tx_clave, tx_nombre) VALUES
 ('ISC', 'Ingeniería en Sistemas Computacionales'),
 ('IIA', 'Ingeniería en Inteligencia Artificial'),
 ('LCD', 'Licenciatura en Ciencia de Datos');
