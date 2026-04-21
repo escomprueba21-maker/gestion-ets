@@ -33,6 +33,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-mailer</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
             <version>1.0.1</version>
