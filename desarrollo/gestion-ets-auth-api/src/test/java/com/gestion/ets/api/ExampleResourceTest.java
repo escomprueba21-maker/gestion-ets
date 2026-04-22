@@ -1,4 +1,4 @@
-package com.escom;
+package com.gestion.ets.api;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
