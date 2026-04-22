@@ -44,8 +44,7 @@ CREATE TABLE esc02_persona (
 
 CREATE TABLE esc03_persona_rol (
     fk_id_persona  INT4 NOT NULL REFERENCES esc02_persona(id_persona),
-    fk_id_rol      INT4 NOT NULL REFERENCES cat03_rol(id_rol),
-    fh_registro    TIMESTAMP NOT NULL DEFAULT NOW(),
+    fk_id_rol      INT4 NOT NULL REFERENCES cat03_rol(id_rol)
     PRIMARY KEY (fk_id_persona, fk_id_rol)
 );
 
