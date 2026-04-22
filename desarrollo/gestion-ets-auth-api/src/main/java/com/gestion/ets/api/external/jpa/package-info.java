@@ -1,1 +1,0 @@
-package com.gestion.ets.api.external.jpa;
