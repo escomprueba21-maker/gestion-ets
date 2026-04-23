@@ -2,6 +2,7 @@ package com.gestion.ets.api.core.business.implementation;
 
 import com.gestion.ets.api.core.business.input.UsuarioService;
 import com.gestion.ets.api.core.business.output.UsuarioRepository;
+import com.gestion.ets.api.core.entity.Auth;
 import com.gestion.ets.api.core.entity.Usuario;
 import com.gestion.ets.api.util.BsConstants;
 import com.gestion.ets.api.util.error.ErrorCodeEnum;
@@ -42,7 +43,8 @@ public class UsuarioBs implements UsuarioService {
         if(usuarioRepository.existUsuarioByCorreo(entity.getEmail())) {
             return Either.left(ErrorCodeEnum.GE_RNN001);
         }
-        usuarioRepository.Save(Usuario.builder()
+        var uuid = UUID.randomUUID().toString();
+       var usuario = usuarioRepository.Save(Usuario.builder()
                 .email(entity.getEmail())
                 .nombre(entity.getNombre()).
                 primerApellido(entity.getPrimerApellido())
@@ -51,14 +53,24 @@ public class UsuarioBs implements UsuarioService {
                 .verificado(Boolean.FALSE)
                 .fechaCreacion(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID))
                 .build());
+        usuarioRepository.createAuthUsuario(Auth.builder()
+                .token(uuid).usado(Boolean.FALSE)
+                .idPersona(usuario.getIdUsuario())
+                .fechaExpiracion(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID).plusMinutes(BsConstants.EXPIRACION))
+                .fechaCreacion(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID))
+                .build());
         sendNewConfirmationEmail(entity.getEmail(),String.join(" ",entity.getNombre(),
-                entity.getPrimerApellido(), entity.getSegundoApellido()), UUID.randomUUID().toString());
+                entity.getPrimerApellido(), entity.getSegundoApellido()), uuid);
         return Either.right(Boolean.TRUE);
     }
 
+    @Override
+    public Either<ErrorCodeEnum, Boolean> createRolBytoken(String token) {
+        return null;
+    }
 
     /**
-     * Envia correo de confirmacion del correo para el cliente al registrarse por primera vez
+     * Envia correo de confirmacion para el cliente al registrarse por primera vez
      * @param email correo electronico
      * @param nombre nombre de la persona
      * @param token token que se envia

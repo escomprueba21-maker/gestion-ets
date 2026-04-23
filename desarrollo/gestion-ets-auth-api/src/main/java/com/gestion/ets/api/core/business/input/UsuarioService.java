@@ -12,4 +12,6 @@ public interface UsuarioService {
      * @return si se persiste regresa true, si hay un problema regresa un Error code
      */
     Either<ErrorCodeEnum,Boolean> createUsuario(Usuario entity);
+
+    Either<ErrorCodeEnum,Boolean> createRolBytoken(String token);
 }
