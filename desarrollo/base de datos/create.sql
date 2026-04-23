@@ -51,9 +51,7 @@ CREATE TABLE esc03_persona_rol (
 CREATE TABLE esc04_token_confirmacion (
     token         VARCHAR(200),
     fk_id_persona  INT4      NOT NULL REFERENCES esc02_persona(id_persona),
-    fh_expiracion  TIMESTAMP NOT NULL,
-    st_usado       BOOLEAN   NOT NULL DEFAULT FALSE,
-    fh_creacion    TIMESTAMP NOT NULL DEFAULT NOW()
+    fh_expiracion  TIMESTAMP NOT NULL
 );
 
 CREATE TABLE esc05_docente (
