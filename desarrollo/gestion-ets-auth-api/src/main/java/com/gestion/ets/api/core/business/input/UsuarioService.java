@@ -13,5 +13,5 @@ public interface UsuarioService {
      */
     Either<ErrorCodeEnum,Boolean> createUsuario(Usuario entity);
 
-    Either<ErrorCodeEnum,Boolean> createRolBytoken(String token);
+    Either<ErrorCodeEnum,Boolean> verificarUsuarioByToken(String token);
 }

@@ -4,6 +4,7 @@ import com.gestion.ets.api.core.business.input.UsuarioService;
 import com.gestion.ets.api.core.business.output.UsuarioRepository;
 import com.gestion.ets.api.core.entity.Auth;
 import com.gestion.ets.api.core.entity.Usuario;
+import com.gestion.ets.api.core.enums.RolesEnum;
 import com.gestion.ets.api.util.BsConstants;
 import com.gestion.ets.api.util.error.ErrorCodeEnum;
 import io.quarkus.mailer.Mail;
@@ -65,8 +66,24 @@ public class UsuarioBs implements UsuarioService {
     }
 
     @Override
-    public Either<ErrorCodeEnum, Boolean> createRolBytoken(String token) {
-        return null;
+    @Transactional
+    public Either<ErrorCodeEnum, Boolean> verificarUsuarioByToken(String token) {
+        var searchUsuario = usuarioRepository.findByToken(token);
+        if (searchUsuario.isEmpty()) {
+            return Either.left(ErrorCodeEnum.GE_RNN002);
+        }
+        if (searchUsuario.get().isTokenUsado()) {
+            return Either.left(ErrorCodeEnum.GE_RNN003);
+        }
+        if (searchUsuario.get().getFechaExpiracion().isBefore(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID))) {
+            return Either.left(ErrorCodeEnum.GE_RNN004);
+        }
+        usuarioRepository.saveRol(Usuario.builder()
+                .idRol(RolesEnum.ALUMNO.getId())
+                .idUsuario(searchUsuario.get().getIdUsuario())
+                .build());
+        usuarioRepository.confirmarCuentaByTokenAndIdPersona(token,searchUsuario.get().getIdUsuario());
+        return Either.right(Boolean.TRUE);
     }
 
     /**

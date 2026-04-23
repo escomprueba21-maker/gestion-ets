@@ -3,6 +3,8 @@ package com.gestion.ets.api.core.business.output;
 import com.gestion.ets.api.core.entity.Auth;
 import com.gestion.ets.api.core.entity.Usuario;
 
+import java.util.Optional;
+
 public interface UsuarioRepository {
     /**
      * Guarda al usuario
@@ -22,4 +24,23 @@ public interface UsuarioRepository {
      * @param entity entidad
      */
     void createAuthUsuario(Auth entity);
+
+    /**
+     * Obtiene la informacion del usuario por el token relacionado
+     * @param token token del usuario
+     * @return {@link Optional<Usuario>}
+     */
+    Optional<Usuario> findByToken(String token);
+
+    /**
+     * crea la relacion usuario-rol
+     * @param entity entidad
+     */
+    void saveRol(Usuario entity);
+
+    /**
+     * Confirma la cuenta del usuario: marca el token como usado
+     * y registra la verificación de la persona.
+     */
+    void confirmarCuentaByTokenAndIdPersona(String token, Integer idPersona);
 }

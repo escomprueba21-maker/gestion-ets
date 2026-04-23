@@ -20,4 +20,8 @@ public class Usuario {
     private Boolean verificado;
     private LocalDateTime fechaCreacion;
     private Integer idRol;
+
+    //extras
+    private boolean tokenUsado;
+    private LocalDateTime fechaExpiracion;
 }

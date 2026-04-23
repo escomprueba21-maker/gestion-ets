@@ -5,11 +5,9 @@ import com.gestion.ets.api.external.rest.dto.PersonaDTO;
 import com.gestion.ets.api.util.error.ErrorCode;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 
 @Path("registro")
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,6 +25,11 @@ public class PersonaController {
     @Path("persona")
     public Boolean createPersona(@Valid PersonaDTO personaDTO) {
         return usuarioService.createUsuario(personaDTO.toEntity()).getOrElseThrow(ErrorCode::toBusinessException);
+    }
+
+    @POST
+    public Boolean verificarUsuarioByToken(@Parameter(description = "token", required = true) @QueryParam("token")String token) {
+        return usuarioService.verificarUsuarioByToken(token).getOrElseThrow(ErrorCode::toBusinessException);
     }
 
 }
