@@ -12,7 +12,5 @@ public class Auth {
     private String token;
     private Integer idPersona;
     private LocalDateTime fechaExpiracion;
-    private LocalDateTime fechaCreacion;
-    private Boolean usado;
 
 }

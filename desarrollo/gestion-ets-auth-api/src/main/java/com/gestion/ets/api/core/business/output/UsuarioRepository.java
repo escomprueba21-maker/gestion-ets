@@ -39,8 +39,14 @@ public interface UsuarioRepository {
     void saveRol(Usuario entity);
 
     /**
-     * Confirma la cuenta del usuario: marca el token como usado
+     * Confirma la cuenta del usuario
      * y registra la verificación de la persona.
      */
-    void confirmarCuentaByTokenAndIdPersona(String token, Integer idPersona);
+    void confirmarCuentaByIdPersona(Integer idPersona);
+
+    /**
+     * Elimina el token
+     * @param token token
+     */
+    void deleteToken(String token);
 }

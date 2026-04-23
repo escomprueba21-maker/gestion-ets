@@ -23,10 +23,6 @@ public class AuthJpa {
     private Integer idPersona;
     @Column(name = "fh_expiracion")
     private LocalDateTime fechaExpiracion;
-    @Column(name = "st_usado")
-    private Boolean usado;
-    @Column(name = "fh_creacion")
-    private LocalDateTime fechaCreacion;
 
 
     public static AuthJpa fromEntity(Auth entity) {
@@ -34,8 +30,6 @@ public class AuthJpa {
                 .token(entity.getToken())
                 .idPersona(entity.getIdPersona())
                 .fechaExpiracion(entity.getFechaExpiracion())
-                .usado(entity.getUsado())
-                .fechaCreacion(entity.getFechaCreacion())
                 .build();
     }
 
@@ -44,8 +38,6 @@ public class AuthJpa {
                 .token(token)
                 .idPersona(idPersona)
                 .fechaExpiracion(fechaExpiracion)
-                .usado(usado)
-                .fechaCreacion(fechaCreacion)
                 .build();
     }
 }

@@ -55,10 +55,9 @@ public class UsuarioBs implements UsuarioService {
                 .fechaCreacion(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID))
                 .build());
         usuarioRepository.createAuthUsuario(Auth.builder()
-                .token(uuid).usado(Boolean.FALSE)
+                .token(uuid)
                 .idPersona(usuario.getIdUsuario())
                 .fechaExpiracion(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID).plusMinutes(BsConstants.EXPIRACION))
-                .fechaCreacion(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID))
                 .build());
         sendNewConfirmationEmail(entity.getEmail(),String.join(" ",entity.getNombre(),
                 entity.getPrimerApellido(), entity.getSegundoApellido()), uuid);
@@ -69,7 +68,7 @@ public class UsuarioBs implements UsuarioService {
     @Transactional
     public Either<ErrorCodeEnum, Boolean> verificarUsuarioByToken(String token) {
         var searchUsuario = usuarioRepository.findByToken(token);
-        if (searchUsuario.isEmpty() || searchUsuario.get().isTokenUsado()) {
+        if (searchUsuario.isEmpty()) {
             return Either.left(ErrorCodeEnum.GE_RNN002);
         }
         if (searchUsuario.get().getFechaExpiracion().isBefore(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID))) {
@@ -79,7 +78,8 @@ public class UsuarioBs implements UsuarioService {
                 .idRol(RolesEnum.ALUMNO.getId())
                 .idUsuario(searchUsuario.get().getIdUsuario())
                 .build());
-        usuarioRepository.confirmarCuentaByTokenAndIdPersona(token,searchUsuario.get().getIdUsuario());
+        usuarioRepository.deleteToken(token);
+        usuarioRepository.confirmarCuentaByIdPersona(searchUsuario.get().getIdUsuario());
         return Either.right(Boolean.TRUE);
     }
 

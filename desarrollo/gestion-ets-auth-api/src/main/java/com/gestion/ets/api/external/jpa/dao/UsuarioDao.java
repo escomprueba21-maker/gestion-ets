@@ -10,7 +10,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -22,10 +21,10 @@ public class UsuarioDao implements UsuarioRepository {
 
     private static final String QUERY_FIND_EXIST_USUARIO_BY_CORREO = """
             select exists(select 1 from esc02_persona esc02
-            where esc02.tx_correo = :correo)
+            where esc02.tx_correo = :correo and esc02.st_verificado is true)
             """;
     private static final String QUERY_FIND_USUARIO_BY_TOKEN = """
-            select esc04.fk_id_persona,esc04.st_usado,esc04.fh_expiracion
+            select esc04.fk_id_persona,esc04.fh_expiracion
             from esc04_token_confirmacion esc04
             where esc04.token = :token
             """;
@@ -63,8 +62,7 @@ public class UsuarioDao implements UsuarioRepository {
                 .setParameter(PARAM_TOKEN, token).getResultStream();
         return result.findFirst().map(row->Usuario.builder()
                 .idUsuario((Integer) row[0])
-                .tokenUsado((Boolean) row[1])
-                .fechaExpiracion((LocalDateTime) row[2])
+                .fechaExpiracion((LocalDateTime) row[1])
                 .build());
     }
 
@@ -74,16 +72,18 @@ public class UsuarioDao implements UsuarioRepository {
     }
 
     @Override
-    public void confirmarCuentaByTokenAndIdPersona(String token, Integer idPersona) {
-        entityManager.createNativeQuery("""
-            update esc04_token_confirmacion
-            set st_usado = true where token = :token """)
-                .setParameter(PARAM_TOKEN, token) .executeUpdate();
-
+    public void confirmarCuentaByIdPersona(Integer idPersona) {
         entityManager.createNativeQuery("""
             update esc02_persona
             set st_verificado = true
             where id_persona = :idPersona """)
                 .setParameter(PARAM_ID_PERSONA, idPersona).executeUpdate();
+    }
+
+    @Override
+    public void deleteToken(String token) {
+        entityManager.createNativeQuery("""
+        delete from esc04_token_confirmacion 
+        where token = :token """).setParameter(PARAM_TOKEN,token).executeUpdate();
     }
 }
