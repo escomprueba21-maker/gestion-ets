@@ -69,11 +69,8 @@ public class UsuarioBs implements UsuarioService {
     @Transactional
     public Either<ErrorCodeEnum, Boolean> verificarUsuarioByToken(String token) {
         var searchUsuario = usuarioRepository.findByToken(token);
-        if (searchUsuario.isEmpty()) {
+        if (searchUsuario.isEmpty() || searchUsuario.get().isTokenUsado()) {
             return Either.left(ErrorCodeEnum.GE_RNN002);
-        }
-        if (searchUsuario.get().isTokenUsado()) {
-            return Either.left(ErrorCodeEnum.GE_RNN003);
         }
         if (searchUsuario.get().getFechaExpiracion().isBefore(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID))) {
             return Either.left(ErrorCodeEnum.GE_RNN004);
