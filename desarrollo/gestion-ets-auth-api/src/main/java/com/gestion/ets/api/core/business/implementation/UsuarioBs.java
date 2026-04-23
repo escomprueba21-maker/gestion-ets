@@ -74,12 +74,12 @@ public class UsuarioBs implements UsuarioService {
         if (searchUsuario.get().getFechaExpiracion().isBefore(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID))) {
             return Either.left(ErrorCodeEnum.GE_RNN004);
         }
+        usuarioRepository.deleteToken(token);
+        usuarioRepository.confirmarCuentaByIdPersona(searchUsuario.get().getIdUsuario());
         usuarioRepository.saveRol(Usuario.builder()
                 .idRol(RolesEnum.ALUMNO.getId())
                 .idUsuario(searchUsuario.get().getIdUsuario())
                 .build());
-        usuarioRepository.deleteToken(token);
-        usuarioRepository.confirmarCuentaByIdPersona(searchUsuario.get().getIdUsuario());
         return Either.right(Boolean.TRUE);
     }
 
