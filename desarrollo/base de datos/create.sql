@@ -49,7 +49,7 @@ CREATE TABLE esc03_persona_rol (
 );
 
 CREATE TABLE esc04_token_confirmacion (
-    id_token       UUID PRIMARY KEY,
+    token         VARCHAR(200),
     fk_id_persona  INT4      NOT NULL REFERENCES esc02_persona(id_persona),
     fh_expiracion  TIMESTAMP NOT NULL,
     st_usado       BOOLEAN   NOT NULL DEFAULT FALSE,
