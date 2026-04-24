@@ -49,4 +49,10 @@ public interface UsuarioRepository {
      * @param token token
      */
     void deleteToken(String token);
+
+    Optional<Usuario> findByEmail(String email);
+
+    void deleteTokenByIdPersona(Integer idPersona);
+
+    void updateDatosNoVerificado(Usuario entity);
 }

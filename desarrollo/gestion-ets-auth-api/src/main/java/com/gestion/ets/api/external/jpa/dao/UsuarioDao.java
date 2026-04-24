@@ -24,20 +24,43 @@ public class UsuarioDao implements UsuarioRepository {
             where esc02.tx_correo = :correo and esc02.st_verificado is true)
             """;
     private static final String QUERY_FIND_USUARIO_BY_TOKEN = """
-            select esc04.fk_id_persona,esc04.fh_expiracion
+            select esc04.fk_id_persona, esc04.fh_expiracion
             from esc04_token_confirmacion esc04
             where esc04.token = :token
             """;
+    private static final String QUERY_FIND_USUARIO_BY_EMAIL = """
+        select esc02.id_persona, esc02.tx_nombre, esc02.tx_apellido_paterno,
+               esc02.tx_apellido_materno, esc02.st_verificado
+        from esc02_persona esc02
+        where esc02.tx_correo = :correo
+        """;
+
+    private static final String QUERY_DELETE_TOKEN_BY_ID_PERSONA = """
+        delete from esc04_token_confirmacion
+        where fk_id_persona = :idPersona
+        """;
+
+    private static final String QUERY_UPDATE_DATOS_NO_VERIFICADO = """
+        update esc02_persona
+        set tx_nombre = :nombre,
+            tx_apellido_paterno = :primerApellido,
+            tx_apellido_materno = :segundoApellido,
+            tx_password = :password
+        where id_persona = :idPersona
+        """;
 
     private static final String PARAM_CORREO = "correo";
     private static final String PARAM_TOKEN = "token";
     private static final String PARAM_ID_PERSONA = "idPersona";
+    private static final String PARAM_NOMBRE = "nombre";
+    private static final String PARAM_PRIMER_APELLIDO = "primerApellido";
+    private static final String PARAM_SEGUNDO_APELLIDO = "segundoApellido";
+    private static final String PARAM_PASSWORD = "password";
 
     @Inject
     public UsuarioDao(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
-
 
     @Override
     public Usuario Save(Usuario entity) {
@@ -58,9 +81,9 @@ public class UsuarioDao implements UsuarioRepository {
     @Override
     @SuppressWarnings("unchecked")
     public Optional<Usuario> findByToken(String token) {
-        Stream<Object[]>result = entityManager.createNativeQuery(QUERY_FIND_USUARIO_BY_TOKEN)
+        Stream<Object[]> result = entityManager.createNativeQuery(QUERY_FIND_USUARIO_BY_TOKEN)
                 .setParameter(PARAM_TOKEN, token).getResultStream();
-        return result.findFirst().map(row->Usuario.builder()
+        return result.findFirst().map(row -> Usuario.builder()
                 .idUsuario((Integer) row[0])
                 .fechaExpiracion((LocalDateTime) row[1])
                 .build());
@@ -74,16 +97,48 @@ public class UsuarioDao implements UsuarioRepository {
     @Override
     public void confirmarCuentaByIdPersona(Integer idPersona) {
         entityManager.createNativeQuery("""
-            update esc02_persona
-            set st_verificado = true
-            where id_persona = :idPersona """)
+                update esc02_persona
+                set st_verificado = true
+                where id_persona = :idPersona """)
                 .setParameter(PARAM_ID_PERSONA, idPersona).executeUpdate();
     }
 
     @Override
     public void deleteToken(String token) {
         entityManager.createNativeQuery("""
-        delete from esc04_token_confirmacion 
-        where token = :token """).setParameter(PARAM_TOKEN,token).executeUpdate();
+                delete from esc04_token_confirmacion
+                where token = :token """)
+                .setParameter(PARAM_TOKEN, token).executeUpdate();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Optional<Usuario> findByEmail(String email) {
+        Stream<Object[]> result = entityManager.createNativeQuery(QUERY_FIND_USUARIO_BY_EMAIL)
+                .setParameter(PARAM_CORREO, email).getResultStream();
+        return result.findFirst().map(row -> Usuario.builder()
+                .idUsuario((Integer) row[0])
+                .nombre((String) row[1])
+                .primerApellido((String) row[2])
+                .segundoApellido((String) row[3])
+                .verificado((Boolean) row[4])
+                .build());
+    }
+
+    @Override
+    public void deleteTokenByIdPersona(Integer idPersona) {
+        entityManager.createNativeQuery(QUERY_DELETE_TOKEN_BY_ID_PERSONA)
+                .setParameter(PARAM_ID_PERSONA, idPersona).executeUpdate();
+    }
+
+    @Override
+    public void updateDatosNoVerificado(Usuario entity) {
+        entityManager.createNativeQuery(QUERY_UPDATE_DATOS_NO_VERIFICADO)
+                .setParameter(PARAM_NOMBRE, entity.getNombre())
+                .setParameter(PARAM_PRIMER_APELLIDO, entity.getPrimerApellido())
+                .setParameter(PARAM_SEGUNDO_APELLIDO, entity.getSegundoApellido())
+                .setParameter(PARAM_PASSWORD, entity.getPassword())
+                .setParameter(PARAM_ID_PERSONA, entity.getIdUsuario())
+                .executeUpdate();
     }
 }

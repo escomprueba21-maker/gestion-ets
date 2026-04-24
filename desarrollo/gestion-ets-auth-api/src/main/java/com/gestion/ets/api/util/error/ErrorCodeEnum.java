@@ -12,8 +12,8 @@ public enum ErrorCodeEnum implements ErrorCode {
 
     // NEGOCIO (GE-RN-NXXX)
     GE_RNN001("Correo registrado con una cuenta existente"),
-    GE_RNN002("El token no es valido"),
-    GE_RNN003("Usuario no encontrado"),
+    GE_RNN002("Usuario no encontrado"),
+    GE_RNN003("El token no es valido"),
     GE_RNN004("Token expirado");
     private final String detail;
 

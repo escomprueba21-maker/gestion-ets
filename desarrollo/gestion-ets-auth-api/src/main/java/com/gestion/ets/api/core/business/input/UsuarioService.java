@@ -14,4 +14,6 @@ public interface UsuarioService {
     Either<ErrorCodeEnum,Boolean> createUsuario(Usuario entity);
 
     Either<ErrorCodeEnum,Boolean> verificarUsuarioByToken(String token);
+
+    Either<ErrorCodeEnum, Boolean> reenviarConfirmacion(String email);
 }

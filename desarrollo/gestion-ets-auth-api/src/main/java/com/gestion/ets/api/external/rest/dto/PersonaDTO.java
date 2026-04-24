@@ -15,7 +15,6 @@ public class PersonaDTO {
     @NotNull(message = "CDA_RNS002")
     private String primerApellido;
     @JsonProperty
-    @NotNull(message = "CDA_RNS002")
     private String segundoApellido;
     @JsonProperty
     @Email

@@ -32,4 +32,10 @@ public class PersonaController {
         return usuarioService.verificarUsuarioByToken(token).getOrElseThrow(ErrorCode::toBusinessException);
     }
 
+    @POST
+    @Path("reenviar-token")
+    public Boolean reenviarConfirmacion(@Parameter(description = "email", required = true) @QueryParam("email") String email) {
+        return usuarioService.reenviarConfirmacion(email).getOrElseThrow(ErrorCode::toBusinessException);
+    }
+
 }
