@@ -21,7 +21,8 @@ public class UsuarioDao implements UsuarioRepository {
 
     private static final String QUERY_FIND_EXIST_USUARIO_BY_CORREO = """
             select exists(select 1 from esc02_persona esc02
-            where esc02.tx_correo = :correo and esc02.st_verificado is true)
+            where esc02.tx_correo = :correo and esc02.tx_password = :password
+            and esc02.st_verificado is true)
             """;
     private static final String QUERY_FIND_USUARIO_BY_TOKEN = """
             select esc04.fk_id_persona, esc04.fh_expiracion
@@ -29,10 +30,14 @@ public class UsuarioDao implements UsuarioRepository {
             where esc04.token = :token
             """;
     private static final String QUERY_FIND_USUARIO_BY_EMAIL = """
-        select esc02.id_persona, esc02.tx_nombre, esc02.tx_apellido_paterno,
-               esc02.tx_apellido_materno, esc02.st_verificado
-        from esc02_persona esc02
+        select esc02.id_persona, esc02.tx_nombre, esc02.tx_apellido_paterno,esc02.tx_apellido_materno,
+        esc02.st_verificado from esc02_persona esc02
         where esc02.tx_correo = :correo
+        """;
+    private static final String QUERY_FIND_USUARIO_VERIFY_BY_EMAIL = """
+        select esc02.id_persona, esc03.fk_id_rol,esc02.tx_password from esc02_persona esc02
+        join esc03_persona_rol esc03 on esc03.fk_id_persona = esc02.id_persona
+        where esc02.tx_correo = :correo and esc02.st_verificado is true
         """;
 
     private static final String QUERY_DELETE_TOKEN_BY_ID_PERSONA = """
@@ -68,9 +73,11 @@ public class UsuarioDao implements UsuarioRepository {
     }
 
     @Override
-    public boolean existUsuarioByCorreo(String email) {
+    public boolean existUsuarioByCorreoAndPassword(String email,String password) {
         return (boolean) entityManager.createNativeQuery(QUERY_FIND_EXIST_USUARIO_BY_CORREO)
-                .setParameter(PARAM_CORREO, email).getSingleResult();
+                .setParameter(PARAM_CORREO, email)
+                .setParameter(PARAM_PASSWORD, password)
+                .getSingleResult();
     }
 
     @Override
@@ -140,5 +147,17 @@ public class UsuarioDao implements UsuarioRepository {
                 .setParameter(PARAM_PASSWORD, entity.getPassword())
                 .setParameter(PARAM_ID_PERSONA, entity.getIdUsuario())
                 .executeUpdate();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Optional<Usuario> findPersonaVerifyByEmail(String email) {
+        Stream<Object[]> result = entityManager.createNativeQuery(QUERY_FIND_USUARIO_VERIFY_BY_EMAIL)
+                .setParameter(PARAM_CORREO, email).getResultStream();
+        return result.findFirst().map(row -> Usuario.builder()
+                .idUsuario((Integer) row[0])
+                .idRol((Integer) row[1])
+                .password((String) row[2])
+                .build());
     }
 }

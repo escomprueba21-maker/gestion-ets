@@ -1,5 +1,6 @@
 package com.gestion.ets.api.core.business.input;
 
+import com.gestion.ets.api.core.entity.Auth;
 import com.gestion.ets.api.core.entity.Usuario;
 import com.gestion.ets.api.util.error.ErrorCodeEnum;
 import io.vavr.control.Either;
@@ -16,4 +17,6 @@ public interface UsuarioService {
     Either<ErrorCodeEnum,Boolean> verificarUsuarioByToken(String token);
 
     Either<ErrorCodeEnum, Boolean> reenviarConfirmacion(String email);
+
+    Either<ErrorCodeEnum, Auth> login(String  email, String password);
 }

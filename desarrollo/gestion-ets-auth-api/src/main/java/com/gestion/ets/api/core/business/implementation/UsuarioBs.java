@@ -31,15 +31,18 @@ public class UsuarioBs implements UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final Mailer mailer;
     private final Template template;
+    private final JWTBs jwtBs;
 
     @ConfigProperty(name = "app.deeplink.base-url")
     String deeplinkBaseUrl;
 
     @Inject
-    public UsuarioBs(UsuarioRepository usuarioRepository, Mailer mailer, @Location("email/confirmacion") Template template) {
+    public UsuarioBs(UsuarioRepository usuarioRepository, Mailer mailer,
+                     @Location("email/confirmacion") Template template, JWTBs jwtBs) {
         this.usuarioRepository = usuarioRepository;
         this.mailer = mailer;
         this.template = template;
+        this.jwtBs = jwtBs;
     }
 
     @Override
@@ -125,6 +128,19 @@ public class UsuarioBs implements UsuarioService {
                         .filter(Objects::nonNull).collect(Collectors.joining(" ")),
                 resultado.get());
         return Either.right(Boolean.TRUE);
+    }
+
+    @Override
+    public Either<ErrorCodeEnum, Auth> login(String email, String password) {
+        var searchUsuario = usuarioRepository.findPersonaVerifyByEmail(email);
+        if (searchUsuario.isEmpty()) {
+            return Either.left(ErrorCodeEnum.GE_RNN002);
+        }
+        if (!BCrypt.checkpw(password, searchUsuario.get().getPassword())) {
+            return Either.left(ErrorCodeEnum.GE_RNN002);
+        }
+         var token = jwtBs.generarAccessToken(searchUsuario.get().getIdUsuario(),searchUsuario.get().getIdRol());
+        return Either.right(Auth.builder().token(token).build());
     }
 
     protected Either<ErrorCodeEnum, String> regenerarToken(String email) {
