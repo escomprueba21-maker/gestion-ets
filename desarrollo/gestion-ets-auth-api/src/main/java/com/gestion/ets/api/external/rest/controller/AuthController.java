@@ -27,7 +27,7 @@ public class AuthController {
     }
 
     @POST
-    @Path("persona")
+    @Path("registrarse")
     public Boolean createPersona(@Valid PersonaDTO personaDTO) {
         return usuarioService.createUsuario(personaDTO.toEntity()).getOrElseThrow(ErrorCode::toBusinessException);
     }
