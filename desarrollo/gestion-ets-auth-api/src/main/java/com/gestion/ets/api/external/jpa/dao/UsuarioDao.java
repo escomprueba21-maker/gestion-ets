@@ -35,7 +35,9 @@ public class UsuarioDao implements UsuarioRepository {
         where esc02.tx_correo = :correo
         """;
     private static final String QUERY_FIND_USUARIO_VERIFY_BY_EMAIL = """
-        select esc02.id_persona, esc03.fk_id_rol,esc02.tx_password from esc02_persona esc02
+        select esc02.id_persona, esc03.fk_id_rol,esc02.tx_password, concat(esc02.tx_nombre, ' ', esc02.tx_apellido_paterno,
+        coalesce(concat(' ', esc02.tx_apellido_materno), ''))
+        as nombre_completo from esc02_persona esc02
         join esc03_persona_rol esc03 on esc03.fk_id_persona = esc02.id_persona
         where esc02.tx_correo = :correo and esc02.st_verificado is true
         """;
@@ -53,6 +55,18 @@ public class UsuarioDao implements UsuarioRepository {
             tx_password = :password
         where id_persona = :idPersona
         """;
+
+    private static final String QUERY_UPDATE_PASSWORD = """
+    update esc02_persona
+    set tx_password = :password
+    where id_persona = :idPersona
+    """;
+
+    private static final String QUERY_FIND_USUARIO_BY_ID = """
+    select esc02.id_persona, esc03.fk_id_rol from esc02_persona esc02
+    join esc03_persona_rol esc03 on esc03.fk_id_persona = esc02.id_persona
+    where esc02.id_persona = :idPersona and esc02.st_verificado is true
+    """;
 
     private static final String PARAM_CORREO = "correo";
     private static final String PARAM_TOKEN = "token";
@@ -73,10 +87,9 @@ public class UsuarioDao implements UsuarioRepository {
     }
 
     @Override
-    public boolean existUsuarioByCorreoAndPassword(String email,String password) {
+    public boolean existUsuarioByCorreo(String email) {
         return (boolean) entityManager.createNativeQuery(QUERY_FIND_EXIST_USUARIO_BY_CORREO)
                 .setParameter(PARAM_CORREO, email)
-                .setParameter(PARAM_PASSWORD, password)
                 .getSingleResult();
     }
 
@@ -158,6 +171,26 @@ public class UsuarioDao implements UsuarioRepository {
                 .idUsuario((Integer) row[0])
                 .idRol((Integer) row[1])
                 .password((String) row[2])
+                .nombre((String) row[3])
                 .build());
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Optional<Usuario> findById(Integer idPersona) {
+        Stream<Object[]> result = entityManager.createNativeQuery(QUERY_FIND_USUARIO_BY_ID)
+                .setParameter(PARAM_ID_PERSONA, idPersona).getResultStream();
+        return result.findFirst().map(row -> Usuario.builder()
+                .idUsuario((Integer) row[0])
+                .idRol((Integer) row[1])
+                .build());
+    }
+
+    @Override
+    public void actualizarPassword(Integer idPersona, String password) {
+        entityManager.createNativeQuery(QUERY_UPDATE_PASSWORD)
+                .setParameter(PARAM_PASSWORD,password)
+                .setParameter(PARAM_ID_PERSONA, idPersona)
+                .executeUpdate();
     }
 }

@@ -8,10 +8,13 @@ import lombok.Builder;
 public class TokenDTO {
     @JsonProperty
     private String token;
+    @JsonProperty
+    private String refreshToken;
 
     public static TokenDTO fromEntity (Auth auth) {
         return TokenDTO.builder()
                 .token(auth.getToken())
+                .refreshToken(auth.getRefreshToken())
                 .build();
     }
 }

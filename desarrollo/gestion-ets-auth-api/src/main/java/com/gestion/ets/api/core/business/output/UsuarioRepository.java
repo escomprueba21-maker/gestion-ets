@@ -13,11 +13,11 @@ public interface UsuarioRepository {
     Usuario Save(Usuario entity);
 
     /**
-     * Verifica si el usuario existe mediante su correo electronico y su contraseña
+     * Verifica si el usuario existe mediante su correo electronico
      * @param email correo electronico
      * @return true si existe false si no
      */
-    boolean existUsuarioByCorreoAndPassword(String email,String password);
+    boolean existUsuarioByCorreo(String email);
 
     /**
      * Crea el token para el usuario
@@ -57,4 +57,8 @@ public interface UsuarioRepository {
     void updateDatosNoVerificado(Usuario entity);
 
     Optional<Usuario>findPersonaVerifyByEmail(String email);
+
+    Optional<Usuario>findById(Integer idPersona);
+
+    void actualizarPassword(Integer idPersona, String password);
 }

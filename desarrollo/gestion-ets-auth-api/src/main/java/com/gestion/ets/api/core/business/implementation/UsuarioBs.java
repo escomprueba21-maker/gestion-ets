@@ -12,11 +12,14 @@ import io.quarkus.mailer.Mailer;
 import io.quarkus.narayana.jta.QuarkusTransaction;
 import io.quarkus.qute.Location;
 import io.quarkus.qute.Template;
+import io.smallrye.jwt.auth.principal.JWTParser;
+import io.smallrye.jwt.auth.principal.ParseException;
 import io.vavr.control.Either;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDateTime;
@@ -31,18 +34,25 @@ public class UsuarioBs implements UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final Mailer mailer;
     private final Template template;
+    private final Template forgotPasswordTemplate;
     private final JWTBs jwtBs;
+    private final JWTParser jwtParser;
 
     @ConfigProperty(name = "app.deeplink.base-url")
     String deeplinkBaseUrl;
+    @ConfigProperty(name = "app.forgotpassword.base-url")
+    String forgotPasswordUrl;
 
     @Inject
     public UsuarioBs(UsuarioRepository usuarioRepository, Mailer mailer,
-                     @Location("email/confirmacion") Template template, JWTBs jwtBs) {
+                     @Location("email/confirmacion") Template template, JWTBs jwtBs, JWTParser jwtParser,
+                     @Location("email/contraseña-olvidada") Template forgotPasswordTemplate) {
         this.usuarioRepository = usuarioRepository;
         this.mailer = mailer;
         this.template = template;
         this.jwtBs = jwtBs;
+        this.jwtParser = jwtParser;
+        this.forgotPasswordTemplate = forgotPasswordTemplate;
     }
 
     @Override
@@ -140,7 +150,73 @@ public class UsuarioBs implements UsuarioService {
             return Either.left(ErrorCodeEnum.GE_RNN002);
         }
          var token = jwtBs.generarAccessToken(searchUsuario.get().getIdUsuario(),searchUsuario.get().getIdRol());
-        return Either.right(Auth.builder().token(token).build());
+        var refreshToken = jwtBs.generarRefreshToken(searchUsuario.get().getIdUsuario());
+        return Either.right(Auth.builder().token(token).refreshToken(refreshToken).build());
+    }
+
+    @Override
+    public Either<ErrorCodeEnum, Auth> refreshToken(String refreshToken) {
+        try {
+            JsonWebToken jwt = jwtParser.parse(refreshToken);
+
+            String type = jwt.getClaim("type");
+            if (!"refresh".equals(type)) {
+                return Either.left(ErrorCodeEnum.GE_RNN002);
+            }
+
+            var userId = Integer.parseInt(jwt.getSubject());
+            var searchUsuario = usuarioRepository.findById(userId);
+            if (searchUsuario.isEmpty()) {
+                return Either.left(ErrorCodeEnum.GE_RNN002);
+            }
+
+            String newAccess = jwtBs.generarAccessToken(searchUsuario.get().getIdUsuario(), searchUsuario.get().getIdRol());
+            String newRefresh = jwtBs.generarRefreshToken(searchUsuario.get().getIdUsuario());
+
+            return Either.right(Auth.builder()
+                    .token(newAccess)
+                    .refreshToken(newRefresh)
+                    .build());
+        } catch (ParseException e) {
+            return Either.left(ErrorCodeEnum.GE_RNN002);
+        }
+    }
+
+    @Override
+    @Transactional
+    public Either<ErrorCodeEnum, Boolean> olvidarContrasenia(String email) {
+        var searchUsuario = usuarioRepository.findPersonaVerifyByEmail(email);
+        var uuid = UUID.randomUUID().toString();
+        if (searchUsuario.isEmpty()) {
+            return Either.left(ErrorCodeEnum.GE_RNN002);
+        }
+        usuarioRepository.deleteTokenByIdPersona(searchUsuario.get().getIdUsuario());
+        usuarioRepository.createAuthUsuario(Auth.builder()
+                .token(uuid)
+                .idPersona(searchUsuario.get().getIdUsuario())
+                .fechaExpiracion(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID).plusMinutes(BsConstants.EXPIRACION))
+                .build());
+        sendNewForgotPasswordEmail(email,searchUsuario.get().getNombre(),uuid);
+        return Either.right(Boolean.TRUE);
+    }
+
+    @Override
+    @Transactional
+    public Either<ErrorCodeEnum, Boolean> updatePasswordNueva(String password, String token) {
+        var searchUsuario = usuarioRepository.findByToken(token);
+
+        if (searchUsuario.isEmpty()) {
+            return Either.left(ErrorCodeEnum.GE_RNN002);
+        }
+
+        if (searchUsuario.get().getFechaExpiracion().isBefore(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID))) {
+            return Either.left(ErrorCodeEnum.GE_RNN003);
+        }
+
+        var hashed = BCrypt.hashpw(password, BCrypt.gensalt());
+        usuarioRepository.actualizarPassword(searchUsuario.get().getIdUsuario(), hashed);
+        usuarioRepository.deleteToken(token);
+        return Either.right(Boolean.TRUE);
     }
 
     protected Either<ErrorCodeEnum, String> regenerarToken(String email) {
@@ -175,5 +251,18 @@ public class UsuarioBs implements UsuarioService {
                 .data("link", link)
                 .render();
         mailer.send(Mail.withHtml(email, "Confirmar Usuario", body));
+    }
+
+    /**
+     * Envía correo de contraseña olvidad  al cliente.
+     */
+    private void sendNewForgotPasswordEmail(String email, String nombre, String token) {
+        var link = forgotPasswordUrl + BsConstants.URL_TOKEN + token;
+        var body = forgotPasswordTemplate
+                .data("nombre", nombre)
+                .data("email", email)
+                .data("link", link)
+                .render();
+        mailer.send(Mail.withHtml(email, "Recuperar contraseña", body));
     }
 }
