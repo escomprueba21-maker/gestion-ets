@@ -19,11 +19,12 @@ public class UsuarioDao implements UsuarioRepository {
 
     private final EntityManager entityManager;
 
-    private static final String QUERY_FIND_EXIST_USUARIO_BY_CORREO = """
-            select exists(select 1 from esc02_persona esc02
-            where esc02.tx_correo = :correo and esc02.tx_password = :password
-            and esc02.st_verificado is true)
-            """;
+    @Inject
+    public UsuarioDao(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+
     private static final String QUERY_FIND_USUARIO_BY_TOKEN = """
             select esc04.fk_id_persona, esc04.fh_expiracion
             from esc04_token_confirmacion esc04
@@ -76,21 +77,10 @@ public class UsuarioDao implements UsuarioRepository {
     private static final String PARAM_SEGUNDO_APELLIDO = "segundoApellido";
     private static final String PARAM_PASSWORD = "password";
 
-    @Inject
-    public UsuarioDao(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
 
     @Override
     public Usuario Save(Usuario entity) {
         return entityManager.merge(UsuarioJpa.fromEntity(entity)).toEntity();
-    }
-
-    @Override
-    public boolean existUsuarioByCorreo(String email) {
-        return (boolean) entityManager.createNativeQuery(QUERY_FIND_EXIST_USUARIO_BY_CORREO)
-                .setParameter(PARAM_CORREO, email)
-                .getSingleResult();
     }
 
     @Override

@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum RolesEnum {
     ALUMNO(1,"Alumno");
-    private Integer id;
-    private String nombre;
+    private final Integer id;
+    private final String nombre;
 }

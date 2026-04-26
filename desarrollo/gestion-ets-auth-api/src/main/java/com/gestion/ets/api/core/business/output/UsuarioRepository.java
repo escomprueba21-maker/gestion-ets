@@ -11,14 +11,6 @@ public interface UsuarioRepository {
      * @param entity entidad
      */
     Usuario Save(Usuario entity);
-
-    /**
-     * Verifica si el usuario existe mediante su correo electronico
-     * @param email correo electronico
-     * @return true si existe false si no
-     */
-    boolean existUsuarioByCorreo(String email);
-
     /**
      * Crea el token para el usuario
      * @param entity entidad
