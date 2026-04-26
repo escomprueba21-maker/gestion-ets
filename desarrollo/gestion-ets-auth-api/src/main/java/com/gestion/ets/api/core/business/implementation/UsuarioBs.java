@@ -170,8 +170,8 @@ public class UsuarioBs implements UsuarioService {
                 return Either.left(ErrorCodeEnum.GE_RNN002);
             }
 
-            String newAccess = jwtBs.generarAccessToken(searchUsuario.get().getIdUsuario(), searchUsuario.get().getIdRol());
-            String newRefresh = jwtBs.generarRefreshToken(searchUsuario.get().getIdUsuario());
+            var newAccess = jwtBs.generarAccessToken(searchUsuario.get().getIdUsuario(), searchUsuario.get().getIdRol());
+            var newRefresh = jwtBs.generarRefreshToken(searchUsuario.get().getIdUsuario());
 
             return Either.right(Auth.builder()
                     .token(newAccess)
