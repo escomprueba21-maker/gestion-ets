@@ -10,6 +10,11 @@ INSERT INTO cat05_turno (tx_nombre) VALUES
 ('Matutino'),
 ('Vespertino');
 
+INSERT INTO cat06_tipo_ets (tx_nombre) VALUES
+    ('Ordinario'),
+    ('Extraordinario'),
+    ('Especial');
+
 INSERT INTO cat01_carrera (tx_clave, tx_nombre) VALUES
 ('ISC', 'Ingeniería en Sistemas Computacionales'),
 ('IIA', 'Ingeniería en Inteligencia Artificial'),
