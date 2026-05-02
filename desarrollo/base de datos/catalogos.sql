@@ -1,4 +1,3 @@
-
 INSERT INTO cat03_rol (tx_nombre) VALUES
 ('Alumno'),
 ('Administrador');
@@ -6,6 +5,10 @@ INSERT INTO cat03_rol (tx_nombre) VALUES
 INSERT INTO cat04_tipo_materia (tx_nombre) VALUES
 ('Obligatoria'),
 ('Optativa');
+
+INSERT INTO cat05_turno (tx_nombre) VALUES
+('Matutino'),
+('Vespertino');
 
 INSERT INTO cat01_carrera (tx_clave, tx_nombre) VALUES
 ('ISC', 'Ingeniería en Sistemas Computacionales'),
