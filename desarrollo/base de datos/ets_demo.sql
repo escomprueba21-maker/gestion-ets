@@ -270,7 +270,7 @@ INSERT INTO esc06_aula (tx_clave, tx_edificio) VALUES
 
 -- =========================================
 -- ETS SIMULADOS
--- Junio = ORDINARIO, Agosto = EXTRAORDINARIO
+-- Junio = Ordinario, Agosto = Extraordinario
 -- =========================================
 
 -- Cálculo - Eduardo Chávez Lima
@@ -280,7 +280,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Chávez' AND tx_apellido_materno='Lima'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3101'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-02 08:00:00';
 
 -- Álgebra Lineal - Leticia Cañedo Suárez
@@ -290,7 +290,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cañedo' AND tx_apellido_materno='Suárez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3102'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-03 10:00:00';
 
 -- Matemáticas Discretas - Israel Buitrón Damaso
@@ -300,7 +300,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Buitrón' AND tx_apellido_materno='Damaso'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3201'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-04 12:00:00';
 
 -- Fundamentos de Programación - Cecilia Albortante Morato
@@ -310,7 +310,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Albortante' AND tx_apellido_materno='Morato'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-05 08:00:00';
 
 -- Algoritmos y Estructuras de Datos - Edgardo Adrián Franco Martínez
@@ -320,7 +320,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Franco' AND tx_apellido_materno='Martínez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-2'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-06 10:00:00';
 
 -- Bases de Datos - Alejandro Botello Castillo
@@ -330,7 +330,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Botello' AND tx_apellido_materno='Castillo'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-3'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-09 12:00:00';
 
 -- Paradigmas de Programación - Rafael Aguilar García
@@ -340,7 +340,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Aguilar' AND tx_apellido_materno='García'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3202'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-10 14:00:00';
 
 -- Análisis y Diseño de Algoritmos - Cristhian Alejandro Ávila Sánchez
@@ -350,7 +350,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Ávila' AND tx_apellido_materno='Sánchez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3301'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-11 08:00:00';
 
 -- Ecuaciones Diferenciales - Juan Manuel Carballo Jiménez
@@ -360,7 +360,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Carballo' AND tx_apellido_materno='Jiménez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3302'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-12 10:00:00';
 
 -- Probabilidad y Estadística - Jorge Alberto Cruz Rojas
@@ -370,7 +370,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cruz' AND tx_apellido_materno='Rojas'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4101'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-13 12:00:00';
 
 -- Sistemas Operativos - David Araujo Díaz
@@ -380,7 +380,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Araujo' AND tx_apellido_materno='Díaz'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-4'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-16 08:00:00';
 
 -- Redes de Computadoras - Juan Jesús Alcaraz Torres
@@ -390,7 +390,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Alcaraz' AND tx_apellido_materno='Torres'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-17 10:00:00';
 
 -- Compiladores - Alberto Jesús Alcántara Méndez
@@ -400,7 +400,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Alcántara' AND tx_apellido_materno='Méndez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4102'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-18 12:00:00';
 
 -- Ingeniería de Software - Martha Rosa Cordero López
@@ -410,7 +410,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cordero' AND tx_apellido_materno='López'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4201'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-19 14:00:00';
 
 -- Inteligencia Artificial - Daniel Aguilar Velázquez
@@ -420,7 +420,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Aguilar' AND tx_apellido_materno='Velázquez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-2'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-20 08:00:00';
 
 -- Finanzas Empresariales - Verónica Agustín Domínguez
@@ -430,7 +430,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Agustín' AND tx_apellido_materno='Domínguez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3101'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-23 10:00:00';
 
 -- Comunicación Oral y Escrita - Maribel Aragón García
@@ -440,7 +440,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Aragón' AND tx_apellido_materno='García'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3102'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-24 12:00:00';
 
 -- Teoría de la Computación - Luis Enrique Hernández Olvera
@@ -450,7 +450,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Hernández' AND tx_apellido_materno='Olvera'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3201'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-25 14:00:00';
 
 -- Bases de Datos (segundo ETS con docente distinto) - Erika Hernández Rubio
@@ -460,11 +460,11 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Hernández' AND tx_apellido_materno='Rubio'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-3'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-26 08:00:00';
 
 -- =========================================
--- ETS ADICIONALES - MATEMÁTICAS Y BÁSICAS (ORDINARIO)
+-- ETS ADICIONALES - MATEMÁTICAS Y BÁSICAS (Ordinario)
 -- =========================================
 
 -- Cálculo Aplicado - Claudia Celia Díaz Huerta
@@ -474,7 +474,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Díaz' AND tx_apellido_materno='Huerta'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3101'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-02 10:00:00';
 
 -- Análisis Vectorial - Benjamín López Carrera
@@ -484,7 +484,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='López' AND tx_apellido_materno='Carrera'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3102'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-03 14:00:00';
 
 -- Cálculo Multivariable - Christian René Leal Pacheco
@@ -494,7 +494,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Leal' AND tx_apellido_materno='Pacheco'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3201'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-04 08:00:00';
 
 -- Mecánica y Electromagnetismo - Florencio Guzmán Aguilar
@@ -504,7 +504,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Guzmán' AND tx_apellido_materno='Aguilar'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3202'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-05 14:00:00';
 
 -- Matemáticas Avanzadas para la Ingeniería - Ignacio Ríos de la Torre
@@ -514,7 +514,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Ríos de la Torre'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3301'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-08 10:00:00';
 
 -- Probabilidad - Leonor Vázquez González
@@ -524,7 +524,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Vázquez' AND tx_apellido_materno='González'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3302'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-09 14:00:00';
 
 -- Estadística - Jorge Alberto Cruz Rojas
@@ -534,7 +534,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cruz' AND tx_apellido_materno='Rojas'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4101'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-10 10:00:00';
 
 -- Métodos Numéricos - Alfonso Sánchez Aguilar
@@ -544,7 +544,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Sánchez' AND tx_apellido_materno='Aguilar'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4102'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-11 14:00:00';
 
 -- Procesos Estocásticos - Alfonso Sánchez Aguilar
@@ -554,11 +554,11 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Sánchez' AND tx_apellido_materno='Aguilar'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4201'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-15 08:00:00';
 
 -- =========================================
--- ETS ADICIONALES - HARDWARE Y SEÑALES (ORDINARIO)
+-- ETS ADICIONALES - HARDWARE Y SEÑALES (Ordinario)
 -- =========================================
 
 -- Fundamentos de Diseño Digital - Rubén Galicia Mejía
@@ -568,7 +568,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Galicia' AND tx_apellido_materno='Mejía'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-02 14:00:00';
 
 -- Diseño de Sistemas Digitales - Erick Eugenio Linares Vallejo
@@ -578,7 +578,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Linares' AND tx_apellido_materno='Vallejo'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-2'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-03 08:00:00';
 
 -- Arquitectura de Computadoras - Victor Hugo García Ortega
@@ -588,7 +588,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='García' AND tx_apellido_materno='Ortega'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-3'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-04 10:00:00';
 
 -- Circuitos Eléctricos - Rocío Almazán Farfán
@@ -598,7 +598,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Almazán' AND tx_apellido_materno='Farfán'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3101'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-05 10:00:00';
 
 -- Electrónica Analógica - Sergio Cancino Calderón
@@ -608,7 +608,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cancino' AND tx_apellido_materno='Calderón'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3102'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-08 12:00:00';
 
 -- Procesamiento Digital de Señales - Gelacio Castillo Cabrera
@@ -618,7 +618,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Castillo' AND tx_apellido_materno='Cabrera'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-4'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-09 08:00:00';
 
 -- Instrumentación y Control - José Luis Hernández Aguilar
@@ -628,11 +628,11 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Hernández' AND tx_apellido_materno='Aguilar'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3201'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-10 12:00:00';
 
 -- =========================================
--- ETS ADICIONALES - IA / CIENCIA DE DATOS (ORDINARIO)
+-- ETS ADICIONALES - IA / CIENCIA DE DATOS (Ordinario)
 -- =========================================
 
 -- Fundamentos de Inteligencia Artificial - Cristal Karina Galindo Durán
@@ -642,7 +642,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Galindo' AND tx_apellido_materno='Durán'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-11 10:00:00';
 
 -- Aprendizaje de Máquina - Consuelo Varinia García Mendoza
@@ -652,7 +652,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='García' AND tx_apellido_materno='Mendoza'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-2'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-12 12:00:00';
 
 -- Visión Artificial - Octavio Sánchez García
@@ -662,7 +662,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Sánchez' AND tx_apellido_materno='García' AND tx_nombre='Octavio'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-3'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-15 10:00:00';
 
 -- Algoritmos Bioinspirados - Jorge Luís Rosas Trigueros
@@ -672,7 +672,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Rosas' AND tx_apellido_materno='Trigueros'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3202'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-16 12:00:00';
 
 -- Tecnologías de Lenguaje Natural - Joel Omar Juárez Gambino
@@ -682,7 +682,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Juárez' AND tx_apellido_materno='Gambino'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-4'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-17 14:00:00';
 
 -- Cómputo Paralelo - Sandra Luz Morales Güitrón
@@ -692,7 +692,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Morales' AND tx_apellido_materno='Güitrón'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-18 08:00:00';
 
 -- Introducción a la Ciencia de Datos - Fabiola Ocampo Botello
@@ -702,7 +702,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Ocampo' AND tx_apellido_materno='Botello'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3301'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-19 10:00:00';
 
 -- Programación para Ciencia de Datos - Daniel Aguilar Velázquez
@@ -712,7 +712,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Aguilar' AND tx_apellido_materno='Velázquez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-2'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-22 08:00:00';
 
 -- Minería de Datos - Roberto Eswart Zagal Flores
@@ -722,7 +722,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Zagal' AND tx_apellido_materno='Flores'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-3'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-23 12:00:00';
 
 -- Análisis de Series de Tiempo - Uriel Corona Bermúdez
@@ -732,7 +732,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Corona' AND tx_apellido_materno='Bermúdez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3302'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-24 10:00:00';
 
 -- Modelado Predictivo - Uriel Corona Bermúdez
@@ -742,11 +742,11 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Corona' AND tx_apellido_materno='Bermúdez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4101'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-25 12:00:00';
 
 -- =========================================
--- ETS ADICIONALES - SISTEMAS Y REDES (ORDINARIO)
+-- ETS ADICIONALES - SISTEMAS Y REDES (Ordinario)
 -- =========================================
 
 -- Análisis y Diseño de Sistemas - Marco Antonio Dorantes González
@@ -756,7 +756,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Dorantes' AND tx_apellido_materno='González'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4102'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-02 12:00:00';
 
 -- Tecnologías para el Desarrollo de Aplicaciones Web - José Asunción Enríquez Zárate
@@ -766,7 +766,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Enríquez' AND tx_apellido_materno='Zárate'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-03 12:00:00';
 
 -- Sistemas Distribuidos - Ukranio Coronilla Contreras
@@ -776,7 +776,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Coronilla' AND tx_apellido_materno='Contreras'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-4'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-04 12:00:00';
 
 -- Aplicaciones para Comunicaciones en Red - Sandra Ivette Bautista Rosales
@@ -786,7 +786,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Bautista' AND tx_apellido_materno='Rosales'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-2'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-05 12:00:00';
 
 -- Administración de Servicios en Red - Leticia Henestrosa Carrasco
@@ -796,11 +796,11 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Henestrosa' AND tx_apellido_materno='Carrasco'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-3'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-08 14:00:00';
 
 -- =========================================
--- ETS ADICIONALES - ÁREA SOCIAL / ECONÓMICA (ORDINARIO)
+-- ETS ADICIONALES - ÁREA SOCIAL / ECONÓMICA (Ordinario)
 -- =========================================
 
 -- Fundamentos Económicos - Gloria Lourdes Cabrera Chávez
@@ -810,7 +810,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cabrera' AND tx_apellido_materno='Chávez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3101'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-09 12:00:00';
 
 -- Gestión Empresarial - Odette Berenice Cancino Mosqueda
@@ -820,7 +820,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cancino' AND tx_apellido_materno='Mosqueda'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3102'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-10 14:00:00';
 
 -- Ingeniería, Ética y Sociedad - Mariana Gómez Tress
@@ -830,7 +830,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Gómez' AND tx_apellido_materno='Tress'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3201'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-11 12:00:00';
 
 -- Ética y Legalidad - Lilian Martínez Acosta
@@ -840,7 +840,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Martínez' AND tx_apellido_materno='Acosta'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3202'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-12 14:00:00';
 
 -- Liderazgo Personal - Jorge Ferrer Tenorio
@@ -850,7 +850,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Ferrer' AND tx_apellido_materno='Tenorio'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3301'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-15 12:00:00';
 
 -- Metodología de la Investigación y Divulgación Científica - Adriana Berenice Celis Domínguez
@@ -860,7 +860,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Celis' AND tx_apellido_materno='Domínguez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3302'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-16 14:00:00';
 
 -- Formulación y Evaluación de Proyectos Informáticos - Rocío Palacios Solano
@@ -870,7 +870,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Palacios' AND tx_apellido_materno='Solano'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4201'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-17 10:00:00';
 
 -- Métodos Cuantitativos para la Toma de Decisiones - Guillermo Márquez Arreguín
@@ -880,11 +880,11 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Márquez' AND tx_apellido_materno='Arreguín'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='4202'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-18 10:00:00';
 
 -- =========================================
--- ETS ADICIONALES - OPTATIVAS (ORDINARIO)
+-- ETS ADICIONALES - OPTATIVAS (Ordinario)
 -- =========================================
 
 -- Computer Security - Alejandro Sigfrido Cifuentes Álvarez
@@ -894,7 +894,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cifuentes' AND tx_apellido_materno='Álvarez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-19 14:00:00';
 
 -- Introduction to Cryptography - Nidia Asunción Cortez Duarte
@@ -904,7 +904,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cortez' AND tx_apellido_materno='Duarte'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-2'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-22 10:00:00';
 
 -- Machine Learning - Joel Omar Juárez Gambino
@@ -914,7 +914,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Juárez' AND tx_apellido_materno='Gambino'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-3'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-23 14:00:00';
 
 -- Genetic Algorithms - María Elena Cruz Meza
@@ -924,7 +924,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cruz' AND tx_apellido_materno='Meza'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-4'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-24 14:00:00';
 
 -- Image Analysis - María Elena Cruz Meza
@@ -934,7 +934,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cruz' AND tx_apellido_materno='Meza'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3101'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-25 10:00:00';
 
 -- Computer Graphics - Rafael Norman Saucedo Delgado
@@ -944,7 +944,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Saucedo' AND tx_apellido_materno='Delgado'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3102'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-26 10:00:00';
 
 -- Data Mining - Fabiola Ocampo Botello
@@ -954,7 +954,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Ocampo' AND tx_apellido_materno='Botello'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3201'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-29 08:00:00';
 
 -- High Technology Enterprise Management - Ariel López Rojas
@@ -964,7 +964,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='López' AND tx_apellido_materno='Rojas'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3202'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-06-30 10:00:00';
 
 -- IT Governance - Jessie Paulina Guzmán Flores
@@ -974,7 +974,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Guzmán' AND tx_apellido_materno='Flores'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3301'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-07-01 08:00:00';
 
 -- Economic Engineering - Ángel Morales González
@@ -984,11 +984,11 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Morales' AND tx_apellido_materno='González'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3302'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='ORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Ordinario'),
     '2026-07-02 10:00:00';
 
 -- =========================================
--- ETS ADICIONALES - SEGUNDA VUELTA (AGOSTO) = EXTRAORDINARIO
+-- ETS ADICIONALES - SEGUNDA VUELTA (AGOSTO) = Extraordinario
 -- =========================================
 
 -- Cálculo (2da vuelta) - Nestor Colin Hernández
@@ -998,7 +998,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Colin' AND tx_apellido_materno='Hernández'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3101'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='EXTRAORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Extraordinario'),
     '2026-08-04 08:00:00';
 
 -- Fundamentos de Programación (2da vuelta) - Yaxkin Flores Mendoza
@@ -1008,7 +1008,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Flores' AND tx_apellido_materno='Mendoza'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='EXTRAORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Extraordinario'),
     '2026-08-05 10:00:00';
 
 -- Algoritmos y Estructuras de Datos (2da vuelta) - Daniel Cruz García
@@ -1018,7 +1018,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cruz' AND tx_apellido_materno='García'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-2'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='EXTRAORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Extraordinario'),
     '2026-08-06 12:00:00';
 
 -- Bases de Datos (2da vuelta) - Lorena Chavarría Báez
@@ -1028,7 +1028,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Chavarría' AND tx_apellido_materno='Báez'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-3'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='EXTRAORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Extraordinario'),
     '2026-08-07 14:00:00';
 
 -- Paradigmas de Programación (2da vuelta) - Saúl De la O Torres
@@ -1038,7 +1038,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='De la O' AND tx_apellido_materno='Torres'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3201'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='EXTRAORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Extraordinario'),
     '2026-08-10 08:00:00';
 
 -- Análisis y Diseño de Algoritmos (2da vuelta) - Ricardo Felipe Díaz Santiago
@@ -1048,7 +1048,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Díaz' AND tx_apellido_materno='Santiago' AND tx_nombre='Ricardo Felipe'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3202'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='EXTRAORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Extraordinario'),
     '2026-08-11 10:00:00';
 
 -- Sistemas Operativos (2da vuelta) - Jorge Cortés Galicia
@@ -1058,7 +1058,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Cortés' AND tx_apellido_materno='Galicia'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-4'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='EXTRAORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Extraordinario'),
     '2026-08-12 12:00:00';
 
 -- Compiladores (2da vuelta) - Miriam Pescador Rojas
@@ -1068,7 +1068,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Pescador' AND tx_apellido_materno='Rojas'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3301'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Vespertino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='EXTRAORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Extraordinario'),
     '2026-08-13 14:00:00';
 
 -- Ingeniería de Software (2da vuelta) - Reyna Elia Melara Abarca
@@ -1078,7 +1078,7 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Melara' AND tx_apellido_materno='Abarca'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='3302'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='EXTRAORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Extraordinario'),
     '2026-08-14 08:00:00';
 
 -- Redes de Computadoras (2da vuelta) - Gilberto Sánchez Quintanilla
@@ -1088,5 +1088,5 @@ SELECT
     (SELECT id_docente FROM esc05_docente WHERE tx_apellido_paterno='Sánchez' AND tx_apellido_materno='Quintanilla'),
     (SELECT id_aula FROM esc06_aula WHERE tx_clave='LAB-1'),
     (SELECT id_turno FROM cat05_turno WHERE tx_nombre='Matutino'),
-    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='EXTRAORDINARIO'),
+    (SELECT id_tipo_ets FROM cat06_tipo_ets WHERE tx_nombre='Extraordinario'),
     '2026-08-17 10:00:00';
