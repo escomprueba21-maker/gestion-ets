@@ -76,12 +76,18 @@ CREATE TABLE esc06_aula (
 );
 
 CREATE TABLE esc07_ets (
-    id_ets         INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    fk_id_materia  INT4      NOT NULL REFERENCES cat02_materia(id_materia),
-    fk_id_docente  INT4      REFERENCES esc05_docente(id_docente),
-    fk_id_aula     INT4      REFERENCES esc06_aula(id_aula),
-    fk_id_turno    INT4      NOT NULL REFERENCES cat05_turno(id_turno),
-    fh_aplicacion  TIMESTAMP NOT NULL
+    id_ets          INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    fk_id_materia   INT4      NOT NULL REFERENCES cat02_materia(id_materia),
+    fk_id_docente   INT4      REFERENCES esc05_docente(id_docente),
+    fk_id_aula      INT4      REFERENCES esc06_aula(id_aula),
+    fk_id_turno     INT4      NOT NULL REFERENCES cat05_turno(id_turno),
+    fk_id_tipo_ets  INT4      NOT NULL REFERENCES cat06_tipo_ets(id_tipo_ets),
+    fh_aplicacion   TIMESTAMP NOT NULL
+);
+
+CREATE TABLE cat06_tipo_ets (
+    id_tipo_ets  INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    tx_nombre    VARCHAR(30) NOT NULL UNIQUE
 );
 
 CREATE INDEX idx_esc07_ets_materia_fecha
