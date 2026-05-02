@@ -9,6 +9,11 @@ CREATE TABLE cat02_materia (
     tx_nombre   VARCHAR(200) NOT NULL
 );
 
+CREATE TABLE cat06_tipo_ets (
+    id_tipo_ets  INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    tx_nombre    VARCHAR(30) NOT NULL UNIQUE
+);
+
 CREATE TABLE cat03_rol (
     id_rol     INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     tx_nombre  VARCHAR(100) NOT NULL
@@ -83,11 +88,6 @@ CREATE TABLE esc07_ets (
     fk_id_turno     INT4      NOT NULL REFERENCES cat05_turno(id_turno),
     fk_id_tipo_ets  INT4      NOT NULL REFERENCES cat06_tipo_ets(id_tipo_ets),
     fh_aplicacion   TIMESTAMP NOT NULL
-);
-
-CREATE TABLE cat06_tipo_ets (
-    id_tipo_ets  INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    tx_nombre    VARCHAR(30) NOT NULL UNIQUE
 );
 
 CREATE INDEX idx_esc07_ets_materia_fecha
