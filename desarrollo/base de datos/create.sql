@@ -98,6 +98,18 @@ CREATE TABLE esc07_ets (
 CREATE INDEX idx_esc07_ets_materia_fecha
     ON esc07_ets (fk_id_materia, fh_aplicacion);
 
+CREATE TABLE esc09_dispositivo (
+    id_dispositivo    INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    fk_id_persona     INT4      NOT NULL REFERENCES esc02_persona(id_persona) ON DELETE CASCADE,
+    fk_id_plataforma  INT4      NOT NULL REFERENCES cat07_plataforma(id_plataforma),
+    tx_fcm_token      TEXT      NOT NULL UNIQUE,
+    fh_registro       TIMESTAMP NOT NULL DEFAULT NOW(),
+    fh_ultima_vista   TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_esc09_dispositivo_persona
+    ON esc09_dispositivo (fk_id_persona);
+
 
 CREATE TABLE esc08_agenda_ets (
     id_agenda_ets    INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
