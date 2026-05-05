@@ -4,6 +4,15 @@ CREATE TABLE cat01_carrera (
     tx_nombre   VARCHAR(200) NOT NULL
 );
 
+CREATE TABLE cat08_periodo_ets (
+    id_periodo      INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    tx_nombre       VARCHAR(50) NOT NULL,
+    fk_id_tipo_ets  INT4      NOT NULL REFERENCES cat06_tipo_ets(id_tipo_ets),
+    fh_inicio       TIMESTAMP NOT NULL,
+    fh_fin          TIMESTAMP NOT NULL,
+    fk_id_persona   INT4      NOT NULL REFERENCES esc02_persona(id_persona)
+);
+
 CREATE TABLE cat07_plataforma (
     id_plataforma  INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     tx_nombre      VARCHAR(20) NOT NULL UNIQUE
