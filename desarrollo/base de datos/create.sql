@@ -4,6 +4,11 @@ CREATE TABLE cat01_carrera (
     tx_nombre   VARCHAR(200) NOT NULL
 );
 
+CREATE TABLE cat07_plataforma (
+    id_plataforma  INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    tx_nombre      VARCHAR(20) NOT NULL UNIQUE
+);
+
 CREATE TABLE cat02_materia (
     id_materia  INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     tx_nombre   VARCHAR(200) NOT NULL
