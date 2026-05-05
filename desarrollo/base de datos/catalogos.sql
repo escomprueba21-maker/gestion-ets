@@ -20,6 +20,8 @@ INSERT INTO cat01_carrera (tx_clave, tx_nombre) VALUES
 ('IIA', 'Ingeniería en Inteligencia Artificial'),
 ('LCD', 'Licenciatura en Ciencia de Datos');
 
+INSERT INTO cat07_plataforma (tx_nombre) VALUES ('android'), ('ios');
+
 INSERT INTO cat02_materia (tx_nombre) VALUES
 ('Cálculo'),
 ('Matemáticas Discretas'),
