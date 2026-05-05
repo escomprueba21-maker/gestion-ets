@@ -128,6 +128,4 @@ CREATE TABLE cat08_periodo_ets (
     tx_nombre       VARCHAR(50) NOT NULL,
     fk_id_tipo_ets  INT4      NOT NULL REFERENCES cat06_tipo_ets(id_tipo_ets),
     fh_inicio       TIMESTAMP NOT NULL,
-    fh_fin          TIMESTAMP NOT NULL,
-    fk_id_persona   INT4      NOT NULL REFERENCES esc02_persona(id_persona)
-);
+    fh_fin          TIMESTAMP NOT NULL);
