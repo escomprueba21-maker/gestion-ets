@@ -1,6 +1,7 @@
 package com.gestion.ets.api.core.business.implementation;
 
 import com.gestion.ets.api.core.business.input.JWTService;
+import com.gestion.ets.api.core.enums.RolesEnum;
 import io.smallrye.jwt.algorithm.SignatureAlgorithm;
 import io.smallrye.jwt.build.Jwt;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -31,8 +32,11 @@ public class JWTBs implements JWTService {
                 .subject(userId.toString())
                 .claim("idRol", rolId)
                 .claim("idPersona",userId)
+                .groups(RolesEnum.fromId(rolId).name())
                 .expiresIn(Duration.ofSeconds(accessDuration))
-                .signWithSecret(secret);
+                .jws()
+                .algorithm(SignatureAlgorithm.HS256)
+                .sign(getKey());
     }
 
     public String generarRefreshToken(Integer userId) {
