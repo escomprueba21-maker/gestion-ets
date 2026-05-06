@@ -7,4 +7,7 @@ import java.util.Optional;
 public interface UsuarioRepository {
 
     Optional<Materia> findEtsById(Integer idEts,Integer idPersona);
+
+    Optional<Materia> findEtsProximosAndFechaByIdPersona(Integer idPersona);
+
 }

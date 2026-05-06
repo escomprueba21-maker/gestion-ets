@@ -6,7 +6,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -40,6 +39,25 @@ public class UsuarioDao implements UsuarioRepository {
             where esc07.id_ets = :idEts
             """;
 
+    private static final String QUERY_FIND_ETS_PROXIMOS_BY_ID = """
+          with fecha_ets as(
+          select
+          concat(to_char(cat08.fh_inicio::date, 'DD/MM/YYYY'),' - ',
+          to_char(cat08.fh_fin::date, 'DD/MM/YYYY')) as fecha,
+          (cat08.fh_fin::date - cat08.fh_inicio::date) as duracion_periodo
+          from cat08_periodo_ets cat08)
+          select esc02.tx_nombre,coalesce(fe.fecha, 'Sin fechas') as fecha,
+          coalesce(fe.duracion_periodo, 0) as duracion_dias,coalesce(json_agg(json_build_object('idEtsAgenda',esc08.id_agenda_ets,'idEts',esc07.id_ets,'materia',cat02.tx_nombre,
+          'fechaHora',to_char(esc07.fh_aplicacion, 'dd/mm · HH24:MI'),'diasRestantes', (esc07.fh_aplicacion::date - current_date) )
+          order by esc07.fh_aplicacion asc) filter (where esc08.id_agenda_ets is not null),'[]'::json)::text as agenda
+          from esc02_persona esc02
+          left join esc08_agenda_ets esc08 on esc08.fk_id_persona = esc02.id_persona
+          left join esc07_ets esc07 on esc07.id_ets = esc08.fk_id_ets
+          left join cat02_materia cat02 on cat02.id_materia = esc07.fk_id_materia
+          left join lateral (select fecha,duracion_periodo from fecha_ets limit 1) fe on true
+          where esc02.id_persona = :idPersona
+          group by 1,2,3
+          """;
 
     private static final String PARAM_ID_ETS = "idEts";
     private static final String PARAM_ID_PERSONA = "idPersona";
@@ -62,6 +80,20 @@ public class UsuarioDao implements UsuarioRepository {
                 .docente((String) row[7])
                 .carrera((String) row[8])
                 .guardado((Boolean) row[9])
+                .build());
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Optional<Materia> findEtsProximosAndFechaByIdPersona(Integer idPersona) {
+        Stream<Object[]>result = entityManager.createNativeQuery(QUERY_FIND_ETS_PROXIMOS_BY_ID)
+                .setParameter(PARAM_ID_PERSONA,idPersona)
+                .getResultStream();
+        return result.findFirst().map(row->Materia.builder()
+                .nombreUsuario((String) row[0])
+                .fecha((String) row[1])
+                .duracionDias((Integer) row[2])
+                .jsEts((String) row[3])
                 .build());
     }
 }

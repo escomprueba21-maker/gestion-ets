@@ -2,6 +2,7 @@ package com.escom.external.rest.controller;
 
 import com.escom.core.business.input.UsuarioService;
 import com.escom.external.rest.dto.DetalleEtsDTO;
+import com.escom.external.rest.dto.MateriaEtsDTO;
 import com.escom.util.BsConstants;
 import com.escom.util.error.ErrorCode;
 import jakarta.annotation.security.RolesAllowed;
@@ -22,15 +23,24 @@ public class AlumnoController {
 
 
     @Inject
-    public AlumnoController(UsuarioService usuarioService, JsonWebToken jwt) {
+    public AlumnoController(UsuarioService usuarioService, JsonWebToken jsonWebToken) {
         this.usuarioService = usuarioService;
-        this.jwt = jwt;
+        this.jwt = jsonWebToken;
+    }
+
+    private Integer getIdPersona() {
+        return Integer.parseInt(jwt.getClaim("idPersona").toString());
     }
 
     @GET
     @Path("{idEts}")
     public DetalleEtsDTO getEtsByIdAndIdPersona(@PathParam("idEts") Integer idEts) {
-        var idPersona = Integer.parseInt(jwt.getClaim("idPersona").toString());
-        return usuarioService.getEtsById(idEts,idPersona).map(DetalleEtsDTO::fromEntity).getOrElseThrow(ErrorCode::toBusinessException);
+        return usuarioService.getEtsById(idEts,getIdPersona()).map(DetalleEtsDTO::fromEntity).getOrElseThrow(ErrorCode::toBusinessException);
+    }
+
+    @GET
+    @Path("inicio")
+    public MateriaEtsDTO getEtsProximosByIdPersona(){
+        return usuarioService.getEtsProximosAndFechaByIdPersona(getIdPersona()).map(MateriaEtsDTO::fromEntity).getOrElseThrow(ErrorCode::toBusinessException);
     }
 }

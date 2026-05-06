@@ -7,5 +7,5 @@ import io.vavr.control.Either;
 public interface UsuarioService {
 
     Either<ErrorCodeEnum, Materia> getEtsById(Integer idEts, Integer idPersona);
-
+    Either<ErrorCodeEnum, Materia>getEtsProximosAndFechaByIdPersona(Integer idPersona);
 }
