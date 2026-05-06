@@ -1,1 +1,0 @@
-package com.escom.external.jpa.model;

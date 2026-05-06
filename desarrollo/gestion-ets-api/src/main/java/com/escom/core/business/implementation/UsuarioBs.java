@@ -28,7 +28,7 @@ public class UsuarioBs implements UsuarioService {
     }
 
     @Override
-    public Either<ErrorCodeEnum, Materia> getEtsProximosAndFechaByIdPersona(Integer idPersona) {
+    public Either<ErrorCodeEnum, Materia> getEtsProximosAndFecha(Integer idPersona) {
         var searchEtsProximos = usuarioRepository.findEtsProximosAndFechaByIdPersona(idPersona);
         if (searchEtsProximos.isEmpty()) {
             return Either.left(ErrorCodeEnum.GE_NOT_FOUND);
@@ -36,5 +36,14 @@ public class UsuarioBs implements UsuarioService {
         var json = JsonMapperUtils.toList(searchEtsProximos.get().getJsEts(),Ets.class);
         searchEtsProximos.get().setEts(json);
         return Either.right(searchEtsProximos.get());
+    }
+
+    @Override
+    public Either<ErrorCodeEnum, Boolean> deleteEtsAgendaById(Integer idEtsAgenda,Integer idPersona) {
+        if(!usuarioRepository.existsEtsAgendaByIdEtsAgenda(idEtsAgenda)) {
+            return Either.left(ErrorCodeEnum.GE_NOT_FOUND);
+        }
+        usuarioRepository.deleteEtsAgendaByIdEtsAgenda(idEtsAgenda,idPersona);
+        return Either.right(true);
     }
 }

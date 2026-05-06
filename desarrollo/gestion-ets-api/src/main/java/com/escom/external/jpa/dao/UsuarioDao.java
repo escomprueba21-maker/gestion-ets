@@ -59,8 +59,15 @@ public class UsuarioDao implements UsuarioRepository {
           group by 1,2,3
           """;
 
+    private static final String QUERY_FIND_EXISTS_ETS_AGENDA = """
+            select exists(select 1 from esc08_agenda_ets esc08 where esc08.id_agenda_ets = :idEtsAgenda)
+            """;
+
+
     private static final String PARAM_ID_ETS = "idEts";
     private static final String PARAM_ID_PERSONA = "idPersona";
+    private static final String PARAM_ID_ETS_AGENDA = "idEtsAgenda";
+
 
     @Override
     @SuppressWarnings("unchecked")
@@ -95,5 +102,18 @@ public class UsuarioDao implements UsuarioRepository {
                 .duracionDias((Integer) row[2])
                 .jsEts((String) row[3])
                 .build());
+    }
+
+    @Override
+    public void deleteEtsAgendaByIdEtsAgenda(Integer idEtsAgenda,Integer idPersona) {
+        entityManager.createQuery("delete from EtsAgendaJpa e where e.idAgendaEts = :idEtsAgenda and e.idPersona = :idPersona ")
+                .setParameter(PARAM_ID_ETS_AGENDA, idEtsAgenda)
+                .setParameter(PARAM_ID_PERSONA, idPersona)
+                .executeUpdate();
+    }
+
+    @Override
+    public boolean existsEtsAgendaByIdEtsAgenda(Integer idEtsAgenda) {
+        return (boolean) entityManager.createNativeQuery(QUERY_FIND_EXISTS_ETS_AGENDA).setParameter(PARAM_ID_ETS_AGENDA,idEtsAgenda).getSingleResult();
     }
 }

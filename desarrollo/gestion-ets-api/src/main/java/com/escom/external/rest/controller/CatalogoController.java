@@ -43,4 +43,23 @@ public class CatalogoController {
     public List<CatalogoDTO> listAllSemestres() {
         return BsConstants.SEMESTRES;
     }
+
+    @GET
+    @Path("docentes")
+    public List<CatalogoDTO> listAllDocentes() {
+        return catalogoService.listAllDocentes().stream().map(catalogo -> CatalogoDTO.builder()
+                .id(catalogo.getIdUsuario())
+                .nombre(catalogo.getNombre())
+                .build()).toList();
+    }
+
+    @GET
+    @Path("{idCarrera}/{idSemestre}/materia")
+    public List<CatalogoDTO>listMateriasByIdCarreraAndIdSemestre(@PathParam("idCarrera")Integer idCarrera,@PathParam("idSemestre")Integer idSemestre) {
+        return catalogoService.listMateriasByIdCarreraAndIdSemestre(idCarrera,idSemestre).stream()
+                .map(catalogo->CatalogoDTO.builder()
+                        .id(catalogo.getId())
+                        .nombre(catalogo.getNombre())
+                        .build()).toList();
+    }
 }

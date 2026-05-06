@@ -1,4 +1,4 @@
-package com.gestion.ets.api.util.paginacion;
+package com.escom.util.paginacion;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -34,13 +34,19 @@ public class AlumnoController {
 
     @GET
     @Path("{idEts}")
-    public DetalleEtsDTO getEtsByIdAndIdPersona(@PathParam("idEts") Integer idEts) {
+    public DetalleEtsDTO getEts(@PathParam("idEts") Integer idEts) {
         return usuarioService.getEtsById(idEts,getIdPersona()).map(DetalleEtsDTO::fromEntity).getOrElseThrow(ErrorCode::toBusinessException);
     }
 
     @GET
     @Path("inicio")
-    public MateriaEtsDTO getEtsProximosByIdPersona(){
-        return usuarioService.getEtsProximosAndFechaByIdPersona(getIdPersona()).map(MateriaEtsDTO::fromEntity).getOrElseThrow(ErrorCode::toBusinessException);
+    public MateriaEtsDTO getEtsProximos(){
+        return usuarioService.getEtsProximosAndFecha(getIdPersona()).map(MateriaEtsDTO::fromEntity).getOrElseThrow(ErrorCode::toBusinessException);
+    }
+
+    @DELETE
+    @Path("{idEtsAgenda}")
+    public Boolean deleteEtsAgenda(@PathParam("idEtsAgenda") Integer idEtsAgenda) {
+        return usuarioService.deleteEtsAgendaById(idEtsAgenda,getIdPersona()).getOrElseThrow(ErrorCode::toBusinessException);
     }
 }

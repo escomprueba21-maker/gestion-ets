@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Builder
 @NoArgsConstructor
@@ -15,5 +17,6 @@ public class Ets {
     private String materia;
     private String fechaHora;
     private Integer diasRestantes;
-
+    private Integer idPersona;
+    private LocalDateTime fechaRegistro;
 }
