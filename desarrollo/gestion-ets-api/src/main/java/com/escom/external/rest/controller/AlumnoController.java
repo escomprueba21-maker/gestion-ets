@@ -49,4 +49,10 @@ public class AlumnoController {
     public Boolean deleteEtsAgenda(@PathParam("idEtsAgenda") Integer idEtsAgenda) {
         return usuarioService.deleteEtsAgendaById(idEtsAgenda,getIdPersona()).getOrElseThrow(ErrorCode::toBusinessException);
     }
+
+    @POST
+    @Path("{idEts}/agenda")
+    public Boolean createEtsAgenda(@PathParam("idEts") Integer idEts) {
+        return usuarioService.createEtsAgenda(idEts, getIdPersona()).getOrElseThrow(ErrorCode::toBusinessException);
+    }
 }

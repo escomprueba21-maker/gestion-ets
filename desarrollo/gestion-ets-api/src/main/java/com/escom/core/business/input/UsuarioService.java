@@ -9,4 +9,5 @@ public interface UsuarioService {
     Either<ErrorCodeEnum, Materia> getEtsById(Integer idEts, Integer idPersona);
     Either<ErrorCodeEnum, Materia> getEtsProximosAndFecha(Integer idPersona);
     Either<ErrorCodeEnum,Boolean>deleteEtsAgendaById(Integer idEtsAgenda,Integer idPersona);
+    Either<ErrorCodeEnum,Boolean>createEtsAgenda(Integer idEts, Integer idPersona);
 }

@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 public class FirebaseBs implements FirebaseService {
 
     public void enviarNotificacion(String fcmToken, String titulo, String cuerpo) throws FirebaseMessagingException {
-
+        
         var message = Message.builder()
                 .setToken(fcmToken)
                 .setNotification(Notification.builder()

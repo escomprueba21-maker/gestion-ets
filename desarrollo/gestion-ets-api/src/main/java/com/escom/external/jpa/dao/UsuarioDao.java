@@ -1,7 +1,9 @@
 package com.escom.external.jpa.dao;
 
 import com.escom.core.business.output.UsuarioRepository;
+import com.escom.core.entity.Ets;
 import com.escom.core.entity.Materia;
+import com.escom.external.jpa.model.EtsAgendaJpa;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -63,6 +65,13 @@ public class UsuarioDao implements UsuarioRepository {
             select exists(select 1 from esc08_agenda_ets esc08 where esc08.id_agenda_ets = :idEtsAgenda)
             """;
 
+    private static final String QUERY_FIND_EXISTS_ETS_AGENDA_BY_ETS_PERSONA = """
+        select exists(
+            select 1 from esc08_agenda_ets esc08
+            where esc08.fk_id_ets = :idEts and esc08.fk_id_persona = :idPersona
+        )
+        """;
+
 
     private static final String PARAM_ID_ETS = "idEts";
     private static final String PARAM_ID_PERSONA = "idPersona";
@@ -115,5 +124,18 @@ public class UsuarioDao implements UsuarioRepository {
     @Override
     public boolean existsEtsAgendaByIdEtsAgenda(Integer idEtsAgenda) {
         return (boolean) entityManager.createNativeQuery(QUERY_FIND_EXISTS_ETS_AGENDA).setParameter(PARAM_ID_ETS_AGENDA,idEtsAgenda).getSingleResult();
+    }
+
+    @Override
+    public void saveEtsAgenda(Ets entity) {
+        entityManager.persist(EtsAgendaJpa.fromEntity(entity));
+    }
+
+    @Override
+    public boolean existsEtsAgendaByEtsAndPersona(Integer idEts, Integer idPersona) {
+        return (boolean) entityManager.createNativeQuery(QUERY_FIND_EXISTS_ETS_AGENDA_BY_ETS_PERSONA)
+                .setParameter(PARAM_ID_ETS, idEts)
+                .setParameter(PARAM_ID_PERSONA, idPersona)
+                .getSingleResult();
     }
 }
