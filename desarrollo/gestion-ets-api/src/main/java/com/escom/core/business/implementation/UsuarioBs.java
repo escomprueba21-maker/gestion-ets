@@ -1,5 +1,6 @@
 package com.escom.core.business.implementation;
 
+import com.escom.core.business.input.FirebaseService;
 import com.escom.core.business.input.UsuarioService;
 import com.escom.core.business.output.UsuarioRepository;
 import com.escom.core.entity.Ets;
@@ -9,6 +10,8 @@ import com.escom.util.error.ErrorCodeEnum;
 import io.vavr.control.Either;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 
 @ApplicationScoped
 public class UsuarioBs implements UsuarioService {
@@ -39,6 +42,7 @@ public class UsuarioBs implements UsuarioService {
     }
 
     @Override
+    @Transactional
     public Either<ErrorCodeEnum, Boolean> deleteEtsAgendaById(Integer idEtsAgenda,Integer idPersona) {
         if(!usuarioRepository.existsEtsAgendaByIdEtsAgenda(idEtsAgenda)) {
             return Either.left(ErrorCodeEnum.GE_NOT_FOUND);
