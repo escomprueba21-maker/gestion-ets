@@ -10,6 +10,7 @@ public enum ErrorCodeEnum implements ErrorCode {
     GE_RNS001("Campos obligatorios"),
     GE_RNS002("Máquina de estados"),
     GE_RNS003("Elementos registrados en el sistema"),
+    GE_RNS004("fecha de periodo no valida"),
 
     // NEGOCIO (GE-RN-NXXX)
     GE_RNN001("Correo registrado con una cuenta existente"),

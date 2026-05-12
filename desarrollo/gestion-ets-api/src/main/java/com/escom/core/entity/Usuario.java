@@ -14,4 +14,6 @@ public class Usuario {
     private String primerApellido;
     private String segundoApellido;
     private String email;
+
+    private String fcmToken;
 }

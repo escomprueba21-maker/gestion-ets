@@ -14,6 +14,8 @@ public class MateriaEtsDTO {
     @JsonProperty
     private String nombreUsuario;
     @JsonProperty
+    private String avatar;
+    @JsonProperty
     private String fecha;
     @JsonProperty
     private Integer duracionDias;

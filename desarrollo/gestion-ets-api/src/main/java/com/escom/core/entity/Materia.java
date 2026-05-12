@@ -17,6 +17,7 @@ public class Materia {
     private String fechaTurno;
     private String salon;
 
+    //extras
     private String plan;
     private String fecha;
     private String hora;
@@ -28,4 +29,8 @@ public class Materia {
     private Integer duracionDias;
     private String jsEts;
     private List<Ets> ets;
+    private String avatar;
+    private String edificio;
+    private Boolean editar;
+    private Boolean eliminar;
 }
