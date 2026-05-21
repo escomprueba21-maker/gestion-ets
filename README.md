@@ -5,7 +5,3 @@ Proyecto que permite a la comunidad estudiantil de ESCOM gestionar su calendario
 
 ![Diagrama ER](bd-ets.png)
 
-
-## Maquetas
-
-![Maquetas](vistas-DAMN.pdf)
