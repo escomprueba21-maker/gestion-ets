@@ -16,7 +16,11 @@ public enum ErrorCodeEnum implements ErrorCode {
     GE_RNN001("Correo registrado con una cuenta existente"),
     GE_RNN002("Usuario no encontrado"),
     GE_RNN003("El token no es valido"),
-    GE_RNN004("Token expirado");
+    GE_RNN004("Token expirado"),
+
+    GE_RNN005("Contraseña incorrecta"),
+    GE_RNN006("Las contraseñas no coinciden");
+    
     private final String detail;
 
     ErrorCodeEnum(String detail) {

@@ -8,12 +8,12 @@ import lombok.Setter;
 @Setter
 @Builder
 public class Usuario {
-
     private Integer idUsuario;
     private String nombre;
     private String primerApellido;
     private String segundoApellido;
     private String email;
-
+    private String password;
+    private Integer idRol;
     private String fcmToken;
 }
