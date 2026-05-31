@@ -1,4 +1,3 @@
-// PerfilResponseDTO.java
 package com.escom.external.rest.dto;
 
 import com.escom.core.entity.Usuario;
