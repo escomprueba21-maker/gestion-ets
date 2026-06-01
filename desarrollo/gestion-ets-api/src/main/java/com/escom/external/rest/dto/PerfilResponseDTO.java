@@ -14,28 +14,23 @@ public class PerfilResponseDTO {
     private String nombre;
 
     @JsonProperty
-    @Schema(description = "Primer apellido del usuario", readOnly = true)
+    @Schema(description = "Primer apellido", readOnly = true)
     private String primerApellido;
 
     @JsonProperty
-    @Schema(description = "Segundo apellido del usuario", readOnly = true)
+    @Schema(description = "Segundo apellido", readOnly = true)
     private String segundoApellido;
 
     @JsonProperty
-    @Schema(description = "Correo electrónico del usuario", readOnly = true)
+    @Schema(description = "Correo electrónico", readOnly = true)
     private String email;
 
-    @JsonProperty
-    @Schema(description = "Rol del usuario en el sistema", readOnly = true)
-    private String rol;
-
-    public static PerfilResponseDTO fromEntity(Usuario usuario, String rol) {
+    public static PerfilResponseDTO fromEntity(Usuario usuario) {
         return PerfilResponseDTO.builder()
                 .nombre(usuario.getNombre())
                 .primerApellido(usuario.getPrimerApellido())
                 .segundoApellido(usuario.getSegundoApellido())
                 .email(usuario.getEmail())
-                .rol(rol)
                 .build();
     }
 }

@@ -52,12 +52,9 @@ public class PerfilController {
     )
     public PerfilResponseDTO getPerfil() {
         return perfilService.getPerfil(getIdPersona())
-                .map(usuario -> {
-                    String rol = usuario.getIdRol() == 1 ? "Alumno" : "Administrador";
-                    return PerfilResponseDTO.fromEntity(usuario, rol);
-                })
-                .getOrElseThrow(ErrorCode::toBusinessException);
-    }
+            .map(PerfilResponseDTO::fromEntity)
+            .getOrElseThrow(ErrorCode::toBusinessException);
+        }
 
     @PUT
     @Path("/nombre")
