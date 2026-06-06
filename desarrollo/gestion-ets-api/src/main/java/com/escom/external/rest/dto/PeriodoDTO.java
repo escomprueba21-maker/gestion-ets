@@ -1,15 +1,15 @@
-// PeriodoDTO.java
 package com.escom.external.rest.dto;
 
 import com.escom.core.entity.Periodo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import java.time.LocalDateTime;
 
+@Getter
 @Builder
 @Schema(name = "Periodo", description = "DTO con la información del periodo ETS")
 public class PeriodoDTO {
@@ -31,8 +31,12 @@ public class PeriodoDTO {
     private LocalDateTime fechaFin;
 
     @JsonProperty
-    @Schema(description = "Estado del periodo", readOnly = true)
-    private String estado;
+    @Schema(description = "Indica si el periodo ya comenzó — congela botones en el formulario", readOnly = true)
+    private Boolean periodoYaComenzo;
+
+    @JsonProperty
+    @Schema(description = "Cantidad de exámenes afectados por cambio de fechas", readOnly = true)
+    private Integer examenesAfectados;
 
     public static PeriodoDTO fromEntity(Periodo periodo) {
         return PeriodoDTO.builder()
@@ -40,7 +44,8 @@ public class PeriodoDTO {
                 .nombre(periodo.getNombre())
                 .fechaInicio(periodo.getFechaInicio())
                 .fechaFin(periodo.getFechaFin())
-                .estado(periodo.getEstado())
+                .periodoYaComenzo(periodo.getPeriodoYaComenzo())
+                .examenesAfectados(periodo.getExamenesAfectados())
                 .build();
     }
 }

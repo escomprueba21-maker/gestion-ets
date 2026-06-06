@@ -8,7 +8,10 @@ import com.escom.core.entity.Materia;
 import com.escom.util.BsConstants;
 import com.escom.util.error.ErrorCodeEnum;
 import com.escom.core.entity.Periodo;
+import com.escom.external.rest.dto.CarreraDashboardDTO;
 import com.escom.external.rest.dto.DashboardDTO;
+import com.escom.external.rest.dto.PeriodoDTO;
+
 import io.vavr.control.Either;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -51,61 +54,86 @@ public class AdministradorBs implements AdministradorService {
         return List.of();
     }
 
-    // Agregar estos métodos en AdministradorBs
-
 @Override
 public Either<ErrorCodeEnum, DashboardDTO> getDashboard() {
     var periodo = administradorRepository.findPeriodoActual();
     var totalExamenes = administradorRepository.countExamenes();
     var totalCarreras = administradorRepository.countCarreras();
     var totalSalones = administradorRepository.countSalones();
-    var examenesPorCarrera = administradorRepository.countExamenesPorCarrera();
+    var examenesPorCarrera = administradorRepository.countExamenesPorCarrera()
+            .stream()
+            .map(CarreraDashboardDTO::fromEntity)
+            .toList();
 
-    Periodo periodoEntity = null;
+    PeriodoDTO periodoDTO = null;
     if (periodo.isPresent()) {
         var p = periodo.get();
         var ahora = LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID);
-        String estado = (ahora.isAfter(p.getFechaInicio()) && ahora.isBefore(p.getFechaFin()))
-                ? "vigente" : "sin_asignar";
-        periodoEntity = Periodo.builder()
+        boolean yaComenzo = ahora.isAfter(p.getFechaInicio());
+        periodoDTO = PeriodoDTO.fromEntity(Periodo.builder()
                 .idPeriodo(p.getIdPeriodo())
                 .nombre(p.getNombre())
                 .fechaInicio(p.getFechaInicio())
                 .fechaFin(p.getFechaFin())
-                .estado(estado)
-                .build();
+                .periodoYaComenzo(yaComenzo)
+                .examenesAfectados(0)
+                .build());
     }
 
     return Either.right(DashboardDTO.fromEntity(
-            periodoEntity, totalExamenes, totalCarreras, totalSalones, examenesPorCarrera));
+            periodoDTO, totalExamenes, totalCarreras, totalSalones, examenesPorCarrera));
 }
 
 @Override
 @Transactional
 public Either<ErrorCodeEnum, Boolean> asignarPeriodo(Periodo periodo) {
+    var periodoActual = administradorRepository.findPeriodoActual();
+    if (periodoActual.isPresent()) {
+        return Either.left(ErrorCodeEnum.GE_RNS008);
+    }
+
     administradorRepository.savePeriodo(periodo);
     return Either.right(true);
 }
 
 @Override
 @Transactional
-public Either<ErrorCodeEnum, Boolean> editarPeriodo(Periodo periodo) {
+public Either<PeriodoDTO, Boolean> editarPeriodo(Periodo periodo) {
     var periodoActual = administradorRepository.findPeriodoActual();
+
     if (periodoActual.isEmpty()) {
-        return Either.left(ErrorCodeEnum.GE_NOT_FOUND);
+        throw ErrorCodeEnum.GE_NOT_FOUND.toBusinessException();
     }
 
-    // Verificar si el periodo ya comenzó
+    var p = periodoActual.get();
     var ahora = LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID);
-    if (ahora.isAfter(periodoActual.get().getFechaInicio())) {
-        return Either.left(ErrorCodeEnum.GE_RNS002);
+
+    // Regla GE_RNS005: no se puede editar si el periodo ya inició
+    if (ahora.isAfter(p.getFechaInicio())) {
+        var afectados = administradorRepository.countEtsAfectadosByFecha(
+                p.getFechaInicio(), p.getFechaFin());
+        return Either.left(PeriodoDTO.fromEntity(Periodo.builder()
+                .idPeriodo(p.getIdPeriodo())
+                .nombre(p.getNombre())
+                .fechaInicio(p.getFechaInicio())
+                .fechaFin(p.getFechaFin())
+                .periodoYaComenzo(true)
+                .examenesAfectados(afectados)
+                .build()));
     }
 
-    // Verificar exámenes afectados por cambio de fechas
+    // Regla GE_RNS006
     var afectados = administradorRepository.countEtsAfectadosByFecha(
             periodo.getFechaInicio(), periodo.getFechaFin());
     if (afectados > 0) {
-        return Either.left(ErrorCodeEnum.GE_RNS004);
+        return Either.left(PeriodoDTO.fromEntity(Periodo.builder()
+                .idPeriodo(p.getIdPeriodo())
+                .nombre(p.getNombre())
+                .fechaInicio(p.getFechaInicio())
+                .fechaFin(p.getFechaFin())
+                .periodoYaComenzo(false)
+                .examenesAfectados(afectados)
+                .build()));
     }
 
     administradorRepository.updatePeriodo(periodo);
@@ -114,11 +142,30 @@ public Either<ErrorCodeEnum, Boolean> editarPeriodo(Periodo periodo) {
 
 @Override
 @Transactional
-public Either<ErrorCodeEnum, Boolean> eliminarPeriodo(Integer idPeriodo) {
-    // Verificar si hay exámenes registrados en el periodo
-    if (administradorRepository.existsEtsEnPeriodo(idPeriodo)) {
-        return Either.left(ErrorCodeEnum.GE_RNS003);
+public Either<PeriodoDTO, Boolean> eliminarPeriodo(Integer idPeriodo) {
+    var ahora = LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID);
+    var periodoActual = administradorRepository.findPeriodoActual();
+
+    if (periodoActual.isEmpty()) {
+        throw ErrorCodeEnum.GE_NOT_FOUND.toBusinessException();
     }
+
+    var p = periodoActual.get();
+
+    // Regla GE_RNS007
+    if (administradorRepository.existsEtsEnPeriodo(idPeriodo)) {
+        var afectados = administradorRepository.countEtsAfectadosByFecha(
+                p.getFechaInicio(), p.getFechaFin());
+        return Either.left(PeriodoDTO.fromEntity(Periodo.builder()
+                .idPeriodo(p.getIdPeriodo())
+                .nombre(p.getNombre())
+                .fechaInicio(p.getFechaInicio())
+                .fechaFin(p.getFechaFin())
+                .periodoYaComenzo(ahora.isAfter(p.getFechaInicio()))
+                .examenesAfectados(afectados)
+                .build()));
+    }
+
     administradorRepository.deletePeriodo(idPeriodo);
     return Either.right(true);
 }

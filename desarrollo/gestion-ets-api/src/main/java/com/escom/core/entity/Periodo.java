@@ -12,8 +12,6 @@ public class Periodo {
     private LocalDateTime fechaInicio;
     private LocalDateTime fechaFin;
     private Integer idTipoEts;
-    private Integer totalExamenes;
-    private Integer totalCarreras;
-    private Integer totalSalones;
-    private String estado; // "vigente", "sin_asignar"
+    private Boolean periodoYaComenzo;
+    private Integer examenesAfectados;
 }

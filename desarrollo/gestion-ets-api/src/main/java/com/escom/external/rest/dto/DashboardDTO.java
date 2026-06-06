@@ -1,8 +1,5 @@
-
 package com.escom.external.rest.dto;
 
-import com.escom.core.entity.Carrera;
-import com.escom.core.entity.Periodo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -31,13 +28,13 @@ public class DashboardDTO {
 
     @JsonProperty
     @Schema(description = "Exámenes por carrera", readOnly = true)
-    private List<Carrera> examenesPorCarrera;
+    private List<CarreraDashboardDTO> examenesPorCarrera;
 
-    public static DashboardDTO fromEntity(Periodo periodo, Integer totalExamenes,
+    public static DashboardDTO fromEntity(PeriodoDTO periodo, Integer totalExamenes,
                                           Integer totalCarreras, Integer totalSalones,
-                                          List<Carrera> examenesPorCarrera) {
+                                          List<CarreraDashboardDTO> examenesPorCarrera) {
         return DashboardDTO.builder()
-                .periodo(periodo != null ? PeriodoDTO.fromEntity(periodo) : null)
+                .periodo(periodo)
                 .totalExamenes(totalExamenes)
                 .totalCarreras(totalCarreras)
                 .totalSalones(totalSalones)

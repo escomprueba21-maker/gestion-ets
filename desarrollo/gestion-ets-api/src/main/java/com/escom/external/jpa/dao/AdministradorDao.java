@@ -52,24 +52,52 @@ public class AdministradorDao implements AdministradorRepository {
         """;
 
 private static final String QUERY_COUNT_EXAMENES = """
-        select count(*) from esc07_ets
+        SELECT COUNT(esc07.id_ets)
+        FROM esc07_ets esc07
+        JOIN (
+            SELECT fh_inicio, fh_fin
+            FROM cat08_periodo_ets
+            ORDER BY fh_inicio DESC
+            LIMIT 1
+        ) periodo ON esc07.fh_aplicacion BETWEEN periodo.fh_inicio AND periodo.fh_fin
         """;
 
 private static final String QUERY_COUNT_CARRERAS = """
-        select count(*) from cat01_carrera
+        SELECT COUNT(DISTINCT esc01.fk_id_carrera)
+        FROM esc07_ets esc07
+        JOIN esc01_carrera_materia esc01 ON esc01.fk_id_materia = esc07.fk_id_materia
+        JOIN (
+            SELECT fh_inicio, fh_fin
+            FROM cat08_periodo_ets
+            ORDER BY fh_inicio DESC
+            LIMIT 1
+        ) periodo ON esc07.fh_aplicacion BETWEEN periodo.fh_inicio AND periodo.fh_fin
         """;
 
 private static final String QUERY_COUNT_SALONES = """
-        select count(*) from esc06_aula
+        SELECT COUNT(DISTINCT esc07.fk_id_aula)
+        FROM esc07_ets esc07
+        JOIN (
+            SELECT fh_inicio, fh_fin
+            FROM cat08_periodo_ets
+            ORDER BY fh_inicio DESC
+            LIMIT 1
+        ) periodo ON esc07.fh_aplicacion BETWEEN periodo.fh_inicio AND periodo.fh_fin
         """;
 
 private static final String QUERY_COUNT_EXAMENES_POR_CARRERA = """
-        select cat01.id_carrera, cat01.tx_nombre, count(esc07.id_ets) as total
-        from cat01_carrera cat01
-        left join esc01_carrera_materia esc01 on esc01.fk_id_carrera = cat01.id_carrera
-        left join esc07_ets esc07 on esc07.fk_id_materia = esc01.fk_id_materia
-        group by cat01.id_carrera, cat01.tx_nombre
-        order by cat01.tx_nombre
+        SELECT cat01.id_carrera, cat01.tx_nombre, COUNT(esc07.id_ets) as total
+        FROM cat01_carrera cat01
+        LEFT JOIN esc01_carrera_materia esc01 ON esc01.fk_id_carrera = cat01.id_carrera
+        LEFT JOIN esc07_ets esc07 ON esc07.fk_id_materia = esc01.fk_id_materia
+        LEFT JOIN (
+            SELECT id_periodo, fh_inicio, fh_fin
+            FROM cat08_periodo_ets
+            ORDER BY fh_inicio DESC
+            LIMIT 1
+        ) periodo ON esc07.fh_aplicacion BETWEEN periodo.fh_inicio AND periodo.fh_fin
+        GROUP BY cat01.id_carrera, cat01.tx_nombre
+        ORDER BY cat01.tx_nombre
         """;
 
 private static final String QUERY_SAVE_PERIODO = """
@@ -182,6 +210,7 @@ public List<Carrera> countExamenesPorCarrera() {
     return result.map(row -> Carrera.builder()
             .id((Integer) row[0])
             .nombre((String) row[1])
+            .totalExamenes(((Number) row[2]).intValue())
             .build()).toList();
 }
 
