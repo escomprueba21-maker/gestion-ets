@@ -60,45 +60,47 @@ public Either<ErrorCodeEnum, DashboardDTO> getDashboard() {
     var totalExamenes = administradorRepository.countExamenes();
     var totalCarreras = administradorRepository.countCarreras();
     var totalSalones = administradorRepository.countSalones();
+
     var examenesPorCarrera = administradorRepository.countExamenesPorCarrera()
             .stream()
             .map(CarreraDashboardDTO::fromEntity)
             .toList();
 
-    PeriodoDTO periodoDTO = null;
+    Periodo periodoEntity = null;
     if (periodo.isPresent()) {
         var p = periodo.get();
         var ahora = LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID);
-        boolean yaComenzo = ahora.isAfter(p.getFechaInicio());
-        periodoDTO = PeriodoDTO.fromEntity(Periodo.builder()
+        periodoEntity = Periodo.builder()
                 .idPeriodo(p.getIdPeriodo())
                 .nombre(p.getNombre())
                 .fechaInicio(p.getFechaInicio())
                 .fechaFin(p.getFechaFin())
-                .periodoYaComenzo(yaComenzo)
+                .periodoYaComenzo(ahora.isAfter(p.getFechaInicio()))
                 .examenesAfectados(0)
-                .build());
+                .build();
     }
 
     return Either.right(DashboardDTO.fromEntity(
-            periodoDTO, totalExamenes, totalCarreras, totalSalones, examenesPorCarrera));
+            periodoEntity,
+            totalExamenes,
+            totalCarreras,
+            totalSalones,
+            examenesPorCarrera));
 }
 
 @Override
 @Transactional
 public Either<ErrorCodeEnum, Boolean> asignarPeriodo(Periodo periodo) {
-    var periodoActual = administradorRepository.findPeriodoActual();
-    if (periodoActual.isPresent()) {
+    if (administradorRepository.findPeriodoActual().isPresent()) {
         return Either.left(ErrorCodeEnum.GE_RNS008);
     }
-
     administradorRepository.savePeriodo(periodo);
     return Either.right(true);
 }
 
 @Override
 @Transactional
-public Either<PeriodoDTO, Boolean> editarPeriodo(Periodo periodo) {
+public Either<ErrorCodeEnum, Boolean> editarPeriodo(Periodo periodo) {
     var periodoActual = administradorRepository.findPeriodoActual();
 
     if (periodoActual.isEmpty()) {
@@ -108,32 +110,18 @@ public Either<PeriodoDTO, Boolean> editarPeriodo(Periodo periodo) {
     var p = periodoActual.get();
     var ahora = LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID);
 
-    // Regla GE_RNS005: no se puede editar si el periodo ya inició
+    // Regla GE_RNS005
     if (ahora.isAfter(p.getFechaInicio())) {
         var afectados = administradorRepository.countEtsAfectadosByFecha(
                 p.getFechaInicio(), p.getFechaFin());
-        return Either.left(PeriodoDTO.fromEntity(Periodo.builder()
-                .idPeriodo(p.getIdPeriodo())
-                .nombre(p.getNombre())
-                .fechaInicio(p.getFechaInicio())
-                .fechaFin(p.getFechaFin())
-                .periodoYaComenzo(true)
-                .examenesAfectados(afectados)
-                .build()));
+        throw ErrorCodeEnum.GE_RNS005.toPeriodoConflictoException(afectados);
     }
 
     // Regla GE_RNS006
     var afectados = administradorRepository.countEtsAfectadosByFecha(
             periodo.getFechaInicio(), periodo.getFechaFin());
     if (afectados > 0) {
-        return Either.left(PeriodoDTO.fromEntity(Periodo.builder()
-                .idPeriodo(p.getIdPeriodo())
-                .nombre(p.getNombre())
-                .fechaInicio(p.getFechaInicio())
-                .fechaFin(p.getFechaFin())
-                .periodoYaComenzo(false)
-                .examenesAfectados(afectados)
-                .build()));
+        throw ErrorCodeEnum.GE_RNS006.toPeriodoConflictoException(afectados);
     }
 
     administradorRepository.updatePeriodo(periodo);
@@ -142,8 +130,7 @@ public Either<PeriodoDTO, Boolean> editarPeriodo(Periodo periodo) {
 
 @Override
 @Transactional
-public Either<PeriodoDTO, Boolean> eliminarPeriodo(Integer idPeriodo) {
-    var ahora = LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID);
+public Either<ErrorCodeEnum, Boolean> eliminarPeriodo(Integer idPeriodo) {
     var periodoActual = administradorRepository.findPeriodoActual();
 
     if (periodoActual.isEmpty()) {
@@ -156,14 +143,7 @@ public Either<PeriodoDTO, Boolean> eliminarPeriodo(Integer idPeriodo) {
     if (administradorRepository.existsEtsEnPeriodo(idPeriodo)) {
         var afectados = administradorRepository.countEtsAfectadosByFecha(
                 p.getFechaInicio(), p.getFechaFin());
-        return Either.left(PeriodoDTO.fromEntity(Periodo.builder()
-                .idPeriodo(p.getIdPeriodo())
-                .nombre(p.getNombre())
-                .fechaInicio(p.getFechaInicio())
-                .fechaFin(p.getFechaFin())
-                .periodoYaComenzo(ahora.isAfter(p.getFechaInicio()))
-                .examenesAfectados(afectados)
-                .build()));
+        throw ErrorCodeEnum.GE_RNS007.toPeriodoConflictoException(afectados);
     }
 
     administradorRepository.deletePeriodo(idPeriodo);

@@ -3,8 +3,10 @@ package com.escom.external.rest.dto;
 import com.escom.core.entity.Carrera;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
+import lombok.Getter;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
+@Getter
 @Builder
 @Schema(name = "CarreraDashboard", description = "DTO con la cantidad de exámenes por carrera")
 public class CarreraDashboardDTO {

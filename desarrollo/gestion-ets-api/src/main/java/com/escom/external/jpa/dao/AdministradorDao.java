@@ -205,9 +205,10 @@ public Integer countSalones() {
 @Override
 @SuppressWarnings("unchecked")
 public List<Carrera> countExamenesPorCarrera() {
-    Stream<Object[]> result = entityManager.createNativeQuery(QUERY_COUNT_EXAMENES_POR_CARRERA)
+        Stream<Object[]> result = entityManager
+            .createNativeQuery(QUERY_COUNT_EXAMENES_POR_CARRERA)
             .getResultStream();
-    return result.map(row -> Carrera.builder()
+        return result.map(row -> Carrera.builder()
             .id((Integer) row[0])
             .nombre((String) row[1])
             .totalExamenes(((Number) row[2]).intValue())

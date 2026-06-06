@@ -40,4 +40,8 @@ public enum ErrorCodeEnum implements ErrorCode {
     public String getDetail() {
         return this.detail;
     }
+
+    public PeriodoConflictoException toPeriodoConflictoException(Integer examenesAfectados) {
+        return new PeriodoConflictoException(this, examenesAfectados);
+    }
 }

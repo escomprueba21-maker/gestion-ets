@@ -4,23 +4,19 @@ import com.escom.core.business.input.AdministradorService;
 import com.escom.external.rest.dto.*;
 import com.escom.util.BsConstants;
 import com.escom.util.error.ErrorCode;
-import com.escom.util.error.ErrorCodeEnum;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.WebApplicationException;
+
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Path("gestion-ets")
 @Produces(MediaType.APPLICATION_JSON)
@@ -57,37 +53,17 @@ public class AdministradorController {
 
     @PUT
     @Path("periodo")
-    @Operation(operationId = "editarPeriodo", summary = "Edita el periodo ETS actual")
-    @APIResponse(responseCode = "200", description = "Periodo editado correctamente")
-    @APIResponse(responseCode = "400", description = "No es posible modificar el periodo")
-    @APIResponse(responseCode = "404", description = "Periodo no encontrado")
     public Boolean editarPeriodo(@Valid EditarPeriodoDTO dto) {
-        var resultado = administradorService.editarPeriodo(dto.toEntity());
-        if (resultado.isLeft()) {
-            var conflicto = resultado.getLeft();
-            // Distinguir si ya comenzó o hay exámenes afectados
-            var codigo = Boolean.TRUE.equals(conflicto.getPeriodoYaComenzo())
-                    ? ErrorCodeEnum.GE_RNS005
-                    : ErrorCodeEnum.GE_RNS006;
-            throw new WebApplicationException(
-                    buildConflictoResponse(codigo, conflicto));
-        }
-        return resultado.get();
-    }
+        return administradorService.editarPeriodo(dto.toEntity())
+        .getOrElseThrow(ErrorCode::toBusinessException);
+}
 
     @DELETE
     @Path("periodo/{idPeriodo}")
-    @Operation(operationId = "eliminarPeriodo", summary = "Elimina el periodo ETS")
-    @APIResponse(responseCode = "200", description = "Periodo eliminado correctamente")
-    @APIResponse(responseCode = "400", description = "No es posible eliminar el periodo")
     public Boolean eliminarPeriodo(@PathParam("idPeriodo") Integer idPeriodo) {
-        var resultado = administradorService.eliminarPeriodo(idPeriodo);
-        if (resultado.isLeft()) {
-            throw new WebApplicationException(
-                    buildConflictoResponse(ErrorCodeEnum.GE_RNS007, resultado.getLeft()));
-        }
-        return resultado.get();
-    }
+        return administradorService.eliminarPeriodo(idPeriodo)
+            .getOrElseThrow(ErrorCode::toBusinessException);
+}
 
     @DELETE
     @Path("{idEts}")
@@ -101,24 +77,9 @@ public class AdministradorController {
     @GET
     @Path("by-filtros")
     public List<SalonEtsDTO> listEdificiosByFiltros(@QueryParam("salon") String salon,
-                                                     @QueryParam("idEdificio") Integer idEdificio,
-                                                     @QueryParam("idSalon") Integer idSalon) {
-        return null;
-    }
+                                                 @QueryParam("idEdificio") Integer idEdificio,
+                                                 @QueryParam("idSalon") Integer idSalon) {
+    return List.of();
+}
 
-    private Response buildConflictoResponse(ErrorCodeEnum code, PeriodoDTO conflicto) {
-        Map<String, Object> detail = new HashMap<>();
-        detail.put("code", code.getName());
-        detail.put("message", code.getDetail());
-        detail.put("info", conflicto);
-
-        Map<String, Object> body = new HashMap<>();
-        body.put("status", Response.Status.BAD_REQUEST.getStatusCode());
-        body.put("message", Response.Status.BAD_REQUEST.name());
-        body.put("details", List.of(detail));
-
-        return Response.status(Response.Status.BAD_REQUEST)
-                .entity(body)
-                .build();
-    }
 }
