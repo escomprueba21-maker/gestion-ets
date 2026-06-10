@@ -11,6 +11,7 @@ public class Carrera {
 
     private Integer id;
     private String nombre;
+    private Integer totalExamenes;
 
     //extras
     private List<Carrera> semestre;

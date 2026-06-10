@@ -2,7 +2,6 @@ package com.escom.util.error;
 
 public interface ErrorCode {
     String getName();
-
     String getDetail();
 
     default BusinessException toBusinessException() {
