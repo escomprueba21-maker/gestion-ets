@@ -128,6 +128,14 @@ private static final String QUERY_COUNT_ETS_AFECTADOS = """
         where esc07.fh_aplicacion < :fechaInicio or esc07.fh_aplicacion > :fechaFin
         """;
 
+private static final String QUERY_COUNT_ETS_EN_PERIODO = """
+        SELECT COUNT(esc07.id_ets)
+        FROM esc07_ets esc07
+        JOIN cat08_periodo_ets cat08
+            ON esc07.fh_aplicacion BETWEEN cat08.fh_inicio AND cat08.fh_fin
+        WHERE cat08.id_periodo = :idPeriodo
+        """;
+
 private static final String PARAM_ID_PERIODO = "idPeriodo";
 private static final String PARAM_NOMBRE = "nombre";
 private static final String PARAM_FECHA_INICIO = "fechaInicio";
@@ -254,6 +262,13 @@ public Integer countEtsAfectadosByFecha(LocalDateTime fechaInicio, LocalDateTime
     return ((Number) entityManager.createNativeQuery(QUERY_COUNT_ETS_AFECTADOS)
             .setParameter(PARAM_FECHA_INICIO, fechaInicio)
             .setParameter(PARAM_FECHA_FIN, fechaFin)
+            .getSingleResult()).intValue();
+}
+
+@Override
+public Integer countEtsEnPeriodo(Integer idPeriodo) {
+    return ((Number) entityManager.createNativeQuery(QUERY_COUNT_ETS_EN_PERIODO)
+            .setParameter(PARAM_ID_PERIODO, idPeriodo)
             .getSingleResult()).intValue();
 }
 }

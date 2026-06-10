@@ -137,12 +137,8 @@ public Either<ErrorCodeEnum, Boolean> eliminarPeriodo(Integer idPeriodo) {
         throw ErrorCodeEnum.GE_NOT_FOUND.toBusinessException();
     }
 
-    var p = periodoActual.get();
-
-    // Regla GE_RNS007
     if (administradorRepository.existsEtsEnPeriodo(idPeriodo)) {
-        var afectados = administradorRepository.countEtsAfectadosByFecha(
-                p.getFechaInicio(), p.getFechaFin());
+        var afectados = administradorRepository.countEtsEnPeriodo(idPeriodo);
         throw ErrorCodeEnum.GE_RNS007.toPeriodoConflictoException(afectados);
     }
 

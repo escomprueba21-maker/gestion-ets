@@ -24,4 +24,5 @@ public interface AdministradorRepository {
     void deletePeriodo(Integer idPeriodo);
     boolean existsEtsEnPeriodo(Integer idPeriodo);
     Integer countEtsAfectadosByFecha(LocalDateTime fechaInicio, LocalDateTime fechaFin);
+    Integer countEtsEnPeriodo(Integer idPeriodo);
 }
