@@ -14,4 +14,7 @@ public class LoginDTO {
     @JsonProperty
     @NotNull(message = "CDA_RNS002")
     String password;
+    @JsonProperty
+    @NotNull(message = "CDA_RNS002")
+    String token;
 }

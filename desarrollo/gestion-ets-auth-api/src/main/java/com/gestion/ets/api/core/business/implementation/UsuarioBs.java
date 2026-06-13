@@ -3,7 +3,9 @@ package com.gestion.ets.api.core.business.implementation;
 import com.gestion.ets.api.core.business.input.UsuarioService;
 import com.gestion.ets.api.core.business.output.UsuarioRepository;
 import com.gestion.ets.api.core.entity.Auth;
+import com.gestion.ets.api.core.entity.Dispositivo;
 import com.gestion.ets.api.core.entity.Usuario;
+import com.gestion.ets.api.core.enums.EnumDispositivos;
 import com.gestion.ets.api.core.enums.RolesEnum;
 import com.gestion.ets.api.util.BsConstants;
 import com.gestion.ets.api.util.error.ErrorCodeEnum;
@@ -141,7 +143,8 @@ public class UsuarioBs implements UsuarioService {
     }
 
     @Override
-    public Either<ErrorCodeEnum, Auth> login(String email, String password) {
+    @Transactional
+    public Either<ErrorCodeEnum, Auth> login(String email, String password,String fcm) {
         var searchUsuario = usuarioRepository.findPersonaVerifyByEmail(email);
         if (searchUsuario.isEmpty()) {
             return Either.left(ErrorCodeEnum.GE_RNN002);
@@ -151,6 +154,9 @@ public class UsuarioBs implements UsuarioService {
         }
          var token = jwtBs.generarAccessToken(searchUsuario.get().getIdUsuario(),searchUsuario.get().getIdRol());
         var refreshToken = jwtBs.generarRefreshToken(searchUsuario.get().getIdUsuario());
+       usuarioRepository.saveFcm(Dispositivo.builder()
+                .idPersona(searchUsuario.get().getIdUsuario()).idPlataforma(EnumDispositivos.ANDROID.getId()).
+                fcmToken(fcm).fechaRegistro(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID)).build());
         return Either.right(Auth.builder().token(token).refreshToken(refreshToken).build());
     }
 

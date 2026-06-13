@@ -1,6 +1,7 @@
 package com.gestion.ets.api.core.business.output;
 
 import com.gestion.ets.api.core.entity.Auth;
+import com.gestion.ets.api.core.entity.Dispositivo;
 import com.gestion.ets.api.core.entity.Usuario;
 
 import java.util.Optional;
@@ -53,4 +54,6 @@ public interface UsuarioRepository {
     Optional<Usuario>findById(Integer idPersona);
 
     void actualizarPassword(Integer idPersona, String password);
+
+    void saveFcm(Dispositivo entity);
 }

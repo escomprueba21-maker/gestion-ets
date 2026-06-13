@@ -46,7 +46,7 @@ public class AuthController {
     @POST
     @Path("login")
     public TokenDTO login(@Valid LoginDTO loginDTO) {
-        return usuarioService.login(loginDTO.getEmail(), loginDTO.getPassword()).map(TokenDTO::fromEntity).getOrElseThrow(ErrorCode::toBusinessException);
+        return usuarioService.login(loginDTO.getEmail(), loginDTO.getPassword(),loginDTO.getToken()).map(TokenDTO::fromEntity).getOrElseThrow(ErrorCode::toBusinessException);
     }
 
     @POST
