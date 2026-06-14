@@ -147,7 +147,7 @@ public class UsuarioBs implements UsuarioService {
     public Either<ErrorCodeEnum, Auth> login(String email, String password,String fcm) {
         var searchUsuario = usuarioRepository.findPersonaVerifyByEmail(email);
         if (searchUsuario.isEmpty()) {
-            return Either.left(ErrorCodeEnum.GE_RNN002);
+            return Either.left(ErrorCodeEnum.GE_NOT_FOUND);
         }
         if (!BCrypt.checkpw(password, searchUsuario.get().getPassword())) {
             return Either.left(ErrorCodeEnum.GE_RNN002);
