@@ -4,6 +4,7 @@ package com.escom.core.business.implementation;
 import com.escom.core.business.input.AdministradorService;
 import com.escom.core.business.output.AdministradorRepository;
 import com.escom.core.business.output.UsuarioRepository;
+import com.escom.core.entity.Examen;
 import com.escom.core.entity.Materia;
 import com.escom.util.BsConstants;
 import com.escom.util.error.ErrorCodeEnum;
@@ -11,6 +12,7 @@ import com.escom.core.entity.Periodo;
 import com.escom.external.rest.dto.CarreraDashboardDTO;
 import com.escom.external.rest.dto.DashboardDTO;
 import com.escom.external.rest.dto.PeriodoDTO;
+import com.escom.core.entity.Examen;
 
 import io.vavr.control.Either;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -143,6 +145,34 @@ public Either<ErrorCodeEnum, Boolean> eliminarPeriodo(Integer idPeriodo) {
     }
 
     administradorRepository.deletePeriodo(idPeriodo);
+    return Either.right(true);
+}
+
+@Override
+public List<Examen> listExamenesByFiltros(Integer idCarrera, Integer idTurno, Integer idSemestre) {
+    return administradorRepository.findExamenesByFiltros(idCarrera, idTurno, idSemestre);
+}
+
+@Override
+@Transactional
+public Either<ErrorCodeEnum, Boolean> crearExamen(Examen examen) {
+    if (!administradorRepository.existsCatalogosExamen(examen)) {
+        return Either.left(ErrorCodeEnum.GE_RNS009);
+    }
+    administradorRepository.createExamen(examen);
+    return Either.right(true);
+}
+
+@Override
+@Transactional
+public Either<ErrorCodeEnum, Boolean> editarExamen(Examen examen) {
+    if (!administradorRepository.existsEtsById(examen.getIdEts())) {
+        return Either.left(ErrorCodeEnum.GE_NOT_FOUND);
+    }
+    if (!administradorRepository.existsCatalogosExamen(examen)) {
+        return Either.left(ErrorCodeEnum.GE_RNS009);
+    }
+    administradorRepository.updateExamen(examen);
     return Either.right(true);
 }
 }

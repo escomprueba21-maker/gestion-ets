@@ -82,4 +82,34 @@ public class AdministradorController {
     return List.of();
 }
 
+@GET
+@Path("examenes")
+@Operation(operationId = "listExamenes", summary = "Lista exámenes con filtros opcionales")
+@APIResponse(responseCode = "200", description = "Listado de exámenes")
+public List<ExamenDTO> listExamenes(@QueryParam("idCarrera") Integer idCarrera,
+                                     @QueryParam("idTurno") Integer idTurno,
+                                     @QueryParam("idSemestre") Integer idSemestre) {
+    return administradorService.listExamenesByFiltros(idCarrera, idTurno, idSemestre)
+            .stream().map(ExamenDTO::fromEntity).toList();
+}
+
+@POST
+@Path("examenes")
+@Operation(operationId = "crearExamen", summary = "Crea un nuevo examen")
+@APIResponse(responseCode = "200", description = "Examen creado correctamente")
+public Boolean crearExamen(@Valid CrearExamenDTO dto) {
+    return administradorService.crearExamen(dto.toEntity())
+            .getOrElseThrow(ErrorCode::toBusinessException);
+}
+
+@PUT
+@Path("examenes")
+@Operation(operationId = "editarExamen", summary = "Edita un examen existente")
+@APIResponse(responseCode = "200", description = "Examen editado correctamente")
+@APIResponse(responseCode = "404", description = "Examen no encontrado")
+public Boolean editarExamen(@Valid EditarExamenDTO dto) {
+    return administradorService.editarExamen(dto.toEntity())
+            .getOrElseThrow(ErrorCode::toBusinessException);
+}
+
 }

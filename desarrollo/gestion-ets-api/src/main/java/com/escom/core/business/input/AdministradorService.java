@@ -1,5 +1,6 @@
 package com.escom.core.business.input;
 
+import com.escom.core.entity.Examen;
 import com.escom.core.entity.Materia;
 import com.escom.core.entity.Periodo;
 import com.escom.external.rest.dto.DashboardDTO;
@@ -14,4 +15,7 @@ public interface AdministradorService {
     Either<ErrorCodeEnum, Boolean> asignarPeriodo(Periodo periodo);
     Either<ErrorCodeEnum, Boolean> editarPeriodo(Periodo periodo);
     Either<ErrorCodeEnum, Boolean> eliminarPeriodo(Integer idPeriodo);
+    List<Examen> listExamenesByFiltros(Integer idCarrera, Integer idTurno, Integer idSemestre);
+    Either<ErrorCodeEnum, Boolean> crearExamen(Examen examen);
+    Either<ErrorCodeEnum, Boolean> editarExamen(Examen examen);
 }
