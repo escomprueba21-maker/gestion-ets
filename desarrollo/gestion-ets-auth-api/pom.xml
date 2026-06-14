@@ -59,7 +59,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.42</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -108,7 +108,6 @@
             <artifactId>quarkus-smallrye-jwt</artifactId>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -122,6 +121,13 @@
                 <version>${compiler-plugin.version}</version>
                 <configuration>
                     <parameters>true</parameters>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.42</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
@@ -149,8 +155,7 @@
                 <configuration>
                     <argLine>@{argLine}</argLine>
                     <systemPropertyVariables>
-                        <native.image.path>${project.build.directory}/${project.build.finalName}-runner
-                        </native.image.path>
+                        <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                         <maven.home>${maven.home}</maven.home>
                     </systemPropertyVariables>
@@ -158,7 +163,6 @@
             </plugin>
         </plugins>
     </build>
-
     <profiles>
         <profile>
             <id>native</id>
