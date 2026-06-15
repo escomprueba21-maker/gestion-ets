@@ -5,6 +5,7 @@ import com.escom.core.entity.Carrera;
 import com.escom.core.entity.Materia;
 import com.escom.core.entity.Periodo;
 import com.escom.core.entity.Usuario;
+import com.escom.core.entity.Examen;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -13,6 +14,9 @@ import java.util.List;
 import java.util.stream.Stream;
 import java.time.LocalDateTime;
 import java.util.Optional;
+
+import org.hibernate.query.TypedParameterValue;
+import org.hibernate.type.StandardBasicTypes;
 @ApplicationScoped
 public class AdministradorDao implements AdministradorRepository {
 
@@ -135,6 +139,56 @@ private static final String QUERY_COUNT_ETS_EN_PERIODO = """
             ON esc07.fh_aplicacion BETWEEN cat08.fh_inicio AND cat08.fh_fin
         WHERE cat08.id_periodo = :idPeriodo
         """;
+
+private static final String QUERY_FIND_EXAMENES_BY_FILTROS = """
+        select esc07.id_ets, esc07.fk_id_materia, cat02.tx_nombre,
+        esc07.fk_id_docente,
+        concat(esc05.tx_nombre, ' ', esc05.tx_apellido_paterno, ' ', coalesce(esc05.tx_apellido_materno, '')),
+        esc07.fk_id_aula, esc06.tx_clave,
+        esc07.fk_id_turno, cat05.tx_nombre,
+        esc07.fk_id_tipo_ets, esc07.fh_aplicacion
+        from esc07_ets esc07
+        join cat02_materia cat02 on cat02.id_materia = esc07.fk_id_materia
+        join esc05_docente esc05 on esc05.id_docente = esc07.fk_id_docente
+        join esc06_aula esc06 on esc06.id_aula = esc07.fk_id_aula
+        join cat05_turno cat05 on cat05.id_turno = esc07.fk_id_turno
+        where (:idTurno is null or esc07.fk_id_turno = :idTurno)
+        and ((:idCarrera is null and :idSemestre is null)
+            or exists (select 1 from esc01_carrera_materia esc01
+                where esc01.fk_id_materia = cat02.id_materia
+                and (:idCarrera is null or esc01.fk_id_carrera = :idCarrera)
+                and (:idSemestre is null or esc01.nu_semestre = :idSemestre)))
+        order by esc07.fh_aplicacion asc
+        """;
+
+private static final String QUERY_INSERT_EXAMEN = """
+        insert into esc07_ets (fk_id_materia, fk_id_docente, fk_id_aula, fk_id_turno, fk_id_tipo_ets, fh_aplicacion)
+        values (:idMateria, :idDocente, :idAula, :idTurno, :idTipoEts, :fechaAplicacion)
+        """;
+
+private static final String QUERY_UPDATE_EXAMEN = """
+        update esc07_ets
+        set fk_id_materia = :idMateria, fk_id_docente = :idDocente, fk_id_aula = :idAula,
+        fk_id_turno = :idTurno, fk_id_tipo_ets = :idTipoEts, fh_aplicacion = :fechaAplicacion
+        where id_ets = :idEts
+        """;
+
+private static final String QUERY_EXISTS_CATALOGOS_EXAMEN = """
+        select
+        exists(select 1 from cat02_materia where id_materia = :idMateria)
+        and exists(select 1 from esc05_docente where id_docente = :idDocente)
+        and exists(select 1 from esc06_aula where id_aula = :idAula)
+        and exists(select 1 from cat05_turno where id_turno = :idTurno)
+        and exists(select 1 from cat06_tipo_ets where id_tipo_ets = :idTipoEts)
+        """;
+
+private static final String PARAM_ID_MATERIA = "idMateria";
+private static final String PARAM_ID_DOCENTE = "idDocente";
+private static final String PARAM_ID_AULA = "idAula";
+private static final String PARAM_ID_TURNO = "idTurno";
+private static final String PARAM_FECHA_APLICACION = "fechaAplicacion";
+private static final String PARAM_ID_SEMESTRE = "idSemestre";
+private static final String PARAM_ID_CARRERA = "idCarrera";
 
 private static final String PARAM_ID_PERIODO = "idPeriodo";
 private static final String PARAM_NOMBRE = "nombre";
@@ -270,5 +324,64 @@ public Integer countEtsEnPeriodo(Integer idPeriodo) {
     return ((Number) entityManager.createNativeQuery(QUERY_COUNT_ETS_EN_PERIODO)
             .setParameter(PARAM_ID_PERIODO, idPeriodo)
             .getSingleResult()).intValue();
+}
+
+@Override
+@SuppressWarnings("unchecked")
+public List<Examen> findExamenesByFiltros(Integer idCarrera, Integer idTurno, Integer idSemestre) {
+    Stream<Object[]> result = entityManager.createNativeQuery(QUERY_FIND_EXAMENES_BY_FILTROS)
+            .setParameter(PARAM_ID_CARRERA, new TypedParameterValue<>(StandardBasicTypes.INTEGER, idCarrera))
+            .setParameter(PARAM_ID_TURNO, new TypedParameterValue<>(StandardBasicTypes.INTEGER, idTurno))
+            .setParameter(PARAM_ID_SEMESTRE, new TypedParameterValue<>(StandardBasicTypes.INTEGER, idSemestre))
+            .getResultStream();
+    return result.map(row -> Examen.builder()
+            .idEts((Integer) row[0])
+            .idMateria((Integer) row[1])
+            .nombreMateria((String) row[2])
+            .idDocente((Integer) row[3])
+            .nombreDocente((String) row[4])
+            .idAula((Integer) row[5])
+            .claveAula((String) row[6])
+            .idTurno((Integer) row[7])
+            .nombreTurno((String) row[8])
+            .idTipoEts((Integer) row[9])
+            .fechaAplicacion((LocalDateTime) row[10])
+            .build()).toList();
+}
+
+@Override
+public void createExamen(Examen examen) {
+    entityManager.createNativeQuery(QUERY_INSERT_EXAMEN)
+            .setParameter(PARAM_ID_MATERIA, examen.getIdMateria())
+            .setParameter(PARAM_ID_DOCENTE, examen.getIdDocente())
+            .setParameter(PARAM_ID_AULA, examen.getIdAula())
+            .setParameter(PARAM_ID_TURNO, examen.getIdTurno())
+            .setParameter(PARAM_ID_TIPO_ETS, examen.getIdTipoEts())
+            .setParameter(PARAM_FECHA_APLICACION, examen.getFechaAplicacion())
+            .executeUpdate();
+}
+
+@Override
+public void updateExamen(Examen examen) {
+    entityManager.createNativeQuery(QUERY_UPDATE_EXAMEN)
+            .setParameter(PARAM_ID_MATERIA, examen.getIdMateria())
+            .setParameter(PARAM_ID_DOCENTE, examen.getIdDocente())
+            .setParameter(PARAM_ID_AULA, examen.getIdAula())
+            .setParameter(PARAM_ID_TURNO, examen.getIdTurno())
+            .setParameter(PARAM_ID_TIPO_ETS, examen.getIdTipoEts())
+            .setParameter(PARAM_FECHA_APLICACION, examen.getFechaAplicacion())
+            .setParameter(PARAM_ID_ETS, examen.getIdEts())
+            .executeUpdate();
+}
+
+@Override
+public boolean existsCatalogosExamen(Examen examen) {
+    return (boolean) entityManager.createNativeQuery(QUERY_EXISTS_CATALOGOS_EXAMEN)
+            .setParameter(PARAM_ID_MATERIA, examen.getIdMateria())
+            .setParameter(PARAM_ID_DOCENTE, examen.getIdDocente())
+            .setParameter(PARAM_ID_AULA, examen.getIdAula())
+            .setParameter(PARAM_ID_TURNO, examen.getIdTurno())
+            .setParameter(PARAM_ID_TIPO_ETS, examen.getIdTipoEts())
+            .getSingleResult();
 }
 }

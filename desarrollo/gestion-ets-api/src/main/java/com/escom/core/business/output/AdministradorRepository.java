@@ -1,9 +1,11 @@
 package com.escom.core.business.output;
 
 import com.escom.core.entity.Carrera;
+import com.escom.core.entity.Examen;
 import com.escom.core.entity.Materia;
 import com.escom.core.entity.Periodo;
 import com.escom.core.entity.Usuario;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -25,4 +27,8 @@ public interface AdministradorRepository {
     boolean existsEtsEnPeriodo(Integer idPeriodo);
     Integer countEtsAfectadosByFecha(LocalDateTime fechaInicio, LocalDateTime fechaFin);
     Integer countEtsEnPeriodo(Integer idPeriodo);
+    List<Examen> findExamenesByFiltros(Integer idCarrera, Integer idTurno, Integer idSemestre);
+    void createExamen(Examen examen);
+    void updateExamen(Examen examen);
+    boolean existsCatalogosExamen(Examen examen);
 }

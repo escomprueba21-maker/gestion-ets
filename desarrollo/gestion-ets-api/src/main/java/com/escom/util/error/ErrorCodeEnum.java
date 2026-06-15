@@ -17,12 +17,13 @@ public enum ErrorCodeEnum implements ErrorCode {
     GE_RNS007("Existen exámenes registrados en el periodo, no es posible eliminarlo"),
     GE_RNS008("Ya existe un periodo activo, no es posible crear uno nuevo"),
 
+    GE_RNS009("Alguno de los catálogos seleccionados no existe"),
+
     // NEGOCIO (GE-RN-NXXX)
     GE_RNN001("Correo registrado con una cuenta existente"),
     GE_RNN002("Usuario no encontrado"),
     GE_RNN003("El token no es valido"),
     GE_RNN004("Token expirado"),
-
     GE_RNN005("Contraseña incorrecta"),
     GE_RNN006("Las contraseñas no coinciden");
     
