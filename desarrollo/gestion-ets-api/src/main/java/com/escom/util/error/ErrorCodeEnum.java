@@ -16,6 +16,7 @@ public enum ErrorCodeEnum implements ErrorCode {
     GE_RNS006("Existen exámenes fuera del nuevo rango de fechas, no es posible modificar el periodo"),
     GE_RNS007("Existen exámenes registrados en el periodo, no es posible eliminarlo"),
     GE_RNS008("Ya existe un periodo activo, no es posible crear uno nuevo"),
+
     GE_RNS009("Alguno de los catálogos seleccionados no existe"),
 
     // NEGOCIO (GE-RN-NXXX)

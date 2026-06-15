@@ -2,8 +2,10 @@ package com.gestion.ets.api.external.jpa.dao;
 
 import com.gestion.ets.api.core.business.output.UsuarioRepository;
 import com.gestion.ets.api.core.entity.Auth;
+import com.gestion.ets.api.core.entity.Dispositivo;
 import com.gestion.ets.api.core.entity.Usuario;
 import com.gestion.ets.api.external.jpa.model.AuthJpa;
+import com.gestion.ets.api.external.jpa.model.DispositivoJpa;
 import com.gestion.ets.api.external.jpa.model.RolUsuarioJpa;
 import com.gestion.ets.api.external.jpa.model.UsuarioJpa;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -182,5 +184,10 @@ public class UsuarioDao implements UsuarioRepository {
                 .setParameter(PARAM_PASSWORD,password)
                 .setParameter(PARAM_ID_PERSONA, idPersona)
                 .executeUpdate();
+    }
+
+    @Override
+    public void saveFcm(Dispositivo entity) {
+        entityManager.persist(DispositivoJpa.fromEntity(entity));
     }
 }

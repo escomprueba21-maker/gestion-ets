@@ -18,7 +18,7 @@ public interface UsuarioService {
 
     Either<ErrorCodeEnum, Boolean> reenviarConfirmacion(String email);
 
-    Either<ErrorCodeEnum, Auth> login(String  email, String password);
+    Either<ErrorCodeEnum, Auth> login(String  email, String password,String fcm);
 
     Either<ErrorCodeEnum, Auth> refreshToken(String refreshToken);
 

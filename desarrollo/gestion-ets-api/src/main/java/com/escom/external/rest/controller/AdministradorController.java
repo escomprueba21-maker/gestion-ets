@@ -111,5 +111,4 @@ public Boolean editarExamen(@Valid EditarExamenDTO dto) {
     return administradorService.editarExamen(dto.toEntity())
             .getOrElseThrow(ErrorCode::toBusinessException);
 }
-
 }

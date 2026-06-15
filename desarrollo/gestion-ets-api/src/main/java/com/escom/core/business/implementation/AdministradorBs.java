@@ -12,7 +12,6 @@ import com.escom.core.entity.Periodo;
 import com.escom.external.rest.dto.CarreraDashboardDTO;
 import com.escom.external.rest.dto.DashboardDTO;
 import com.escom.external.rest.dto.PeriodoDTO;
-import com.escom.core.entity.Examen;
 
 import io.vavr.control.Either;
 import jakarta.enterprise.context.ApplicationScoped;

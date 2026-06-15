@@ -5,7 +5,7 @@ import com.escom.core.entity.Examen;
 import com.escom.core.entity.Materia;
 import com.escom.core.entity.Periodo;
 import com.escom.core.entity.Usuario;
-import com.escom.core.entity.Examen;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
