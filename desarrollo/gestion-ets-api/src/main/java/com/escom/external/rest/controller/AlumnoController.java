@@ -47,19 +47,53 @@ public class AlumnoController {
 
     @GET
     @Path("inicio")
-    public MateriaEtsDTO getEtsProximos(){
-        return usuarioService.getEtsProximosAndFecha(getIdPersona()).map(MateriaEtsDTO::fromEntity).getOrElseThrow(ErrorCode::toBusinessException);
+    @Operation(
+            operationId = "getEtsProximos",
+            summary = "Obtiene los ETS próximos",
+            description = "Retorna los ETS próximos y su fecha para el usuario autenticado"
+    )
+    @APIResponse(
+            responseCode = "200",
+            description = "Petición exitosa",
+            content = @Content(schema = @Schema(implementation = MateriaEtsDTO.class))
+    )
+    public MateriaEtsDTO getEtsProximos() {
+        return usuarioService.getEtsProximosAndFecha(getIdPersona())
+                .map(MateriaEtsDTO::fromEntity)
+                .getOrElseThrow(ErrorCode::toBusinessException);
     }
 
     @DELETE
     @Path("{idEtsAgenda}")
+    @Operation(
+            operationId = "deleteEtsAgenda",
+            summary = "Elimina un ETS de la agenda",
+            description = "Elimina el ETS indicado de la agenda del usuario autenticado"
+    )
+    @APIResponse(
+            responseCode = "200",
+            description = "Petición exitosa",
+            content = @Content(schema = @Schema(implementation = Boolean.class))
+    )
     public Boolean deleteEtsAgenda(@PathParam("idEtsAgenda") Integer idEtsAgenda) {
-        return usuarioService.deleteEtsAgendaById(idEtsAgenda,getIdPersona()).getOrElseThrow(ErrorCode::toBusinessException);
+        return usuarioService.deleteEtsAgendaById(idEtsAgenda, getIdPersona())
+                .getOrElseThrow(ErrorCode::toBusinessException);
     }
 
     @POST
     @Path("{idEts}/agenda")
+    @Operation(
+            operationId = "createEtsAgenda",
+            summary = "Agrega un ETS a la agenda",
+            description = "Registra el ETS indicado en la agenda del usuario autenticado"
+    )
+    @APIResponse(
+            responseCode = "200",
+            description = "Petición exitosa",
+            content = @Content(schema = @Schema(implementation = Boolean.class))
+    )
     public Boolean createEtsAgenda(@PathParam("idEts") Integer idEts) {
-        return usuarioService.createEtsAgenda(idEts, getIdPersona()).getOrElseThrow(ErrorCode::toBusinessException);
+        return usuarioService.createEtsAgenda(idEts, getIdPersona())
+                .getOrElseThrow(ErrorCode::toBusinessException);
     }
 }
