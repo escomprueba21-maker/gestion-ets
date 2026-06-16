@@ -6,6 +6,7 @@ import com.escom.core.entity.Materia;
 import com.escom.core.entity.Periodo;
 import com.escom.core.entity.Usuario;
 import com.escom.core.entity.Examen;
+import com.escom.core.entity.Aula;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -182,6 +183,64 @@ private static final String QUERY_EXISTS_CATALOGOS_EXAMEN = """
         and exists(select 1 from cat06_tipo_ets where id_tipo_ets = :idTipoEts)
         """;
 
+private static final String QUERY_FIND_ALL_CARRERAS_COMPLETAS = """
+        select id_carrera, tx_clave, tx_nombre from cat01_carrera order by tx_nombre
+        """;
+
+private static final String QUERY_INSERT_CARRERA = """
+        insert into cat01_carrera (tx_clave, tx_nombre) values (:clave, :nombre)
+        """;
+
+private static final String QUERY_UPDATE_CARRERA = """
+        update cat01_carrera set tx_clave = :clave, tx_nombre = :nombre where id_carrera = :id
+        """;
+
+private static final String QUERY_EXISTS_CARRERA = """
+        select exists(select 1 from cat01_carrera where id_carrera = :id) 
+        """;
+
+private static final String QUERY_EXISTS_CARRERA_BY_CLAVE = """
+        select exists(select 1 from cat01_carrera where tx_clave = :clave)
+        """;
+
+private static final String QUERY_INSERT_AULA = """
+        insert into esc06_aula (tx_clave, tx_edificio) values (:clave, :edificio)
+        """;
+
+private static final String QUERY_UPDATE_AULA = """
+        update esc06_aula set tx_clave = :clave, tx_edificio = :edificio where id_aula = :id
+        """;
+
+private static final String QUERY_EXISTS_AULA = """
+        select exists(select 1 from esc06_aula where id_aula = :id)
+        """;
+
+private static final String QUERY_EXISTS_AULA_BY_CLAVE = """
+        select exists(select 1 from esc06_aula where tx_clave = :clave)
+        """;
+
+private static final String QUERY_FIND_ALL_AULAS = """
+        select id_aula, tx_clave, tx_edificio from esc06_aula
+        where (:edificio is null or tx_edificio = :edificio)
+        order by tx_edificio, tx_clave
+        """;
+
+private static final String QUERY_DELETE_CARRERA = """
+        delete from cat01_carrera where id_carrera = :id
+        """;
+
+private static final String QUERY_EXISTS_CARRERA_EN_USO = """
+        select exists(select 1 from esc01_carrera_materia where fk_id_carrera = :id)
+        """;
+
+private static final String QUERY_DELETE_AULA = """
+        delete from esc06_aula where id_aula = :id
+        """;
+
+private static final String QUERY_EXISTS_AULA_EN_USO = """
+        select exists(select 1 from esc07_ets where fk_id_aula = :id)
+        """;
+
 private static final String PARAM_ID_MATERIA = "idMateria";
 private static final String PARAM_ID_DOCENTE = "idDocente";
 private static final String PARAM_ID_AULA = "idAula";
@@ -189,12 +248,14 @@ private static final String PARAM_ID_TURNO = "idTurno";
 private static final String PARAM_FECHA_APLICACION = "fechaAplicacion";
 private static final String PARAM_ID_SEMESTRE = "idSemestre";
 private static final String PARAM_ID_CARRERA = "idCarrera";
-
 private static final String PARAM_ID_PERIODO = "idPeriodo";
 private static final String PARAM_NOMBRE = "nombre";
 private static final String PARAM_FECHA_INICIO = "fechaInicio";
 private static final String PARAM_FECHA_FIN = "fechaFin";
 private static final String PARAM_ID_TIPO_ETS = "idTipoEts";
+private static final String PARAM_ID = "id";
+private static final String PARAM_CLAVE = "clave";
+private static final String PARAM_EDIFICIO = "edificio";
 
     @Override
     public void deleteEtsById(Integer idEts) {
@@ -382,6 +443,121 @@ public boolean existsCatalogosExamen(Examen examen) {
             .setParameter(PARAM_ID_AULA, examen.getIdAula())
             .setParameter(PARAM_ID_TURNO, examen.getIdTurno())
             .setParameter(PARAM_ID_TIPO_ETS, examen.getIdTipoEts())
+            .getSingleResult();
+}
+
+@Override
+@SuppressWarnings("unchecked")
+public List<Carrera> findAllCarrerasCompletas() {
+    Stream<Object[]> result = entityManager.createNativeQuery(QUERY_FIND_ALL_CARRERAS_COMPLETAS)
+            .getResultStream();
+    return result.map(row -> Carrera.builder()
+            .id((Integer) row[0])
+            .clave((String) row[1])
+            .nombre((String) row[2])
+            .build()).toList();
+}
+
+@Override
+public void createCarrera(Carrera carrera) {
+    entityManager.createNativeQuery(QUERY_INSERT_CARRERA)
+            .setParameter(PARAM_CLAVE, carrera.getClave())
+            .setParameter(PARAM_NOMBRE, carrera.getNombre())
+            .executeUpdate();
+}
+
+@Override
+public void updateCarrera(Carrera carrera) {
+    entityManager.createNativeQuery(QUERY_UPDATE_CARRERA)
+            .setParameter(PARAM_CLAVE, carrera.getClave())
+            .setParameter(PARAM_NOMBRE, carrera.getNombre())
+            .setParameter(PARAM_ID, carrera.getId())
+            .executeUpdate();
+}
+
+@Override
+public boolean existsCarreraById(Integer id) {
+    return (boolean) entityManager.createNativeQuery(QUERY_EXISTS_CARRERA)
+            .setParameter(PARAM_ID, id)
+            .getSingleResult();
+}
+
+@Override
+public boolean existsCarreraByClave(String clave) {
+    return (boolean) entityManager.createNativeQuery(QUERY_EXISTS_CARRERA_BY_CLAVE)
+            .setParameter(PARAM_CLAVE, clave)
+            .getSingleResult();
+}
+
+@Override
+public void updateAula(Aula aula) {
+    entityManager.createNativeQuery(QUERY_UPDATE_AULA)
+            .setParameter(PARAM_CLAVE, aula.getClave())
+            .setParameter(PARAM_EDIFICIO, aula.getEdificio())
+            .setParameter(PARAM_ID, aula.getId())
+            .executeUpdate();
+}
+
+@Override
+public boolean existsAulaById(Integer id) {
+    return (boolean) entityManager.createNativeQuery(QUERY_EXISTS_AULA)
+            .setParameter(PARAM_ID, id)
+            .getSingleResult();
+}
+
+@Override
+public boolean existsAulaByClave(String clave) {
+    return (boolean) entityManager.createNativeQuery(QUERY_EXISTS_AULA_BY_CLAVE)
+            .setParameter(PARAM_CLAVE, clave)
+            .getSingleResult();
+}
+
+@Override
+@SuppressWarnings("unchecked")
+public List<Aula> findAllAulas(String edificio) {
+    Stream<Object[]> result = entityManager.createNativeQuery(QUERY_FIND_ALL_AULAS)
+            .setParameter(PARAM_EDIFICIO, new TypedParameterValue<>(StandardBasicTypes.STRING, edificio))
+            .getResultStream();
+    return result.map(row -> Aula.builder()
+            .id((Integer) row[0])
+            .clave((String) row[1])
+            .edificio((String) row[2])
+            .build()).toList();
+}
+
+@Override
+public void createAula(Aula aula) {
+    entityManager.createNativeQuery(QUERY_INSERT_AULA)
+            .setParameter(PARAM_CLAVE, aula.getClave())
+            .setParameter(PARAM_EDIFICIO, aula.getEdificio())
+            .executeUpdate();
+}
+
+@Override
+public void deleteCarrera(Integer id) {
+    entityManager.createNativeQuery(QUERY_DELETE_CARRERA)
+            .setParameter(PARAM_ID, id)
+            .executeUpdate();
+}
+
+@Override
+public boolean existsCarreraEnUso(Integer id) {
+    return (boolean) entityManager.createNativeQuery(QUERY_EXISTS_CARRERA_EN_USO)
+            .setParameter(PARAM_ID, id)
+            .getSingleResult();
+}
+
+@Override
+public void deleteAula(Integer id) {
+    entityManager.createNativeQuery(QUERY_DELETE_AULA)
+            .setParameter(PARAM_ID, id)
+            .executeUpdate();
+}
+
+@Override
+public boolean existsAulaEnUso(Integer id) {
+    return (boolean) entityManager.createNativeQuery(QUERY_EXISTS_AULA_EN_USO)
+            .setParameter(PARAM_ID, id)
             .getSingleResult();
 }
 }

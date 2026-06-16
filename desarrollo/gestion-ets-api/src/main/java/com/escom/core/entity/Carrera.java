@@ -10,6 +10,7 @@ import java.util.List;
 public class Carrera {
 
     private Integer id;
+    private String clave;
     private String nombre;
     private Integer totalExamenes;
 

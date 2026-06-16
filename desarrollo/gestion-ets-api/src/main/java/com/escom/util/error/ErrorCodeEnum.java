@@ -18,6 +18,11 @@ public enum ErrorCodeEnum implements ErrorCode {
     GE_RNS008("Ya existe un periodo activo, no es posible crear uno nuevo"),
 
     GE_RNS009("Alguno de los catálogos seleccionados no existe"),
+    GE_RNS010("No es posible eliminar la carrera, está en uso por materias o exámenes"),
+    GE_RNS011("No es posible eliminar el salón, está en uso por exámenes"),
+    GE_RNS012("Ya existe una carrera con esa clave"),
+    GE_RNS013("Ya existe un salón con esa clave"),
+    
 
     // NEGOCIO (GE-RN-NXXX)
     GE_RNN001("Correo registrado con una cuenta existente"),
