@@ -1,0 +1,36 @@
+package com.escom.external.rest.dto;
+
+import com.escom.core.entity.Aula;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
+@Getter
+@Schema(name = "EditarAula", description = "DTO para editar un salón existente")
+public class EditarAulaDTO {
+
+    @JsonProperty
+    @NotNull(message = "GE_RNS001")
+    @Schema(description = "Id del salón a editar")
+    private Integer id;
+
+    @JsonProperty
+    @NotBlank(message = "GE_RNS001")
+    @Schema(description = "Clave del salón")
+    private String clave;
+
+    @JsonProperty
+    @NotBlank(message = "GE_RNS001")
+    @Schema(description = "Edificio del salón")
+    private String edificio;
+
+    public Aula toEntity() {
+        return Aula.builder()
+                .id(id)
+                .clave(clave)
+                .edificio(edificio)
+                .build();
+    }
+}

@@ -5,6 +5,7 @@ import com.escom.core.entity.Examen;
 import com.escom.core.entity.Materia;
 import com.escom.core.entity.Periodo;
 import com.escom.core.entity.Usuario;
+import com.escom.core.entity.Aula;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,4 +32,20 @@ public interface AdministradorRepository {
     void createExamen(Examen examen);
     void updateExamen(Examen examen);
     boolean existsCatalogosExamen(Examen examen);
+
+    List<Carrera> findAllCarrerasCompletas();
+    void createCarrera(Carrera carrera);
+    void updateCarrera(Carrera carrera);
+    boolean existsCarreraById(Integer id);
+    boolean existsCarreraByClave(String clave);
+    void deleteCarrera(Integer id);
+    boolean existsCarreraEnUso(Integer id);
+
+    List<Aula> findAllAulas(String edificio);
+    void createAula(Aula aula);
+    void updateAula(Aula aula);
+    boolean existsAulaById(Integer id);
+    boolean existsAulaByClave(String clave);
+    void deleteAula(Integer id);
+    boolean existsAulaEnUso(Integer id);
 }

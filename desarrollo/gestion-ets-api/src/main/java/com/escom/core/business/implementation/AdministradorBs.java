@@ -9,6 +9,8 @@ import com.escom.core.entity.Materia;
 import com.escom.util.BsConstants;
 import com.escom.util.error.ErrorCodeEnum;
 import com.escom.core.entity.Periodo;
+import com.escom.core.entity.Aula;
+import com.escom.core.entity.Carrera;
 import com.escom.external.rest.dto.CarreraDashboardDTO;
 import com.escom.external.rest.dto.DashboardDTO;
 import com.escom.external.rest.dto.PeriodoDTO;
@@ -172,6 +174,82 @@ public Either<ErrorCodeEnum, Boolean> editarExamen(Examen examen) {
         return Either.left(ErrorCodeEnum.GE_RNS009);
     }
     administradorRepository.updateExamen(examen);
+    return Either.right(true);
+}
+
+@Override
+public List<Carrera> listAllCarrerasCompletas() {
+    return administradorRepository.findAllCarrerasCompletas();
+}
+
+@Override
+@Transactional
+public Either<ErrorCodeEnum, Boolean> crearCarrera(Carrera carrera) {
+    if (administradorRepository.existsCarreraByClave(carrera.getClave())) {
+        return Either.left(ErrorCodeEnum.GE_RNS012);
+    }
+    administradorRepository.createCarrera(carrera);
+    return Either.right(true);
+}
+
+@Override
+@Transactional
+public Either<ErrorCodeEnum, Boolean> editarCarrera(Carrera carrera) {
+    if (!administradorRepository.existsCarreraById(carrera.getId())) {
+        return Either.left(ErrorCodeEnum.GE_NOT_FOUND);
+    }
+    administradorRepository.updateCarrera(carrera);
+    return Either.right(true);
+}
+
+@Override
+@Transactional
+public Either<ErrorCodeEnum, Boolean> eliminarCarrera(Integer id) {
+    if (!administradorRepository.existsCarreraById(id)) {
+        return Either.left(ErrorCodeEnum.GE_NOT_FOUND);
+    }
+    if (administradorRepository.existsCarreraEnUso(id)) {
+        return Either.left(ErrorCodeEnum.GE_RNS010);
+    }
+    administradorRepository.deleteCarrera(id);
+    return Either.right(true);
+}
+
+@Override
+public List<Aula> listAllAulas(String edificio) {
+    return administradorRepository.findAllAulas(edificio);
+}
+
+@Override
+@Transactional
+public Either<ErrorCodeEnum, Boolean> crearAula(Aula aula) {
+    if (administradorRepository.existsAulaByClave(aula.getClave())) {
+        return Either.left(ErrorCodeEnum.GE_RNS013);
+    }
+    administradorRepository.createAula(aula);
+    return Either.right(true);
+}
+
+@Override
+@Transactional
+public Either<ErrorCodeEnum, Boolean> editarAula(Aula aula) {
+    if (!administradorRepository.existsAulaById(aula.getId())) {
+        return Either.left(ErrorCodeEnum.GE_NOT_FOUND);
+    }
+    administradorRepository.updateAula(aula);
+    return Either.right(true);
+}
+
+@Override
+@Transactional
+public Either<ErrorCodeEnum, Boolean> eliminarAula(Integer id) {
+    if (!administradorRepository.existsAulaById(id)) {
+        return Either.left(ErrorCodeEnum.GE_NOT_FOUND);
+    }
+    if (administradorRepository.existsAulaEnUso(id)) {
+        return Either.left(ErrorCodeEnum.GE_RNS011);
+    }
+    administradorRepository.deleteAula(id);
     return Either.right(true);
 }
 }

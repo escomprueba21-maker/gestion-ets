@@ -111,4 +111,85 @@ public Boolean editarExamen(@Valid EditarExamenDTO dto) {
     return administradorService.editarExamen(dto.toEntity())
             .getOrElseThrow(ErrorCode::toBusinessException);
 }
+
+@GET
+@Path("carreras")
+@Operation(operationId = "listCarreras", summary = "Lista todas las carreras")
+@APIResponse(responseCode = "200", description = "Listado de carreras")
+public List<CarreraDTO> listCarreras() {
+    return administradorService.listAllCarrerasCompletas()
+            .stream().map(CarreraDTO::fromEntity).toList();
+}
+
+@POST
+@Path("carreras")
+@Operation(operationId = "crearCarrera", summary = "Crea una nueva carrera")
+@APIResponse(responseCode = "200", description = "Carrera creada correctamente")
+@APIResponse(responseCode = "400", description = "Clave de carrera duplicada")
+public Boolean crearCarrera(@Valid CrearCarreraDTO dto) {
+    return administradorService.crearCarrera(dto.toEntity())
+            .getOrElseThrow(ErrorCode::toBusinessException);
+}
+
+@PUT
+@Path("carreras")
+@Operation(operationId = "editarCarrera", summary = "Edita una carrera existente")
+@APIResponse(responseCode = "200", description = "Carrera editada correctamente")
+@APIResponse(responseCode = "404", description = "Carrera no encontrada")
+public Boolean editarCarrera(@Valid EditarCarreraDTO dto) {
+    return administradorService.editarCarrera(dto.toEntity())
+            .getOrElseThrow(ErrorCode::toBusinessException);
+}
+
+@GET
+@Path("salones")
+@Operation(operationId = "listSalones", summary = "Lista salones, opcionalmente filtrados por edificio")
+@APIResponse(responseCode = "200", description = "Listado de salones")
+public List<AulaDTO> listSalones(@QueryParam("edificio") String edificio) {
+    return administradorService.listAllAulas(edificio)
+            .stream().map(AulaDTO::fromEntity).toList();
+}
+
+@POST
+@Path("salones")
+@Operation(operationId = "crearSalon", summary = "Crea un nuevo salón")
+@APIResponse(responseCode = "200", description = "Salón creado correctamente")
+@APIResponse(responseCode = "400", description = "Clave de salón duplicada")
+public Boolean crearSalon(@Valid CrearAulaDTO dto) {
+    return administradorService.crearAula(dto.toEntity())
+            .getOrElseThrow(ErrorCode::toBusinessException);
+}
+
+@PUT
+@Path("salones")
+@Operation(operationId = "editarSalon", summary = "Edita un salón existente")
+@APIResponse(responseCode = "200", description = "Salón editado correctamente")
+@APIResponse(responseCode = "404", description = "Salón no encontrado")
+public Boolean editarSalon(@Valid EditarAulaDTO dto) {
+    return administradorService.editarAula(dto.toEntity())
+            .getOrElseThrow(ErrorCode::toBusinessException);
+}
+
+@DELETE
+@Path("carreras/{id}")
+@Operation(operationId = "eliminarCarrera", summary = "Elimina una carrera")
+@APIResponse(responseCode = "200", description = "Carrera eliminada correctamente")
+@APIResponse(responseCode = "400", description = "Carrera en uso, no es posible eliminarla")
+@APIResponse(responseCode = "404", description = "Carrera no encontrada")
+public Boolean eliminarCarrera(@PathParam("id") Integer id) {
+    return administradorService.eliminarCarrera(id)
+            .getOrElseThrow(ErrorCode::toBusinessException);
+}
+
+@DELETE
+@Path("salones/{id}")
+@Operation(operationId = "eliminarSalon", summary = "Elimina un salón")
+@APIResponse(responseCode = "200", description = "Salón eliminado correctamente")
+@APIResponse(responseCode = "400", description = "Salón en uso, no es posible eliminarlo")
+@APIResponse(responseCode = "404", description = "Salón no encontrado")
+public Boolean eliminarSalon(@PathParam("id") Integer id) {
+    return administradorService.eliminarAula(id)
+            .getOrElseThrow(ErrorCode::toBusinessException);
+}
+
 }
