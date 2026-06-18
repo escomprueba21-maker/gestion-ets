@@ -6,6 +6,8 @@ import com.escom.core.entity.Materia;
 import com.escom.core.entity.Periodo;
 import com.escom.core.entity.Usuario;
 import com.escom.core.entity.Aula;
+import com.escom.util.error.ErrorCodeEnum;
+import io.vavr.control.Either;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,4 +50,6 @@ public interface AdministradorRepository {
     boolean existsAulaByClave(String clave);
     void deleteAula(Integer id);
     boolean existsAulaEnUso(Integer id);
+    Optional<Examen> findById(Integer idExamen);
+
 }

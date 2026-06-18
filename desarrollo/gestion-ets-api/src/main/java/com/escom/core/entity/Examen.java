@@ -14,6 +14,8 @@ public class Examen {
     private Integer idTurno;
     private Integer idTipoEts;
     private LocalDateTime fechaAplicacion;
+    private Integer idCarrera;
+    private Integer semestre;
 
     // Solo para el listado (display)
     private String nombreMateria;

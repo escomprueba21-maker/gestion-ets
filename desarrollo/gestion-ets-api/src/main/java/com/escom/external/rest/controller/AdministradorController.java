@@ -102,6 +102,14 @@ public Boolean crearExamen(@Valid CrearExamenDTO dto) {
             .getOrElseThrow(ErrorCode::toBusinessException);
 }
 
+@GET
+@Path("{idExamen}")
+@Operation(operationId = "getExamenById", summary = "obtiene la informacion de un examen")
+@APIResponse(responseCode = "200", description = "obtiene la informacion de un examen")
+public GetExamenDTO getExamenById(@PathParam("idExamen") Integer idExamen) {
+return administradorService.getById(idExamen).map(GetExamenDTO::fromEntity).getOrElseThrow(ErrorCode::toBusinessException);
+}
+
 @PUT
 @Path("examenes")
 @Operation(operationId = "editarExamen", summary = "Edita un examen existente")

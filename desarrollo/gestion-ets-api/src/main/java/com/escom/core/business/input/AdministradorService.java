@@ -28,4 +28,5 @@ public interface AdministradorService {
     Either<ErrorCodeEnum, Boolean> eliminarAula(Integer id);
     Either<ErrorCodeEnum, Boolean> crearCarrera(Carrera carrera);
     Either<ErrorCodeEnum, Boolean> crearAula(Aula aula);
+    Either<ErrorCodeEnum, Examen> getById(Integer idExamen);
 }

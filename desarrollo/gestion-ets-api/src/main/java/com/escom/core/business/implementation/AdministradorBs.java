@@ -236,7 +236,13 @@ public Either<ErrorCodeEnum, Boolean> crearAula(Aula aula) {
     return Either.right(true);
 }
 
-@Override
+    @Override
+    public Either<ErrorCodeEnum, Examen> getById(Integer idExamen) {
+        var examenSearch = administradorRepository.findById(idExamen);
+        return examenSearch.<Either<ErrorCodeEnum, Examen>>map(Either::right).orElseGet(() -> Either.left(ErrorCodeEnum.GE_NOT_FOUND));
+    }
+
+    @Override
 @Transactional
 public Either<ErrorCodeEnum, Boolean> editarAula(Aula aula) {
     if (!administradorRepository.existsAulaById(aula.getId())) {

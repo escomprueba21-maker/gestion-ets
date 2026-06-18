@@ -7,10 +7,14 @@ import com.escom.core.entity.Periodo;
 import com.escom.core.entity.Usuario;
 import com.escom.core.entity.Examen;
 import com.escom.core.entity.Aula;
+import com.google.api.client.util.DateTime;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Stream;
 import java.time.LocalDateTime;
@@ -18,6 +22,8 @@ import java.util.Optional;
 
 import org.hibernate.query.TypedParameterValue;
 import org.hibernate.type.StandardBasicTypes;
+import org.threeten.bp.DateTimeUtils;
+
 @ApplicationScoped
 public class AdministradorDao implements AdministradorRepository {
 
@@ -241,6 +247,13 @@ private static final String QUERY_EXISTS_AULA_EN_USO = """
         select exists(select 1 from esc07_ets where fk_id_aula = :id)
         """;
 
+private static final String QUERY_FIND_EXAMEN_BY_ID = """
+        select esc07.id_ets, esc07.fk_id_materia,esc01.fk_id_carrera, esc01.nu_semestre, esc07.fh_aplicacion,esc07.fk_id_turno, esc07.fk_id_aula, esc07.fk_id_docente,
+        esc07.fk_id_tipo_ets      
+        from esc07_ets esc07
+        join esc01_carrera_materia esc01 on esc01.fk_id_materia = esc07.fk_id_materia
+        where esc07.id_ets = :idEts
+        """;
 private static final String PARAM_ID_MATERIA = "idMateria";
 private static final String PARAM_ID_DOCENTE = "idDocente";
 private static final String PARAM_ID_AULA = "idAula";
@@ -560,4 +573,26 @@ public boolean existsAulaEnUso(Integer id) {
             .setParameter(PARAM_ID, id)
             .getSingleResult();
 }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Optional<Examen> findById(Integer idExamen) {
+        Stream<Object []>result = entityManager.createNativeQuery(QUERY_FIND_EXAMEN_BY_ID)
+                .setParameter(PARAM_ID_ETS,idExamen)
+                .getResultStream();
+        return result.findFirst().map(row->Examen.builder()
+                .idEts((Integer)row[0])
+                .idMateria((Integer)row[1])
+                .idCarrera((Integer)row[2])
+                .semestre((Integer)row[3])
+                .fechaAplicacion(
+                        row[4] == null ? null :
+                                row[4] instanceof LocalDateTime ldt ? ldt :
+                                        ((Timestamp) row[4]).toLocalDateTime()
+                )                .idTurno((Integer)row[5])
+                .idAula((Integer)row[6])
+                .idDocente((Integer)row[7])
+                .idTipoEts((Integer)row[8])
+                .build());
+    }
 }
