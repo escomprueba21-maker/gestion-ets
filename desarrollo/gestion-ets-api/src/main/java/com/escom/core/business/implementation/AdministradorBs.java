@@ -13,7 +13,6 @@ import com.escom.core.entity.Aula;
 import com.escom.core.entity.Carrera;
 import com.escom.external.rest.dto.CarreraDashboardDTO;
 import com.escom.external.rest.dto.DashboardDTO;
-import com.escom.external.rest.dto.PeriodoDTO;
 
 import io.vavr.control.Either;
 import jakarta.enterprise.context.ApplicationScoped;

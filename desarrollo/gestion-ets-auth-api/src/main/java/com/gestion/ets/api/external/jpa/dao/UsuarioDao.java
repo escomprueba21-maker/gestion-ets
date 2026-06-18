@@ -70,6 +70,12 @@ public class UsuarioDao implements UsuarioRepository {
     join esc03_persona_rol esc03 on esc03.fk_id_persona = esc02.id_persona
     where esc02.id_persona = :idPersona and esc02.st_verificado is true
     """;
+    private static final String QUERY_FIND_EXISTS_FCM = """
+            select exists( select 1 from esc09_dispositivo esc09
+            where esc09.fk_id_persona = :idPersona
+            and esc09.tx_fcm_token = :fcm)
+            """;
+
 
     private static final String PARAM_CORREO = "correo";
     private static final String PARAM_TOKEN = "token";
@@ -78,6 +84,8 @@ public class UsuarioDao implements UsuarioRepository {
     private static final String PARAM_PRIMER_APELLIDO = "primerApellido";
     private static final String PARAM_SEGUNDO_APELLIDO = "segundoApellido";
     private static final String PARAM_PASSWORD = "password";
+    private static final String PARAM_FCM = "fcm";
+
 
 
     @Override
@@ -189,5 +197,13 @@ public class UsuarioDao implements UsuarioRepository {
     @Override
     public void saveFcm(Dispositivo entity) {
         entityManager.persist(DispositivoJpa.fromEntity(entity));
+    }
+
+    @Override
+    public boolean existsFcm(Integer idPersona, String fcm) {
+        return (boolean) entityManager.createNativeQuery(QUERY_FIND_EXISTS_FCM)
+                .setParameter(PARAM_ID_PERSONA,idPersona)
+                .setParameter(PARAM_FCM, fcm)
+                .getSingleResult();
     }
 }

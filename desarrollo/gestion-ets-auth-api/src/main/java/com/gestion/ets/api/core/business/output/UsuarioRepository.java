@@ -56,4 +56,6 @@ public interface UsuarioRepository {
     void actualizarPassword(Integer idPersona, String password);
 
     void saveFcm(Dispositivo entity);
+
+    boolean existsFcm(Integer idPersona, String fcm);
 }

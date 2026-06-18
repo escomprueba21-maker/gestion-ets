@@ -154,10 +154,15 @@ public class UsuarioBs implements UsuarioService {
         }
          var token = jwtBs.generarAccessToken(searchUsuario.get().getIdUsuario(),searchUsuario.get().getIdRol());
         var refreshToken = jwtBs.generarRefreshToken(searchUsuario.get().getIdUsuario());
-       usuarioRepository.saveFcm(Dispositivo.builder()
-                .idPersona(searchUsuario.get().getIdUsuario()).idPlataforma(EnumDispositivos.ANDROID.getId()).
-                fcmToken(fcm).fechaRegistro(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID)).build());
-        return Either.right(Auth.builder().token(token).refreshToken(refreshToken).build());
+        if (!usuarioRepository.existsFcm(searchUsuario.get().getIdUsuario(), fcm)) {
+            usuarioRepository.saveFcm(Dispositivo.builder()
+                    .idPersona(searchUsuario.get().getIdUsuario())
+                    .idPlataforma(EnumDispositivos.ANDROID.getId())
+                    .fcmToken(fcm)
+                    .fechaRegistro(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID))
+                    .build());
+        }
+            return Either.right(Auth.builder().token(token).refreshToken(refreshToken).build());
     }
 
     @Override
