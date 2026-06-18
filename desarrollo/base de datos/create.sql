@@ -105,7 +105,7 @@ CREATE TABLE esc09_dispositivo (
     id_dispositivo    INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     fk_id_persona     INT4      NOT NULL REFERENCES esc02_persona(id_persona) ON DELETE CASCADE,
     fk_id_plataforma  INT4      NOT NULL REFERENCES cat07_plataforma(id_plataforma),
-    tx_fcm_token      TEXT      NOT NULL UNIQUE,
+    tx_fcm_token      TEXT      NOT NULL,
     fh_registro       TIMESTAMP NOT NULL DEFAULT NOW(),
     fh_ultima_vista   TIMESTAMP NOT NULL DEFAULT NOW()
 );
