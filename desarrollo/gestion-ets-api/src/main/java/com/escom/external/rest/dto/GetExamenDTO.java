@@ -27,6 +27,15 @@ public class GetExamenDTO {
     private Integer idDocente;
 
     @JsonProperty
+    @Schema(description = "Id carrera")
+    private Integer idCarrera;
+
+    @JsonProperty
+    @Schema(description = "semestre")
+    private Integer semestre;
+
+
+    @JsonProperty
     @Schema(description = "Id del aula / salón")
     private Integer idAula;
 
@@ -46,10 +55,12 @@ public class GetExamenDTO {
         return GetExamenDTO.builder()
                 .idEts(examen.getIdEts())
                 .idMateria(examen.getIdMateria())
+                .idCarrera(examen.getIdCarrera())
                 .idDocente(examen.getIdDocente())
                 .idAula(examen.getIdAula())
                 .idTurno(examen.getIdTurno())
                 .idTipoEts(examen.getIdTipoEts())
+                .semestre(examen.getSemestre())
                 .fechaAplicacion(examen.getFechaAplicacion())
                 .build();
     }
