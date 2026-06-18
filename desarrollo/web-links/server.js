@@ -2,7 +2,7 @@ const http = require('http');
 const url  = require('url');
 
 const AUTH_API = 'https://gestion-ets-auth-api-production.up.railway.app';
-const PORT     = process.env.PORT || 8083;
+const PORT     =  8083;
 
 // ---------- HTML helpers ----------
 function page(title, body) {
