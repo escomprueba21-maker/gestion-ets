@@ -50,8 +50,6 @@ public class UsuarioBs implements UsuarioService {
     @ConfigProperty(name = "resend.from")
     String resendFrom;
 
-    @ConfigProperty(name = "resend.to.override")
-    String resendToOverride;
 
     @Inject
     public UsuarioBs(UsuarioRepository usuarioRepository,
@@ -261,7 +259,7 @@ public class UsuarioBs implements UsuarioService {
                 .data("email", email)
                 .data("link", link)
                 .render();
-        resendClient.send(new ResendEmailRequest(resendFrom, resendToOverride, "Confirmar Usuario", body));
+        resendClient.send(new ResendEmailRequest(resendFrom, email, "Confirmar Usuario", body));
     }
 
     private void sendNewForgotPasswordEmail(String email, String nombre, String token) {
@@ -271,6 +269,6 @@ public class UsuarioBs implements UsuarioService {
                 .data("email", email)
                 .data("link", link)
                 .render();
-        resendClient.send(new ResendEmailRequest(resendFrom, resendToOverride, "Recuperar contraseña", body));
+        resendClient.send(new ResendEmailRequest(resendFrom, email, "Recuperar contraseña", body));
     }
 }
