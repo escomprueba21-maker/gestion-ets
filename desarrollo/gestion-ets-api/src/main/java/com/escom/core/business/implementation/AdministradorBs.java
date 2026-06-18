@@ -4,13 +4,9 @@ package com.escom.core.business.implementation;
 import com.escom.core.business.input.AdministradorService;
 import com.escom.core.business.output.AdministradorRepository;
 import com.escom.core.business.output.UsuarioRepository;
-import com.escom.core.entity.Examen;
-import com.escom.core.entity.Materia;
+import com.escom.core.entity.*;
 import com.escom.util.BsConstants;
 import com.escom.util.error.ErrorCodeEnum;
-import com.escom.core.entity.Periodo;
-import com.escom.core.entity.Aula;
-import com.escom.core.entity.Carrera;
 import com.escom.external.rest.dto.CarreraDashboardDTO;
 import com.escom.external.rest.dto.DashboardDTO;
 
@@ -21,17 +17,24 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.time.LocalDateTime;
+import java.util.Objects;
+
+import com.escom.config.FcmNotificationService;
+import lombok.extern.slf4j.Slf4j;
 
 @ApplicationScoped
+@Slf4j
 public class AdministradorBs implements AdministradorService {
 
     private final AdministradorRepository administradorRepository;
     private final UsuarioRepository usuarioRepository;
+    private final FcmNotificationService fcmNotificationService;
 
     @Inject
-    public AdministradorBs(AdministradorRepository administradorRepository, UsuarioRepository usuarioRepository) {
+    public AdministradorBs(AdministradorRepository administradorRepository, UsuarioRepository usuarioRepository, FcmNotificationService fcmNotificationService) {
         this.administradorRepository = administradorRepository;
         this.usuarioRepository = usuarioRepository;
+        this.fcmNotificationService = fcmNotificationService;
     }
 
 
@@ -44,10 +47,14 @@ public class AdministradorBs implements AdministradorService {
         if(administradorRepository.existsPeriodo()){
             return Either.left(ErrorCodeEnum.GE_RNS004);
         }
-        //TODO: enviar msj app con fcm
         var listPersonasInEts = administradorRepository.listEtsJoinUsuariosWithFcm(idEts);
+        log.info("Tokens antes de filtrar: {}", listPersonasInEts.stream().map(Usuario::getFcmToken).toList());
         administradorRepository.deleteEtsById(idEts);
 
+        fcmNotificationService.enviarNotificacion(listPersonasInEts.stream()
+                .map(Usuario::getFcmToken).filter(Objects::nonNull)
+                .toList(),BsConstants.TITULO,BsConstants.MENSAJE);
+        log.info("Tokens después de filtrar: {}", listPersonasInEts.stream().map(Usuario::getFcmToken).filter(Objects::nonNull).toList());
         return Either.right(true);
     }
 

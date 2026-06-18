@@ -20,5 +20,8 @@ public class BsConstants {
 
     public static final String ROL_ALUMNO = "ALUMNO";
     public static final String ROL_ADMINISTRADOR = "ADMINISTRADOR";
+    public static final String TITULO = "TU ASIGNACION AL ETS FUE ELIMINADO ";
+    public static final String MENSAJE = "Por favor verifica tu calendario";
+
 
 }
