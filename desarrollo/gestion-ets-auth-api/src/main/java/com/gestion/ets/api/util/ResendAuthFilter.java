@@ -9,6 +9,7 @@ public class ResendAuthFilter implements ClientRequestFilter {
     @Override
     public void filter(ClientRequestContext requestContext) {
         String apiKey = ConfigProvider.getConfig().getValue("resend.api.key", String.class);
+        System.out.println("=== RESEND KEY: [" + apiKey + "]");
         requestContext.getHeaders().add("Authorization", "Bearer " + apiKey);
     }
 }
