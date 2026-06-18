@@ -1,6 +1,7 @@
 package com.escom.external.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -20,7 +21,7 @@ public class CambiarNombreDTO {
     private String primerApellido;
 
     @JsonProperty
-    @NotBlank(message = "El segundo apellido no puede estar vacío")
-    @Schema(description = "Segundo apellido del usuario")
+    @Nullable
+    @Schema(description = "Segundo apellido del usuario (opcional)")
     private String segundoApellido;
 }

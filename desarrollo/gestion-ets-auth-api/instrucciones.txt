@@ -1,0 +1,103 @@
+================================================================
+  INSTRUCCIONES DE ARRANQUE — gestion-ets-auth-api
+  API de autenticación y gestión de usuarios
+  Puerto: 8081
+================================================================
+
+REQUISITOS PREVIOS
+------------------
+  - Java JDK 17 o superior  (java -version para verificar)
+  - Maven Wrapper incluido en el repo (mvnw.cmd en Windows)
+  - PostgreSQL 14+ corriendo en localhost:5432
+  - Base de datos "calendario-ets" creada y con el script SQL aplicado
+    (ver desarrollo/base de datos/build.sql)
+  - Node.js 18+ para el servidor web-links (confirmación de cuenta)
+
+VARIABLES DE ENTORNO (.env)
+----------------------------
+Crea el archivo  desarrollo/gestion-ets-auth-api/.env
+con el siguiente contenido (reemplaza los valores marcados con <>):
+
+  DB_PASSWORD=<contraseña-de-postgresql>
+  MAILER_AUTH_METHODS=LOGIN
+  MAILER_FROM=<correo-gmail-remitente>@gmail.com
+  MAILER_HOST=smtp.gmail.com
+  MAILER_PORT=587
+  MAILER_START_TLS=REQUIRED
+  MAILER_USERNAME=<correo-gmail-remitente>@gmail.com
+  MAILER_PASSWORD=<contraseña-de-aplicación-gmail-16-chars>
+  MAILER_MOCK=false
+  APP_CONFIRMACION=http://localhost:8083/confirmar-cuenta
+  APP_OLVIDAR_CONTRASENIA=http://localhost:8083/contraseña-olvidada
+  JWT_SECRET=<cadena-hex-de-64-chars-compartida-con-main-api>
+
+  * MAILER_PASSWORD es una "contraseña de aplicación" de Google
+    (Cuenta Google → Seguridad → Verificación en 2 pasos → Contraseñas de aplicación)
+  * JWT_SECRET debe ser la MISMA cadena en auth-api y main-api
+  * Si MAILER_MOCK=true los emails no se envían (modo prueba sin SMTP)
+  * APP_CONFIRMACION y APP_OLVIDAR_CONTRASENIA son las URLs del
+    servidor web-links que maneja los deep-links de email
+
+CÓMO ARRANCAR EN WINDOWS
+--------------------------
+IMPORTANTE: NO uses PowerShell con redirección (> log.txt)
+porque Quarkus dev mode necesita stdin y se cierra solo.
+
+Opción A — Ventana CMD separada (recomendado):
+  1. Abre una ventana de Símbolo del sistema (cmd.exe)
+  2. Navega al directorio del proyecto:
+       cd /d D:\ruta\a\gestion-ets\desarrollo\gestion-ets-auth-api
+  3. Carga el .env manualmente o usa un script wrapper
+  4. Inicia el servidor:
+       mvnw.cmd quarkus:dev -Dquarkus.http.port=8081
+
+Opción B — Desde PowerShell con Start-Process:
+  Start-Process "cmd.exe" -ArgumentList `
+    "/c cd /d <ruta>\gestion-ets-auth-api && mvnw.cmd quarkus:dev -Dquarkus.http.port=8081" `
+    -WindowStyle Normal
+
+  NOTA: Para que las variables .env estén disponibles,
+  usa dotenv-java o exporta las variables en el cmd antes de mvnw.
+
+Verificar que está corriendo:
+  Abre en el navegador: http://localhost:8081/q/swagger-ui
+  Debe mostrar la documentación Swagger de la API.
+
+PARA PRUEBAS CON DISPOSITIVO FÍSICO (ADB reverse)
+----------------------------------------------------
+Conecta el dispositivo Android por USB con depuración activada,
+luego ejecuta en PowerShell o CMD:
+
+  adb reverse tcp:8081 tcp:8081
+
+Esto permite que el teléfono acceda a tu localhost:8081.
+El app Flutter usa http://localhost:8081 como baseUrlAuth.
+
+ENDPOINTS PRINCIPALES
+----------------------
+  POST /auth/login               ← Login con correo + contraseña
+  POST /auth/registrarse         ← Crear cuenta nueva
+  POST /auth?token={uuid}        ← Confirmar cuenta (desde email)
+  POST /auth/forgot-password     ← Solicitar reset de contraseña
+  POST /auth/update-password     ← Guardar nueva contraseña (token email)
+  POST /auth/refresh             ← Refrescar access token
+  POST /auth/reenviar-token      ← Reenviar correo de confirmación
+
+FLUJO DE CONFIRMACIÓN DE CUENTA
+---------------------------------
+  1. App llama POST /auth/registrarse → backend genera token UUID en DB
+  2. Backend envía email con enlace a:
+       http://localhost:8083/confirmar-cuenta?token={uuid}
+  3. El servidor web-links recibe el GET y hace POST /auth?token={uuid}
+  4. Auth-api verifica token, marca usuario como verificado (st_verificado=true)
+  5. Usuario ya puede hacer login
+
+  El servidor web-links DEBE estar corriendo en puerto 8083
+  para que los links de email funcionen.
+
+NOTAS
+------
+  - El token de confirmación tiene una vigencia limitada (ver DB esc04_token_confirmacion.fh_expiracion)
+  - El access token JWT dura 15 minutos (jwt.access.duration=900)
+  - El refresh token dura 7 días (jwt.refresh.duration=604800)
+  - El issuer del JWT es "auth-ets-api" — debe coincidir con la config de main-api

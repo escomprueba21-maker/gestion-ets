@@ -7,6 +7,6 @@ CREATE DATABASE "calendario-ets";
 
 BEGIN;
 \i create.sql
-\i catalogos.sql
-\i ets_demo.sql
+--\i catalogos.sql
+--\i ets_demo.sql
 COMMIT;

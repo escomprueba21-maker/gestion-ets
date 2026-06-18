@@ -17,7 +17,7 @@ public class FcmNotificationService {
         }
 
         List<Message> messages = fcmTokens.stream()
-                .filter(Objects::nonNull)
+                .filter(token -> token != null && !token.isBlank())
                 .map(token -> Message.builder()
                         .setToken(token)
                         .setNotification(Notification.builder()

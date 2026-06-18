@@ -1,9 +1,12 @@
 package com.escom.core.business.implementation;
 
+import java.time.LocalDateTime;
+
 import com.escom.core.business.input.UsuarioService;
 import com.escom.core.business.output.UsuarioRepository;
 import com.escom.core.entity.Ets;
 import com.escom.core.entity.Materia;
+import com.escom.util.BsConstants;
 import com.escom.util.JsonMapperUtils;
 import com.escom.util.error.ErrorCodeEnum;
 import io.vavr.control.Either;
@@ -50,11 +53,16 @@ public class UsuarioBs implements UsuarioService {
     }
 
     @Override
+    @Transactional
     public Either<ErrorCodeEnum, Boolean> createEtsAgenda(Integer idEts, Integer idPersona) {
         if(usuarioRepository.existsEtsAgendaByEtsAndPersona(idEts,idPersona)) {
             return Either.left(ErrorCodeEnum.GE_RNS003);
         }
-        usuarioRepository.saveEtsAgenda(Ets.builder().idEts(idEts).idPersona(idPersona).build());
+        usuarioRepository.saveEtsAgenda(Ets.builder()
+                .idEts(idEts)
+                .idPersona(idPersona)
+                .fechaRegistro(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID))
+                .build());
         return Either.right(true);
     }
 }

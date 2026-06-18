@@ -52,8 +52,9 @@ public class AdministradorBs implements AdministradorService {
         administradorRepository.deleteEtsById(idEts);
 
         fcmNotificationService.enviarNotificacion(listPersonasInEts.stream()
-                .map(Usuario::getFcmToken).filter(Objects::nonNull)
-                .toList(),BsConstants.TITULO,BsConstants.MENSAJE);
+                .map(Usuario::getFcmToken)
+                .filter(t -> t != null && !t.isBlank())
+                .toList(), BsConstants.TITULO, BsConstants.MENSAJE);
         log.info("Tokens después de filtrar: {}", listPersonasInEts.stream().map(Usuario::getFcmToken).filter(Objects::nonNull).toList());
         return Either.right(true);
     }

@@ -1,0 +1,91 @@
+================================================================
+  INSTRUCCIONES DE ARRANQUE — web-links server
+  Servidor de deep-links para confirmación de cuenta y
+  recuperación de contraseña por email
+  Puerto: 8083
+================================================================
+
+DESCRIPCIÓN
+-----------
+Este es un pequeño servidor HTTP en Node.js que actúa como
+intermediario entre los links que se envían por correo y la
+Auth-API de Quarkus.
+
+Los correos de confirmación y recuperación de contraseña contienen
+links del tipo:
+  http://localhost:8083/confirmar-cuenta?token=UUID
+  http://localhost:8083/contraseña-olvidada?token=UUID
+
+El servidor los recibe, llama internamente a la Auth-API en
+localhost:8081, y devuelve una página HTML de resultado al usuario.
+
+REQUISITOS PREVIOS
+------------------
+  - Node.js 18 o superior (node --version para verificar)
+    (el servidor usa fetch nativo disponible desde Node 18+)
+  - Auth-API corriendo en localhost:8081
+
+NO requiere npm install — usa únicamente módulos built-in de Node.js.
+
+CÓMO ARRANCAR
+--------------
+  1. Abre una terminal (CMD o PowerShell) en este directorio:
+       cd desarrollo/web-links
+
+  2. Inicia el servidor:
+       node server.js
+
+  3. Verás el mensaje:
+       Web-links server corriendo en http://localhost:8083
+
+Mantén la terminal abierta mientras estés haciendo pruebas con emails.
+
+PARA PRUEBAS CON DISPOSITIVO FÍSICO (ADB reverse)
+----------------------------------------------------
+  adb reverse tcp:8083 tcp:8083
+
+Esto permite que el navegador del teléfono acceda al servidor
+al abrir links del tipo http://localhost:8083/...
+
+RUTAS DISPONIBLES
+-----------------
+  GET  /confirmar-cuenta?token={uuid}
+       → Verifica el token contra Auth-API
+       → Muestra página "¡Cuenta verificada!" o error
+
+  GET  /contraseña-olvidada?token={uuid}
+       → Muestra formulario para ingresar nueva contraseña
+
+  POST /nueva-password
+       Body (form-urlencoded): token, password, confirm
+       → Envía nueva contraseña a Auth-API
+       → Muestra página "¡Contraseña actualizada!" o error
+
+FLUJO COMPLETO DE CONFIRMACIÓN DE CUENTA
+-----------------------------------------
+  1. Usuario se registra en la app → Auth-API genera token en DB
+  2. Auth-API envía email con enlace a /confirmar-cuenta?token=UUID
+  3. Usuario abre el email y toca el enlace → Chrome abre localhost:8083
+  4. web-links hace POST a Auth-API: /auth?token=UUID
+  5. Auth-API marca st_verificado=true en BD
+  6. web-links muestra "¡Cuenta verificada! HTTP 200"
+
+FLUJO COMPLETO DE RECUPERACIÓN DE CONTRASEÑA
+---------------------------------------------
+  1. Usuario toca "¿Olvidaste tu contraseña?" en la app
+  2. App hace POST a Auth-API: /auth/forgot-password {email}
+  3. Auth-API genera token y envía email con enlace a /contraseña-olvidada?token=UUID
+  4. Usuario abre email → Chrome abre localhost:8083
+  5. web-links muestra formulario para nueva contraseña
+  6. Usuario escribe y envía → web-links hace POST a /auth/update-password
+  7. Auth-API actualiza la contraseña en BD
+  8. web-links muestra "¡Contraseña actualizada! HTTP 200"
+
+NOTAS
+------
+  - El servidor escucha en localhost:8083 (todas las interfaces)
+  - La URL base de Auth-API está hardcodeada en server.js como
+    const AUTH_API = 'http://localhost:8081'
+  - Los emails se reciben normalmente en la carpeta Spam de Gmail
+    (el remitente escomprueba21@gmail.com no está en la lista de
+     contactos del destinatario)
