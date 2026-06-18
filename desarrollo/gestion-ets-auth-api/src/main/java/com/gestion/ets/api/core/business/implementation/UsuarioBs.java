@@ -48,7 +48,7 @@ public class UsuarioBs implements UsuarioService {
     @Inject
     public UsuarioBs(UsuarioRepository usuarioRepository, Mailer mailer,
                      @Location("email/confirmacion") Template template, JWTBs jwtBs, JWTParser jwtParser,
-                     @Location("email/contraseña-olvidada") Template forgotPasswordTemplate) {
+                     @Location("email/contrasena-olvidada") Template forgotPasswordTemplate) {
         this.usuarioRepository = usuarioRepository;
         this.mailer = mailer;
         this.template = template;
