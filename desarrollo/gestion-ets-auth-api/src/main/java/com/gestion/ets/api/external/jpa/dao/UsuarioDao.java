@@ -196,7 +196,7 @@ public class UsuarioDao implements UsuarioRepository {
 
     @Override
     public void saveFcm(Dispositivo entity) {
-        entityManager.persist(DispositivoJpa.fromEntity(entity));
+         entityManager.persist(DispositivoJpa.fromEntity(entity));
     }
 
     @Override

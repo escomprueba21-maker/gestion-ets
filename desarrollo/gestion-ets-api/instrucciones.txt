@@ -1,0 +1,108 @@
+================================================================
+  INSTRUCCIONES DE ARRANQUE — gestion-ets-api  (Main API)
+  API principal de gestión de ETS, perfil y catálogos
+  Puerto: 8082
+  (Nota: en equipos Windows con el puerto 8080 ocupado por otros
+   servicios del sistema, se usa 8082 como alternativa)
+================================================================
+
+REQUISITOS PREVIOS
+------------------
+  - Java JDK 17 o superior  (java -version para verificar)
+  - Maven Wrapper incluido en el repo (mvnw.cmd en Windows)
+  - PostgreSQL 14+ corriendo en localhost:5432
+  - Base de datos "calendario-ets" creada y con el script SQL aplicado
+    (ver desarrollo/base de datos/build.sql)
+  - Auth-API corriendo en puerto 8081 (main-api valida JWT contra el mismo secreto)
+  - Cuenta de servicio de Firebase (para notificaciones FCM)
+
+VARIABLES DE ENTORNO (.env)
+----------------------------
+Crea el archivo  desarrollo/gestion-ets-api/.env
+con el siguiente contenido:
+
+  DB_PASSWORD=<contraseña-de-postgresql>
+  JWT_SECRET=<cadena-hex-de-64-chars-misma-que-auth-api>
+  FIREBASE_CREDENTIALS=<json-completo-de-service-account-firebase>
+
+  * JWT_SECRET DEBE SER IDÉNTICO al de auth-api para que los tokens
+    generados por auth-api sean válidos en main-api.
+  * FIREBASE_CREDENTIALS es el contenido JSON del archivo de cuenta de
+    servicio de Firebase (serviceAccountKey.json), todo en UNA SOLA LÍNEA.
+
+Cómo obtener FIREBASE_CREDENTIALS:
+  1. Ir a console.firebase.google.com → tu proyecto
+  2. Configuración ⚙ → Cuentas de servicio
+  3. "Generar nueva clave privada" → descarga el JSON
+  4. Minificar el JSON (sin saltos de línea) y asignarlo a FIREBASE_CREDENTIALS
+
+CÓMO ARRANCAR EN WINDOWS
+--------------------------
+IMPORTANTE: NO uses PowerShell con redirección (> log.txt)
+porque Quarkus dev mode necesita stdin y se cierra solo.
+
+Opción A — Ventana CMD separada (recomendado):
+  1. Abre una ventana de Símbolo del sistema (cmd.exe)
+  2. Navega al directorio:
+       cd /d D:\ruta\a\gestion-ets\desarrollo\gestion-ets-api
+  3. Inicia en puerto 8082:
+       mvnw.cmd quarkus:dev -Dquarkus.http.port=8082
+
+  Si en tu entorno el puerto 8080 está libre, puedes usar:
+       mvnw.cmd quarkus:dev
+  (usa 8080 por defecto según application.properties)
+
+Opción B — Desde PowerShell con Start-Process:
+  Start-Process "cmd.exe" -ArgumentList `
+    "/c cd /d <ruta>\gestion-ets-api && mvnw.cmd quarkus:dev -Dquarkus.http.port=8082" `
+    -WindowStyle Normal
+
+Verificar que está corriendo:
+  Abre en el navegador: http://localhost:8082/q/swagger-ui
+  Debe mostrar la documentación Swagger con todos los endpoints.
+
+PARA PRUEBAS CON DISPOSITIVO FÍSICO (ADB reverse)
+----------------------------------------------------
+  adb reverse tcp:8082 tcp:8082
+
+El app Flutter usa http://localhost:8082 como baseUrlMain cuando se configura
+el modo ADB reverse en api_constants.dart.
+
+ENDPOINTS PRINCIPALES
+----------------------
+  Alumno:
+    GET  /gestion-etsAgenda/inicio          ← Periodo activo + exámenes guardados
+    GET  /gestion-etsAgenda/{id}            ← Detalle de un ETS
+    POST /gestion-etsAgenda/{id}/agenda     ← Guardar ETS en agenda
+    DELETE /gestion-etsAgenda/{id}/agenda   ← Quitar de agenda
+    GET  /perfil                            ← Datos del perfil
+    PUT  /perfil/nombre                     ← Cambiar nombre
+    PUT  /perfil/password                   ← Cambiar contraseña
+
+  Catálogos (sin autenticación requerida para GET):
+    GET  /catalogo/carreras
+    GET  /catalogo/semestres
+    GET  /catalogo/{idCarrera}/{idSemestre}/materia
+    GET  /catalogo/ets-by-filtros           ← Búsqueda con filtros
+    GET  /catalogo/docentes
+    GET  /gestion-ets/salones
+
+  Admin:
+    GET  /gestion-ets/dashboard             ← Estadísticas y periodo activo
+    GET  /gestion-ets/examenes              ← Lista de exámenes con filtros
+    POST /gestion-ets/examenes              ← Crear examen
+    PUT  /gestion-ets/examenes/{id}         ← Editar examen
+    DELETE /gestion-ets/examenes/{id}       ← Eliminar examen
+    POST /gestion-ets/periodo               ← Asignar periodo
+    PUT  /gestion-ets/periodo               ← Editar periodo
+    DELETE /gestion-ets/periodo             ← Eliminar periodo
+
+NOTAS
+------
+  - Todos los endpoints (excepto catálogos públicos) requieren header:
+      Authorization: Bearer <access_token>
+  - El JWT es verificado con HS256 usando JWT_SECRET
+  - El issuer esperado es "auth-ets-api"
+  - Firebase se usa para notificaciones push — si no configuras
+    FIREBASE_CREDENTIALS las notificaciones fallarán pero el resto del API
+    seguirá funcionando

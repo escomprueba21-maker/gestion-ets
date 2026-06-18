@@ -1,0 +1,25 @@
+# Variables de entorno — NUNCA subir al repositorio
+.env
+**/.env
+
+# Directorio de configuración local de Claude Code
+.claude/
+
+# Archivos de credenciales Firebase
+serviceAccountKey.json
+**/serviceAccountKey.json
+firebase-adminsdk*.json
+
+# Java / Maven build output
+target/
+*.class
+*.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db

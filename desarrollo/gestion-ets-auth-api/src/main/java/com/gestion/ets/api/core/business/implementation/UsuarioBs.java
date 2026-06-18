@@ -162,7 +162,7 @@ public class UsuarioBs implements UsuarioService {
                     .fechaRegistro(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID))
                     .build());
         }
-            return Either.right(Auth.builder().token(token).refreshToken(refreshToken).build());
+        return Either.right(Auth.builder().token(token).refreshToken(refreshToken).build());
     }
 
     @Override
