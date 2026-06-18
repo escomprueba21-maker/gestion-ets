@@ -97,18 +97,22 @@ private static final String QUERY_COUNT_SALONES = """
         """;
 
 private static final String QUERY_COUNT_EXAMENES_POR_CARRERA = """
-        SELECT cat01.id_carrera, cat01.tx_nombre, COUNT(esc07.id_ets) as total
-        FROM cat01_carrera cat01
-        LEFT JOIN esc01_carrera_materia esc01 ON esc01.fk_id_carrera = cat01.id_carrera
-        LEFT JOIN esc07_ets esc07 ON esc07.fk_id_materia = esc01.fk_id_materia
-        LEFT JOIN (
-            SELECT id_periodo, fh_inicio, fh_fin
-            FROM cat08_periodo_ets
-            ORDER BY fh_inicio DESC
-            LIMIT 1
-        ) periodo ON esc07.fh_aplicacion BETWEEN periodo.fh_inicio AND periodo.fh_fin
-        GROUP BY cat01.id_carrera, cat01.tx_nombre
-        ORDER BY cat01.tx_nombre
+        WITH periodo_actual AS (
+                    SELECT fh_inicio, fh_fin
+                    FROM cat08_periodo_ets
+                    ORDER BY fh_inicio DESC
+                    LIMIT 1),
+                examenes_periodo AS (
+                    SELECT esc07.id_ets, esc07.fk_id_materia
+                    FROM esc07_ets esc07
+                    JOIN periodo_actual periodo
+                        ON esc07.fh_aplicacion BETWEEN periodo.fh_inicio AND periodo.fh_fin)
+                SELECT cat01.id_carrera, cat01.tx_nombre, COUNT(examenes_periodo.id_ets) as total
+                FROM cat01_carrera cat01
+                LEFT JOIN esc01_carrera_materia esc01 ON esc01.fk_id_carrera = cat01.id_carrera
+                LEFT JOIN examenes_periodo ON examenes_periodo.fk_id_materia = esc01.fk_id_materia
+                GROUP BY cat01.id_carrera, cat01.tx_nombre
+                ORDER BY cat01.tx_nombre
         """;
 
 private static final String QUERY_SAVE_PERIODO = """

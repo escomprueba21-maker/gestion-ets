@@ -67,7 +67,6 @@ public class AdministradorBs implements AdministradorService {
 @Override
 public Either<ErrorCodeEnum, DashboardDTO> getDashboard() {
     var periodo = administradorRepository.findPeriodoActual();
-    var totalExamenes = administradorRepository.countExamenes();
     var totalCarreras = administradorRepository.countCarreras();
     var totalSalones = administradorRepository.countSalones();
 
@@ -75,6 +74,10 @@ public Either<ErrorCodeEnum, DashboardDTO> getDashboard() {
             .stream()
             .map(CarreraDashboardDTO::fromEntity)
             .toList();
+
+    var totalExamenes = examenesPorCarrera.stream()
+            .mapToInt(CarreraDashboardDTO::getTotalExamenes)
+            .sum();
 
     Periodo periodoEntity = null;
     if (periodo.isPresent()) {
