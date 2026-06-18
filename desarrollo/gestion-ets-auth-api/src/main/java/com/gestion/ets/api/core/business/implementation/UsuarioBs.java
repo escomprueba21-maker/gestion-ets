@@ -8,9 +8,9 @@ import com.gestion.ets.api.core.entity.Usuario;
 import com.gestion.ets.api.core.enums.EnumDispositivos;
 import com.gestion.ets.api.core.enums.RolesEnum;
 import com.gestion.ets.api.util.BsConstants;
+import com.gestion.ets.api.util.ResendClient;
+import com.gestion.ets.api.util.ResendEmailRequest;
 import com.gestion.ets.api.util.error.ErrorCodeEnum;
-import io.quarkus.mailer.Mail;
-import io.quarkus.mailer.Mailer;
 import io.quarkus.narayana.jta.QuarkusTransaction;
 import io.quarkus.qute.Location;
 import io.quarkus.qute.Template;
@@ -22,6 +22,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDateTime;
@@ -34,7 +35,7 @@ import java.util.stream.Stream;
 public class UsuarioBs implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private final Mailer mailer;
+    private final ResendClient resendClient;
     private final Template template;
     private final Template forgotPasswordTemplate;
     private final JWTBs jwtBs;
@@ -42,15 +43,25 @@ public class UsuarioBs implements UsuarioService {
 
     @ConfigProperty(name = "app.deeplink.base-url")
     String deeplinkBaseUrl;
+
     @ConfigProperty(name = "app.forgotpassword.base-url")
     String forgotPasswordUrl;
 
+    @ConfigProperty(name = "resend.from")
+    String resendFrom;
+
+    @ConfigProperty(name = "resend.to.override")
+    String resendToOverride;
+
     @Inject
-    public UsuarioBs(UsuarioRepository usuarioRepository, Mailer mailer,
-                     @Location("email/confirmacion") Template template, JWTBs jwtBs, JWTParser jwtParser,
+    public UsuarioBs(UsuarioRepository usuarioRepository,
+                     @RestClient ResendClient resendClient,
+                     @Location("email/confirmacion") Template template,
+                     JWTBs jwtBs,
+                     JWTParser jwtParser,
                      @Location("email/contrasena-olvidada") Template forgotPasswordTemplate) {
         this.usuarioRepository = usuarioRepository;
-        this.mailer = mailer;
+        this.resendClient = resendClient;
         this.template = template;
         this.jwtBs = jwtBs;
         this.jwtParser = jwtParser;
@@ -66,7 +77,7 @@ public class UsuarioBs implements UsuarioService {
         var token = resultado.get();
         sendNewConfirmationEmail(entity.getEmail(), Stream.of(entity.getNombre(),
                         entity.getPrimerApellido(), entity.getSegundoApellido())
-                        .filter(Objects::nonNull).collect(Collectors.joining(" ")), token);
+                .filter(Objects::nonNull).collect(Collectors.joining(" ")), token);
         return Either.right(Boolean.TRUE);
     }
 
@@ -144,7 +155,7 @@ public class UsuarioBs implements UsuarioService {
 
     @Override
     @Transactional
-    public Either<ErrorCodeEnum, Auth> login(String email, String password,String fcm) {
+    public Either<ErrorCodeEnum, Auth> login(String email, String password, String fcm) {
         var searchUsuario = usuarioRepository.findPersonaVerifyByEmail(email);
         if (searchUsuario.isEmpty()) {
             return Either.left(ErrorCodeEnum.GE_NOT_FOUND);
@@ -152,7 +163,7 @@ public class UsuarioBs implements UsuarioService {
         if (!BCrypt.checkpw(password, searchUsuario.get().getPassword())) {
             return Either.left(ErrorCodeEnum.GE_RNN002);
         }
-         var token = jwtBs.generarAccessToken(searchUsuario.get().getIdUsuario(),searchUsuario.get().getIdRol());
+        var token = jwtBs.generarAccessToken(searchUsuario.get().getIdUsuario(), searchUsuario.get().getIdRol());
         var refreshToken = jwtBs.generarRefreshToken(searchUsuario.get().getIdUsuario());
         if (!usuarioRepository.existsFcm(searchUsuario.get().getIdUsuario(), fcm)) {
             usuarioRepository.saveFcm(Dispositivo.builder()
@@ -169,21 +180,17 @@ public class UsuarioBs implements UsuarioService {
     public Either<ErrorCodeEnum, Auth> refreshToken(String refreshToken) {
         try {
             JsonWebToken jwt = jwtParser.parse(refreshToken);
-
             String type = jwt.getClaim("type");
             if (!"refresh".equals(type)) {
                 return Either.left(ErrorCodeEnum.GE_RNN002);
             }
-
             var userId = Integer.parseInt(jwt.getSubject());
             var searchUsuario = usuarioRepository.findById(userId);
             if (searchUsuario.isEmpty()) {
                 return Either.left(ErrorCodeEnum.GE_RNN002);
             }
-
             var newAccess = jwtBs.generarAccessToken(searchUsuario.get().getIdUsuario(), searchUsuario.get().getIdRol());
             var newRefresh = jwtBs.generarRefreshToken(searchUsuario.get().getIdUsuario());
-
             return Either.right(Auth.builder()
                     .token(newAccess)
                     .refreshToken(newRefresh)
@@ -207,7 +214,7 @@ public class UsuarioBs implements UsuarioService {
                 .idPersona(searchUsuario.get().getIdUsuario())
                 .fechaExpiracion(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID).plusMinutes(BsConstants.EXPIRACION))
                 .build());
-        sendNewForgotPasswordEmail(email,searchUsuario.get().getNombre(),uuid);
+        sendNewForgotPasswordEmail(email, searchUsuario.get().getNombre(), uuid);
         return Either.right(Boolean.TRUE);
     }
 
@@ -215,15 +222,12 @@ public class UsuarioBs implements UsuarioService {
     @Transactional
     public Either<ErrorCodeEnum, Boolean> updatePasswordNueva(String password, String token) {
         var searchUsuario = usuarioRepository.findByToken(token);
-
         if (searchUsuario.isEmpty()) {
             return Either.left(ErrorCodeEnum.GE_RNN002);
         }
-
         if (searchUsuario.get().getFechaExpiracion().isBefore(LocalDateTime.now(BsConstants.DEFAULT_ZONE_ID))) {
             return Either.left(ErrorCodeEnum.GE_RNN003);
         }
-
         var hashed = BCrypt.hashpw(password, BCrypt.gensalt());
         usuarioRepository.actualizarPassword(searchUsuario.get().getIdUsuario(), hashed);
         usuarioRepository.deleteToken(token);
@@ -250,10 +254,6 @@ public class UsuarioBs implements UsuarioService {
         return Either.right(token);
     }
 
-
-    /**
-     * Envía correo de confirmación al cliente al registrarse por primera vez.
-     */
     private void sendNewConfirmationEmail(String email, String nombre, String token) {
         var link = deeplinkBaseUrl + BsConstants.URL_TOKEN + token;
         var body = template
@@ -261,12 +261,9 @@ public class UsuarioBs implements UsuarioService {
                 .data("email", email)
                 .data("link", link)
                 .render();
-        mailer.send(Mail.withHtml(email, "Confirmar Usuario", body));
+        resendClient.send(new ResendEmailRequest(resendFrom, resendToOverride, "Confirmar Usuario", body));
     }
 
-    /**
-     * Envía correo de contraseña olvidad  al cliente.
-     */
     private void sendNewForgotPasswordEmail(String email, String nombre, String token) {
         var link = forgotPasswordUrl + BsConstants.URL_TOKEN + token;
         var body = forgotPasswordTemplate
@@ -274,6 +271,6 @@ public class UsuarioBs implements UsuarioService {
                 .data("email", email)
                 .data("link", link)
                 .render();
-        mailer.send(Mail.withHtml(email, "Recuperar contraseña", body));
+        resendClient.send(new ResendEmailRequest(resendFrom, resendToOverride, "Recuperar contraseña", body));
     }
 }
