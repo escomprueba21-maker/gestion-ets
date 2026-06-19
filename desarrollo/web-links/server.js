@@ -149,7 +149,7 @@ const server = http.createServer(async (req, res) => {
   try {
     if (req.method === 'GET' && path === '/confirmar-cuenta') {
       await handleConfirmar(token, res);
-    } else if (req.method === 'GET' && (path === '/contraseña-olvidada' || path === '/contrase%C3%B1a-olvidada')) {
+    } else if (req.method === 'GET' && ( path === '/contrasena-olvidada')) {
       await handleOlvidarContrasenia(token, res);
     } else if (req.method === 'POST' && path === '/nueva-password') {
       let body = '';
