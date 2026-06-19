@@ -74,14 +74,6 @@ public class AdministradorController {
                 .getOrElseThrow(ErrorCode::toBusinessException);
     }
 
-    @GET
-    @Path("by-filtros")
-    public List<SalonEtsDTO> listEdificiosByFiltros(@QueryParam("salon") String salon,
-                                                 @QueryParam("idEdificio") Integer idEdificio,
-                                                 @QueryParam("idSalon") Integer idSalon) {
-    return List.of();
-}
-
 @GET
 @Path("examenes")
 @Operation(operationId = "listExamenes", summary = "Lista exámenes con filtros opcionales")

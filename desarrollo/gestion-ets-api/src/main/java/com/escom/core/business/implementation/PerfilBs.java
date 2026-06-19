@@ -23,10 +23,7 @@ public class PerfilBs implements PerfilService {
     @Override
     public Either<ErrorCodeEnum, Usuario> getPerfil(Integer idPersona) {
         var perfil = perfilRepository.findPerfilByIdPersona(idPersona);
-        if (perfil.isEmpty()) {
-            return Either.left(ErrorCodeEnum.GE_RNN002);
-        }
-        return Either.right(perfil.get());
+        return perfil.<Either<ErrorCodeEnum, Usuario>>map(Either::right).orElseGet(() -> Either.left(ErrorCodeEnum.GE_RNN002));
     }
 
     @Override

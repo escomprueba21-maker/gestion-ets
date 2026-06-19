@@ -305,10 +305,6 @@ private static final String PARAM_EDIFICIO = "edificio";
         return (boolean) entityManager.createNativeQuery(QUERY_EXISTS_PERIODO).getSingleResult();
     }
 
-    @Override
-    public List<Materia> findSalonesByFiltros(String salon, Integer idEdificio, Integer idSalon) {
-        return List.of();
-    }
 
     @Override
 @SuppressWarnings("unchecked")
@@ -322,12 +318,6 @@ public Optional<Periodo> findPeriodoActual() {
             .fechaFin((LocalDateTime) row[3])
             .idTipoEts((Integer) row[4])
             .build());
-}
-
-@Override
-public Integer countExamenes() {
-    return ((Number) entityManager.createNativeQuery(QUERY_COUNT_EXAMENES)
-            .getSingleResult()).intValue();
 }
 
 @Override

@@ -1,39 +1,34 @@
 package com.escom.core.business.implementation;
 
 
+import com.escom.config.FcmNotificationService;
 import com.escom.core.business.input.AdministradorService;
 import com.escom.core.business.output.AdministradorRepository;
-import com.escom.core.business.output.UsuarioRepository;
 import com.escom.core.entity.*;
-import com.escom.util.BsConstants;
-import com.escom.util.error.ErrorCodeEnum;
 import com.escom.external.rest.dto.CarreraDashboardDTO;
 import com.escom.external.rest.dto.DashboardDTO;
-
+import com.escom.util.BsConstants;
+import com.escom.util.error.ErrorCodeEnum;
 import io.vavr.control.Either;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-
-import java.util.List;
-import java.time.LocalDateTime;
-import java.util.Objects;
-
-import com.escom.config.FcmNotificationService;
 import lombok.extern.slf4j.Slf4j;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
 
 @ApplicationScoped
 @Slf4j
 public class AdministradorBs implements AdministradorService {
 
     private final AdministradorRepository administradorRepository;
-    private final UsuarioRepository usuarioRepository;
     private final FcmNotificationService fcmNotificationService;
 
     @Inject
-    public AdministradorBs(AdministradorRepository administradorRepository, UsuarioRepository usuarioRepository, FcmNotificationService fcmNotificationService) {
+    public AdministradorBs(AdministradorRepository administradorRepository, FcmNotificationService fcmNotificationService) {
         this.administradorRepository = administradorRepository;
-        this.usuarioRepository = usuarioRepository;
         this.fcmNotificationService = fcmNotificationService;
     }
 
