@@ -2,11 +2,10 @@ const http = require('http');
 const url  = require('url');
 
 const AUTH_API = 'https://gestion-ets-auth-api-production.up.railway.app';
-const PORT     =  8083;
+const PORT     = 8083;
 
 // ---------- HTML helpers ----------
-function page(title, body, opts = {}) {
-  const { showLogo = true } = opts;
+function page(title, body) {
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,168 +13,156 @@ function page(title, body, opts = {}) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${title} — ETS ESCOM</title>
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body{
-      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-      background:#F5F7FF;
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-      color:#1A1A2E;
-    }
-
-    .card{
-      background:#fff;
-      border-radius:24px;
-      max-width:420px;
-      width:100%;
-      overflow:hidden;
-      box-shadow:0 12px 40px rgba(26,35,126,.16);
-      text-align:center;
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #F5F7FF;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: #1A1A2E;
     }
 
-    /* ---- Header: degradado azul con esquinas curvas tipo app ---- */
-    .header{
-      background:linear-gradient(135deg,#1A237E 0%,#3949AB 60%,#1565C0 100%);
-      padding:34px 28px 56px;
-      position:relative;
-      color:#fff;
-    }
-    .header::after{
-      content:'';
-      position:absolute;
-      left:0; right:0; bottom:-1px;
-      height:32px;
-      background:#fff;
-      border-radius:32px 32px 0 0;
-    }
-    .logo-tag{
-      font-size:12px;
-      font-weight:700;
-      letter-spacing:1.5px;
-      opacity:.85;
-      text-transform:uppercase;
-      margin-bottom:14px;
-    }
-    .icon-circle{
-      width:64px;
-      height:64px;
-      margin:0 auto 6px;
-      border-radius:50%;
-      background:rgba(255,255,255,.16);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:32px;
-    }
-    .header h1{
-      font-size:21px;
-      font-weight:700;
-      margin-top:10px;
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      max-width: 420px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(26, 35, 126, .16);
+      text-align: center;
     }
 
-    /* ---- Body content ---- */
-    .content{
-      padding:8px 28px 32px;
-      margin-top:-24px;
+    .header {
+      background: #1A237E;
+      padding: 34px 28px 56px;
+      position: relative;
+      color: #fff;
     }
-    .content p{
-      font-size:14px;
-      color:#6B6B6B;
-      line-height:1.55;
-      margin-bottom:22px;
+    .header::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: -1px;
+      height: 32px;
+      background: #fff;
+      border-radius: 32px 32px 0 0;
+    }
+    .header--danger { background: #7F1D1D; }
+
+    .header__label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      opacity: .8;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .header__icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .header__icon svg { width: 32px; height: 32px; stroke: #fff; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .header h1 { font-size: 21px; font-weight: 700; margin-top: 10px; }
+
+    .content {
+      padding: 8px 28px 32px;
+      margin-top: -24px;
+    }
+    .content p {
+      font-size: 14px;
+      color: #6B6B6B;
+      line-height: 1.6;
+      margin-bottom: 22px;
     }
 
-    .btn{
-      display:block;
-      width:100%;
-      padding:15px;
-      border:none;
-      border-radius:14px;
-      font-size:16px;
-      font-weight:700;
-      cursor:pointer;
-      text-decoration:none;
-      background:linear-gradient(135deg,#1A237E 0%,#1565C0 100%);
-      color:#fff;
-      box-shadow:0 6px 18px rgba(26,35,126,.28);
-      transition:opacity .15s ease, transform .15s ease;
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      background: #1A237E;
+      color: #fff;
+      transition: opacity .15s, transform .15s;
     }
-    .btn:hover{opacity:.92;transform:translateY(-1px)}
-    .btn.secondary{
-      background:#F5F7FF;
-      color:#1A237E;
-      border:1.5px solid #E3E7FB;
-      box-shadow:none;
-      margin-top:10px;
-    }
+    .btn:hover { opacity: .9; transform: translateY(-1px); }
 
-    input{
-      width:100%;
-      padding:14px 16px;
-      border:1.5px solid #E3E7FB;
-      background:#F5F7FF;
-      border-radius:14px;
-      font-size:15px;
-      margin-bottom:12px;
-      outline:none;
-      color:#1A1A2E;
-      transition:border-color .15s ease;
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1.5px solid #E3E7FB;
+      background: #F5F7FF;
+      border-radius: 14px;
+      font-size: 15px;
+      margin-bottom: 12px;
+      outline: none;
+      color: #1A1A2E;
+      transition: border-color .15s;
     }
-    input::placeholder{color:#9AA0C3}
-    input:focus{border-color:#1A237E;background:#fff}
+    input::placeholder { color: #9AA0C3; }
+    input:focus { border-color: #1A237E; background: #fff; }
 
-    .error{
-      background:#FFEBEE;
-      color:#C62828;
-      border-radius:12px;
-      padding:12px 16px;
-      font-size:13px;
-      margin-bottom:16px;
-      text-align:left;
-      font-weight:500;
+    .alert {
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      text-align: left;
+      font-weight: 500;
     }
+    .alert--error { background: #FFEBEE; color: #C62828; }
 
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      border-radius:999px;
-      padding:7px 16px;
-      font-size:13px;
-      font-weight:700;
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 600;
     }
-    .pill.success{background:#E8F5E9;color:#2E7D32}
-    .pill.info{background:#E3F2FD;color:#1565C0}
-
-    .footer-note{
-      margin-top:18px;
-      font-size:12px;
-      color:#9AA0C3;
-    }
+    .badge--success { background: #E8F5E9; color: #2E7D32; }
   </style>
 </head>
 <body><div class="card">${body}</div></body>
 </html>`;
 }
 
-function headerBlock(icon, eyebrow, heading) {
+function headerBlock(icon, eyebrow, heading, modifier = '') {
   return `
-    <div class="header">
-      ${eyebrow ? `<div class="logo-tag">${eyebrow}</div>` : ''}
-      <div class="icon-circle">${icon}</div>
+    <div class="header${modifier ? ` header--${modifier}` : ''}">
+      ${eyebrow ? `<div class="header__label">${eyebrow}</div>` : ''}
+      <div class="header__icon">${icon}</div>
       <h1>${heading}</h1>
     </div>`;
 }
 
-// ---------- Fetch helper (node 22 has native fetch) ----------
+// SVG icons (sin emojis)
+const ICONS = {
+  check: `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`,
+  lock:  `<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+  warn:  `<svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+  error: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
+};
+
+// ---------- Fetch helper ----------
 async function apiFetch(path, method = 'GET', body = null) {
   const opts = { method, headers: { 'Content-Type': 'application/json' } };
   if (body) opts.body = JSON.stringify(body);
-  const res = await fetch(AUTH_API + path, opts);
+  const res  = await fetch(AUTH_API + path, opts);
   const text = await res.text();
   let json;
   try { json = JSON.parse(text); } catch { json = text; }
@@ -183,11 +170,11 @@ async function apiFetch(path, method = 'GET', body = null) {
 }
 
 // ---------- Routes ----------
-async function handleConfirmar(token, res) {
+async function handleConfirmarCuenta(token, res) {
   if (!token) {
     res.writeHead(400, { 'Content-Type': 'text/html; charset=utf-8' });
-    res.end(page('Error', `
-      ${headerBlock('❌', 'ETS ESCOM', 'Token inválido')}
+    res.end(page('Token inválido', `
+      ${headerBlock(ICONS.error, 'ETS ESCOM', 'Enlace inválido', 'danger')}
       <div class="content">
         <p>No se proporcionó un token de verificación.</p>
       </div>
@@ -200,50 +187,50 @@ async function handleConfirmar(token, res) {
   if (r.ok && r.data === true) {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(page('Cuenta confirmada', `
-      ${headerBlock('✅', 'ETS ESCOM', '¡Cuenta verificada!')}
+      ${headerBlock(ICONS.check, 'ETS ESCOM', 'Cuenta verificada')}
       <div class="content">
         <p>Tu cuenta ha sido confirmada exitosamente.<br>Ya puedes iniciar sesión en la app.</p>
-        <span class="pill success">HTTP ${r.status} · Verificación completada</span>
+        <span class="badge badge--success">Verificación completada</span>
       </div>
     `));
   } else {
-    const msg = r.data?.details?.[0]?.message || r.data?.message || 'Error desconocido';
-    res.writeHead(r.status, { 'Content-Type': 'text/html; charset=utf-8' });
+    const msg = r.data?.details?.[0]?.message || r.data?.message || 'El enlace puede haber expirado o ya fue utilizado.';
+    res.writeHead(400, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(page('Error de verificación', `
-      ${headerBlock('⚠️', 'ETS ESCOM', 'No se pudo verificar')}
+      ${headerBlock(ICONS.warn, 'ETS ESCOM', 'No se pudo verificar', 'danger')}
       <div class="content">
-        <div class="error"><b>HTTP ${r.status}</b> · ${msg}</div>
-        <p>El enlace puede haber expirado o ya fue utilizado.</p>
+        <div class="alert alert--error">${msg}</div>
+        <p>Solicita un nuevo enlace desde la aplicación.</p>
       </div>
     `));
   }
 }
 
 function serveResetForm(token, errorMsg, res) {
-  const err = errorMsg ? `<div class="error">${errorMsg}</div>` : '';
+  const err = errorMsg ? `<div class="alert alert--error">${errorMsg}</div>` : '';
   res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-  res.end(page('Recuperar contraseña', `
-    ${headerBlock('🔒', 'ETS ESCOM', 'Nueva contraseña')}
+  res.end(page('Nueva contraseña', `
+    ${headerBlock(ICONS.lock, 'ETS ESCOM', 'Nueva contraseña')}
     <div class="content">
       <p>Ingresa y confirma tu nueva contraseña.</p>
       ${err}
-      <form method="POST" action="/nueva-password">
+      <form method="POST" action="/nueva-contrasena">
         <input type="hidden" name="token" value="${token}">
-        <input type="password" name="password" placeholder="Nueva contraseña" required minlength="8">
-        <input type="password" name="confirm"  placeholder="Confirmar contraseña" required minlength="8">
+        <input type="password" name="password" placeholder="Nueva contraseña" required minlength="8" autocomplete="new-password">
+        <input type="password" name="confirm"  placeholder="Confirmar contraseña" required minlength="8" autocomplete="new-password">
         <button type="submit" class="btn">Guardar contraseña</button>
       </form>
     </div>
   `));
 }
 
-async function handleOlvidarContrasenia(token, res) {
+async function handleContrasenaOlvidada(token, res) {
   if (!token) {
     res.writeHead(400, { 'Content-Type': 'text/html; charset=utf-8' });
-    res.end(page('Error', `
-      ${headerBlock('❌', 'ETS ESCOM', 'Token inválido')}
+    res.end(page('Token inválido', `
+      ${headerBlock(ICONS.error, 'ETS ESCOM', 'Enlace inválido', 'danger')}
       <div class="content">
-        <p>No se proporcionó un token.</p>
+        <p>No se proporcionó un token de recuperación.</p>
       </div>
     `));
     return;
@@ -251,8 +238,8 @@ async function handleOlvidarContrasenia(token, res) {
   serveResetForm(token, null, res);
 }
 
-async function handleNuevaPassword(bodyStr, res) {
-  const params = new URLSearchParams(bodyStr);
+async function handleNuevaContrasena(bodyStr, res) {
+  const params   = new URLSearchParams(bodyStr);
   const token    = params.get('token')    || '';
   const password = params.get('password') || '';
   const confirm  = params.get('confirm')  || '';
@@ -270,44 +257,52 @@ async function handleNuevaPassword(bodyStr, res) {
   if (r.ok && r.data === true) {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(page('Contraseña actualizada', `
-      ${headerBlock('✅', 'ETS ESCOM', '¡Contraseña actualizada!')}
+      ${headerBlock(ICONS.check, 'ETS ESCOM', 'Contraseña actualizada')}
       <div class="content">
         <p>Tu contraseña ha sido cambiada exitosamente.<br>Ya puedes iniciar sesión en la app.</p>
-        <span class="pill success">HTTP ${r.status} · Contraseña guardada</span>
+        <span class="badge badge--success">Contraseña guardada</span>
       </div>
     `));
   } else {
-    const msg = r.data?.details?.[0]?.message || r.data?.message || 'Error desconocido';
-    serveResetForm(token, `<b>HTTP ${r.status}</b> · ${msg}`, res);
+    const msg = r.data?.details?.[0]?.message || r.data?.message || 'No se pudo actualizar la contraseña.';
+    serveResetForm(token, msg, res);
   }
 }
 
 // ---------- Server ----------
 const server = http.createServer(async (req, res) => {
-  const parsed = url.parse(req.url, true);
-  const path   = parsed.pathname;
-  const token  = parsed.query.token || '';
+  const parsed   = url.parse(req.url, true);
+  const pathname = parsed.pathname;
+  const token    = parsed.query.token || '';
 
   try {
-    if (req.method === 'GET' && path === '/confirmar-cuenta') {
-      await handleConfirmar(token, res);
-    } else if (req.method === 'GET' && ( path === '/contrasena-olvidada')) {
-      await handleOlvidarContrasenia(token, res);
-    } else if (req.method === 'POST' && path === '/nueva-password') {
+    if (req.method === 'GET' && pathname === '/confirmar-cuenta') {
+      await handleConfirmarCuenta(token, res);
+
+    } else if (req.method === 'GET' && pathname === '/contrasena-olvidada') {
+      await handleContrasenaOlvidada(token, res);
+
+    } else if (req.method === 'POST' && pathname === '/nueva-contrasena') {
       let body = '';
-      req.on('data', chunk => body += chunk);
-      req.on('end', () => handleNuevaPassword(body, res));
+      req.on('data', chunk => (body += chunk));
+      req.on('end', () => handleNuevaContrasena(body, res));
+
     } else {
       res.writeHead(404, { 'Content-Type': 'text/plain' });
       res.end('Not found');
     }
-  } catch (e) {
+  } catch (err) {
+    console.error('[web-links] error interno:', err);
     res.writeHead(500, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(page('Error interno', `
-      ${headerBlock('💥', 'ETS ESCOM', 'Error interno')}
-      <div class="content"><p>${e.message}</p></div>
+      ${headerBlock(ICONS.error, 'ETS ESCOM', 'Error interno', 'danger')}
+      <div class="content">
+        <p>Ocurrió un error inesperado. Inténtalo más tarde.</p>
+      </div>
     `));
   }
 });
 
-server.listen(PORT, () => console.log(`Web-links server corriendo en http://localhost:${PORT}`));
+server.listen(PORT, () => {
+  console.log(`[web-links] servidor corriendo en http://localhost:${PORT}`);
+});
