@@ -127,7 +127,9 @@ public Either<ErrorCodeEnum, Boolean> editarPeriodo(Periodo periodo) {
     if (ahora.isAfter(p.getFechaInicio())) {
         var afectados = administradorRepository.countEtsAfectadosByFecha(
                 p.getFechaInicio(), p.getFechaFin());
-        throw ErrorCodeEnum.GE_RNS005.toPeriodoConflictoException(afectados);
+        if (afectados > 0) {
+            throw ErrorCodeEnum.GE_RNS005.toPeriodoConflictoException(afectados);
+        }
     }
 
     // Regla GE_RNS006
