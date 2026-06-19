@@ -4,6 +4,14 @@ const url  = require('url');
 const AUTH_API = 'https://gestion-ets-auth-api-production.up.railway.app';
 const PORT     = 8083;
 
+// ---------- SVG icons ----------
+const ICONS = {
+  check: `<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  lock:  `<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+  warn:  `<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+  error: `<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
+};
+
 // ---------- HTML helpers ----------
 function page(title, body) {
   return `<!DOCTYPE html>
@@ -38,10 +46,11 @@ function page(title, body) {
 
     .header {
       background: #1A237E;
-      padding: 34px 28px 56px;
+      padding: 34px 28px 44px;
       position: relative;
       color: #fff;
     }
+    .header--danger { background: #7F1D1D; }
     .header::after {
       content: '';
       position: absolute;
@@ -50,7 +59,6 @@ function page(title, body) {
       background: #fff;
       border-radius: 32px 32px 0 0;
     }
-    .header--danger { background: #7F1D1D; }
 
     .header__label {
       font-size: 12px;
@@ -70,12 +78,10 @@ function page(title, body) {
       align-items: center;
       justify-content: center;
     }
-    .header__icon svg { width: 32px; height: 32px; stroke: #fff; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .header h1 { font-size: 21px; font-weight: 700; margin-top: 10px; }
 
     .content {
-      padding: 8px 28px 32px;
-      margin-top: -24px;
+      padding: 24px 28px 32px;
     }
     .content p {
       font-size: 14px;
@@ -149,14 +155,6 @@ function headerBlock(icon, eyebrow, heading, modifier = '') {
       <h1>${heading}</h1>
     </div>`;
 }
-
-// SVG icons (sin emojis)
-const ICONS = {
-  check: `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`,
-  lock:  `<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
-  warn:  `<svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
-  error: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
-};
 
 // ---------- Fetch helper ----------
 async function apiFetch(path, method = 'GET', body = null) {
@@ -270,6 +268,12 @@ async function handleNuevaContrasena(bodyStr, res) {
 }
 
 // ---------- Server ----------
+const PATHS_CONTRASENA_OLVIDADA = new Set([
+  '/contrasena-olvidada',
+  '/contrase%C3%B1a-olvidada',
+  '/contrase%EF%BF%BD%EF%BF%BDa-olvidada',
+]);
+
 const server = http.createServer(async (req, res) => {
   const parsed   = url.parse(req.url, true);
   const pathname = parsed.pathname;
@@ -279,7 +283,7 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'GET' && pathname === '/confirmar-cuenta') {
       await handleConfirmarCuenta(token, res);
 
-    } else if (req.method === 'GET' && pathname === '/contrasena-olvidada') {
+    } else if (req.method === 'GET' && PATHS_CONTRASENA_OLVIDADA.has(pathname)) {
       await handleContrasenaOlvidada(token, res);
 
     } else if (req.method === 'POST' && pathname === '/nueva-contrasena') {
